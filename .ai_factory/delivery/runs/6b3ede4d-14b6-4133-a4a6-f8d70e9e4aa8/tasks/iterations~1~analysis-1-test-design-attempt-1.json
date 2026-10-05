@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "Execution was cancelled by a user decision.\nElapsed: 60 seconds.\nLast observed activity: item.completed (command_execution) at 2026-09-14T16:35:45.000Z.\nAgent process exit observed; descendant processes and file changes still require verification.\nError: No confirmed task result. Verify external effects before retry.",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}

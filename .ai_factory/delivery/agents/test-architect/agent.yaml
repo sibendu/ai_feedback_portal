@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: test-architect
+version: "1.0"
+baseRole: test-architect
+promptFile: prompt.md
+config: {}

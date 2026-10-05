@@ -1,0 +1,27 @@
+{
+  "outcome": "blocked",
+  "summary": "Intake readiness cannot be confirmed because the project workspace could not be inspected: read-only directory and artifact inspection commands were rejected by policy. The intake itself is also underspecified for delivery readiness: it requests a “nice landing page” but does not define acceptance criteria, required content, branding, routes, data needs, or an iteration plan. Human clarification is needed before this can be treated as ready for implementation.",
+  "defects": [
+    {
+      "id": "missing-verifiable-project-artifacts",
+      "layer": "both",
+      "severity": "high",
+      "description": "Unable to verify required AI Factory artifacts, project structure, package setup, or existing source state because local read commands were blocked by execution policy."
+    },
+    {
+      "id": "underspecified-landing-page-requirements",
+      "layer": "frontend",
+      "severity": "high",
+      "description": "The intake does not define concrete acceptance expectations for the landing page, such as required sections, copy, visual direction, responsive behavior, navigation, or success criteria."
+    },
+    {
+      "id": "missing-iteration-plan",
+      "layer": "both",
+      "severity": "medium",
+      "description": "No iteration plan was provided or verifiable, so dependencies, task sequencing, test expectations, and prerequisites cannot be reviewed end to end."
+    }
+  ],
+  "artifacts": [],
+  "retryable": false,
+  "workItems": null
+}

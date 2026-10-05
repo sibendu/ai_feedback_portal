@@ -1,0 +1,22 @@
+{
+  "outcome": "blocked",
+  "summary": "Current story `bootstrap-nextjs-app` is implemented in the workspace and structural verification passed: `src/app/layout.tsx` and `src/app/page.tsx` provide a Next.js TypeScript App Router home route without starter boilerplate; `package.json` includes `dev`, `build`, `lint`, and `test:e2e`; `npm run lint` passed; `npm run build` passed and prerendered `/`; script validation passed; starter boilerplate scan returned no matches. Browser verification is blocked in this execution environment: exact command `npm run test:e2e` started Playwright, launched its managed web server, discovered and began the single Chromium test, then stalled with no further output for over three minutes. I interrupted it to avoid leaving a test process running. Evidence after interruption: `npm run test:e2e -- --list` passed and listed 1 test in `.ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts`; `netstat -ano | Select-String ':3187'` returned no listener, so the managed test server was not left running. Per instruction, this is reported as an environment/test page-setup blocker, not an application defect. No application files were changed in this attempt.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "package-lock.json",
+    "next.config.ts",
+    "eslint.config.mjs",
+    "tsconfig.json",
+    "playwright.config.ts",
+    "next-env.d.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".gitignore",
+    ".ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts",
+    ".ai_factory/tests/reports/playwright-html/index.html"
+  ],
+  "retryable": false,
+  "workItems": null
+}

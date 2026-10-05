@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "The agent did not return a valid confirmed result.\nElapsed: 0 seconds.\nProcess shutdown has not been confirmed.\nError: spawn codex ENOENT",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}

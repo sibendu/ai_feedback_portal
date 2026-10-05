@@ -1,0 +1,11 @@
+schemaVersion: 1
+engineVersion: 0.1.0
+defaults:
+  model: GPT-5.5
+  reasoning: medium
+  timeoutSeconds: 900
+maxIterations: 3
+configurationVersion: 1
+enabledProcesses:
+  - .ai_factory/delivery/processes/feature-delivery/2.0.yaml
+  - .ai_factory/delivery/processes/multi-iteration-delivery/1.0.yaml

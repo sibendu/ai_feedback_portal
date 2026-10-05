@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: tester
+version: "1.0"
+baseRole: tester
+promptFile: prompt.md
+config: {}

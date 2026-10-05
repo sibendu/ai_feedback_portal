@@ -1,0 +1,18 @@
+{
+  "outcome": "blocked",
+  "summary": "Implemented remediation for `bootstrap-nextjs-app` by adding executable Playwright coverage at `.ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts`. Evidence: `npm run lint` passed; `npm run build` passed and prerendered `/`; package script validation passed for `dev`, `build`, `lint`, and `test:e2e`; source-only boilerplate scan found no default Next.js starter copy in `src` or `package.json`; `npm run test:e2e -- --list` passed and discovered 1 test in 1 file, resolving the prior `No tests found` defect. Full Playwright execution is blocked in this sandbox because Chromium launch fails with `browserType.launch: spawn EPERM`, so I cannot truthfully claim e2e tests passed.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "playwright.config.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts",
+    ".ai_factory/tests/functional/feedback/iteration-1-landing-home-test-design.md",
+    "test-results/.last-run.json",
+    "test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/error-context.md"
+  ],
+  "retryable": false,
+  "workItems": null
+}

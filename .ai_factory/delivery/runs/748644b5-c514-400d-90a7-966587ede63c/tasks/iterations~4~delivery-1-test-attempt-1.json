@@ -1,0 +1,47 @@
+{
+  "outcome": "defects",
+  "summary": "Feedback batch-upload testing found unresolved acceptance defects despite clean approved non-browser checks. Passed commands: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, and `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-delivery-behavior.test.mjs .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs .ai_factory\\tests\\unit\\feedback\\feedback-request-batch-upload-source.test.mjs` with 22/22 passing. Browser, Playwright, e2e, app server startup, production build, deployment, publishing, and real email delivery were not run per task constraints.",
+  "defects": [
+    {
+      "id": "FDB-DEFECT-001",
+      "layer": "backend",
+      "severity": "medium",
+      "description": "Duplicate required workbook headers are not rejected. Requirement FDB-VALID-004 requires missing, duplicate, or misspelled required headers to reject the file, but `src/features/feedback-request/validation.ts` builds `columnIndexes` with `new Map(header.map(...))` at lines 45-47 and only checks for missing columns. Duplicate headers are silently collapsed to the last occurrence."
+    },
+    {
+      "id": "FDB-DEFECT-002",
+      "layer": "backend",
+      "severity": "high",
+      "description": "Invalid calendar dates can be silently accepted. Requirement FDB-VALID-009 requires `purchase_date` parsing without silently accepting invalid calendar values, but `parsePurchaseDate` uses `new Date(isoLike)` at `src/features/feedback-request/validation.ts:132`; JavaScript normalizes impossible dates such as `2026-02-30` instead of rejecting them."
+    },
+    {
+      "id": "FDB-DEFECT-003",
+      "layer": "backend",
+      "severity": "medium",
+      "description": "`product_code` and `product_name` are not bounded before persistence. Requirement FDB-VALID-010 requires trimmed and implementation-defined maximum lengths, but `src/features/feedback-request/validation.ts:72-87` only checks presence, then `src/features/feedback-request/service.ts:46-47` persists the values directly."
+    },
+    {
+      "id": "FDB-DEFECT-004",
+      "layer": "backend",
+      "severity": "low",
+      "description": "Uploaded file names are stored directly without sanitization or bounding. The requirements call out unsafe uploaded file names as needing sanitization or display-only safe handling; `src/app/dashboard/feedback-request/actions.ts:47` passes `file.name` directly as `sourceFileName` for persistence."
+    }
+  ],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260915100000_feedback_request_batch_upload/migration.sql",
+    "src/app/dashboard/feedback-request/actions.ts",
+    "src/app/dashboard/feedback-request/page.tsx",
+    "src/app/dashboard/feedback-request/upload-form.tsx",
+    "src/features/feedback-request/validation.ts",
+    "src/features/feedback-request/xlsx.ts",
+    "src/features/feedback-request/service.ts",
+    "src/features/feedback-request/email.ts",
+    ".ai_factory/tests/unit/feedback/feedback-request-batch-upload-source.test.mjs",
+    ".ai_factory/docs/requirements/modules/feedback/feedback-request-batch-upload-requirements.md",
+    ".ai_factory/tests/functional/feedback/feedback-request-batch-upload-test-design.md"
+  ],
+  "retryable": false,
+  "workItems": null
+}

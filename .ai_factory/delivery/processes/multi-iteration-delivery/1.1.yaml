@@ -1,0 +1,112 @@
+schemaVersion: 1
+id: multi-iteration-delivery
+version: "1.1"
+name: Multi-iteration feature delivery
+stages:
+  - id: iteration-planning
+    name: Technical Project Manager iteration planning
+    mode: sequential
+    steps:
+      - id: plan-iterations
+        agent: technical-project-manager
+        action: plan-iterations
+        access: write
+        instructions: Plan the entire intake as ordered delivery iterations. Use one iteration for simple straightforward work; otherwise split into coherent sequential increments with dependencies and acceptance objectives. Return workItems containing 1 to 20 unique ids, titles and descriptions. Cover the entire intake without overlap or omissions.
+  - id: iterations
+    name: Execute planned iterations
+    mode: iterations
+    steps: []
+  - id: production-verification
+    name: Verify final production readiness
+    mode: sequential
+    steps:
+      - id: verify-production
+        agent: technical-architect
+        action: release-readiness
+        access: write
+        instructions: After every planned delivery iteration has passed its own review, perform the project-native final production build and applicable non-browser release checks once for this intake. This is not an iteration check. Build output and verification reports may be created, but do not modify application source, dependencies, deployment configuration, or environment files. Report the exact checks and evidence. A real non-zero exit, timeout, or unresolved verification failure is a blocker.
+  - id: solution-review
+    name: Review overall intake solution
+    mode: sequential
+    steps:
+      - id: review-solution
+        agent: solution-architect
+        action: review-intake-solution
+        access: read
+        instructions: Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked.
+  - id: closure
+    name: Technical Project Manager intake closure
+    mode: sequential
+    steps:
+      - id: close
+        agent: technical-project-manager
+        action: close-intake
+        access: write
+        instructions: Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish.
+iterationTemplate:
+  - id: readiness
+    name: Solution Architect readiness review
+    mode: sequential
+    steps:
+      - id: review-readiness
+        agent: solution-architect
+        action: review-intake-readiness
+        access: read
+        instructions: Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed.
+  - id: planning
+    name: Plan iteration stories
+    mode: sequential
+    steps:
+      - id: plan
+        agent: scrum-master
+        action: plan-stories
+        access: write
+        instructions: Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives.
+  - id: analysis
+    name: Elaborate stories and design tests
+    mode: parallel
+    steps:
+      - id: stories
+        agent: business-analyst
+        action: analyze
+        access: write
+        instructions: Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts.
+      - id: test-design
+        agent: test-architect
+        action: design-tests
+        access: write
+        instructions: Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan.
+  - id: scope-review
+    name: Review iteration readiness
+    mode: sequential
+    steps:
+      - id: scope
+        agent: technical-architect
+        action: review-iteration-scope
+        access: read
+        instructions: Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked.
+  - id: delivery
+    name: Develop and test complete iteration
+    mode: iteration
+    exitWhen: testing.accepted
+    requiresPlan: plan-stories
+    steps:
+      - id: build
+        agent: full-stack-developer
+        action: implement
+        access: write
+        instructions: Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests.
+      - id: test
+        agent: tester
+        action: test
+        access: write
+        instructions: After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass.
+  - id: iteration-review
+    name: Review complete iteration
+    mode: sequential
+    steps:
+      - id: review-delivery
+        agent: technical-architect
+        action: review-iteration-delivery
+        access: read
+        instructions: "Review the complete iteration delivery, including cross-story code review, integration and overall test evidence. Do not run a production build here: final production readiness is verified once after all delivery iterations. Report blockers for human review. Approve only when the iteration objectives are satisfied."

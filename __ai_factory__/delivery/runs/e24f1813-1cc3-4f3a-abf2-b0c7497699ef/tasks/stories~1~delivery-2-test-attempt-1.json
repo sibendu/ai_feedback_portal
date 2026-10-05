@@ -1,0 +1,27 @@
+{
+  "outcome": "defects",
+  "summary": "Tested current story `bootstrap-nextjs-app` for module `feedback`, iteration 2. Structural criteria passed: `package.json` contains `dev`, `build`, `lint`, and `test:e2e`; `src/app/layout.tsx` and `src/app/page.tsx` use Next.js App Router conventions with TypeScript; the home page source contains Customer Feedback Portal content instead of framework starter content. Evidence: `npm run lint` passed; `npm run build` passed and prerendered `/`; script validation passed; source/config boilerplate scan found no matches. Playwright discovery passed with 1 test in `.ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts`. Full Playwright execution did not pass: `npm run test:e2e` started the single Chromium test but failed with `Test timeout of 30000ms exceeded while setting up \"page\"`, producing `test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/error-context.md` and `trace.zip`. Because the current story browser test does not pass, success cannot be claimed.",
+  "defects": [
+    {
+      "id": "DEF-bootstrap-nextjs-app-002",
+      "layer": "frontend",
+      "severity": "medium",
+      "description": "Full Playwright browser execution for the bootstrap home-route regression test still fails. Evidence: `npm run test:e2e -- --list` discovers 1 test in `.ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts`, but `npm run test:e2e` fails during execution with `Test timeout of 30000ms exceeded while setting up \"page\"`. Failure artifacts were generated at `test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/error-context.md` and `test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/trace.zip`."
+    }
+  ],
+  "artifacts": [
+    "package.json",
+    "tsconfig.json",
+    "next.config.ts",
+    "playwright.config.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts",
+    ".ai_factory/tests/reports/playwright-html/index.html",
+    "test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/error-context.md",
+    "test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/trace.zip"
+  ],
+  "retryable": false,
+  "workItems": null
+}

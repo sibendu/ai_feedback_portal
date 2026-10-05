@@ -1,0 +1,59 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current delivery iteration only for `feedback-request-batch-upload`. Evidence reviewed: `src/app/dashboard/feedback-request/page.tsx` is currently a protected placeholder; `prisma/schema.prisma` has auth, registration, and welcome-email models but no FeedbackBatch or Feedback models; `package.json` confirms Next.js, TypeScript, Prisma, Auth.js, and Playwright but no Excel parser dependency; `src/features/registration/welcome-email.ts` and `src/features/registration/welcome-delivery.ts` provide an existing server-only, injectable Gmail delivery pattern. No tests, browser checks, app server, deployment, publishing, or real email sending were run for this planning action. `rg --files` was unavailable in the shell, so file discovery used PowerShell `Get-ChildItem` instead.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/app/dashboard/feedback-request/page.tsx",
+    "src/app/dashboard/layout.tsx",
+    "src/features/dashboard/shell.tsx",
+    "src/auth.ts",
+    "src/features/registration/welcome-email.ts",
+    "src/features/registration/welcome-delivery.ts",
+    ".ai_factory/delivery/runs/748644b5-c514-400d-90a7-966587ede63c/tasks/iterations~4~readiness-1-review-readiness-attempt-1.json"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "feedback-batch-data-model",
+      "title": "Model Feedback Batches And Requests",
+      "description": "Add database persistence for uploaded feedback batches and individual feedback request rows. Acceptance criteria: Prisma schema includes traceable FeedbackBatch and Feedback models related to the authenticated admin user; each feedback row stores email, type, productCode, productName, purchaseDate, unique link identifier, email delivery status, and timestamps; migration can be applied without affecting existing auth, registration, welcome-email, or dashboard data; identifiers are constrained unique at the database level. Dependencies: authenticated-dashboard-shell."
+    },
+    {
+      "id": "feedback-excel-upload-ui",
+      "title": "Build Feedback Request Upload UI",
+      "description": "Replace the protected Feedback Request placeholder with an authenticated upload form for Excel files. Acceptance criteria: `/dashboard/feedback-request` remains protected inside the dashboard shell; the page accepts a single Excel upload and clearly shows submit, processing, success, and validation-error states; accepted column expectations are email, type, product_code, product_name, and purchase_date; UI does not imply support for Configure or public feedback form behavior in this iteration. Dependencies: feedback-batch-data-model."
+    },
+    {
+      "id": "feedback-file-parser-validation",
+      "title": "Validate Uploaded Feedback Rows",
+      "description": "Parse the uploaded Excel workbook and validate file shape and row content before creating records. Acceptance criteria: missing or misspelled required columns are rejected with useful errors; empty files and rows without required values are rejected or reported deterministically; invalid email, invalid purchase_date, unsupported type, duplicate link conflicts, and initially unsupported non-purchase types are handled; only `type=purchase` is accepted; validation returns row-level feedback without creating partial records when the file is invalid. Dependencies: feedback-excel-upload-ui."
+    },
+    {
+      "id": "feedback-batch-creation",
+      "title": "Create Traceable Batch And Feedback Rows",
+      "description": "Create a feedback batch and associated feedback records for a valid upload. Acceptance criteria: a valid upload creates one batch tied to the authenticated admin user; each valid customer row creates one feedback record linked to that batch; stored values preserve product_code, product_name, purchase_date, type, and recipient email; creation is transactional so failures do not leave incomplete batches; created batch metadata supports later audit and dashboard display. Dependencies: feedback-file-parser-validation."
+    },
+    {
+      "id": "feedback-link-generation",
+      "title": "Generate Unique Feedback Links",
+      "description": "Generate a unique feedback-link identifier for every feedback record. Acceptance criteria: every created feedback row receives a non-guessable unique identifier; database uniqueness is enforced; generated customer email links include the identifier in a future public feedback URL; retry behavior handles identifier collisions without exposing internal errors; no public feedback form implementation is required in this iteration. Dependencies: feedback-batch-creation."
+    },
+    {
+      "id": "feedback-request-email-sender",
+      "title": "Email Feedback Requests With Mockable Sender",
+      "description": "Add server-only feedback request email delivery using the existing Gmail configuration pattern without contacting real customers in tests. Acceptance criteria: sender reads Gmail settings server-side and does not expose secrets; email content includes product context and the unique feedback link identifier URL; delivery is injectable or mockable for source-level tests; invalid recipient and provider failures produce deterministic status values; implementation does not send real email during tests. Dependencies: feedback-link-generation."
+    },
+    {
+      "id": "feedback-email-status-tracking",
+      "title": "Track Feedback Email Delivery Outcomes",
+      "description": "Record email-send attempt and outcome for each feedback request row and summarize upload results for the admin. Acceptance criteria: each feedback record stores attempted/sent/failed status and sanitized failure reason where applicable; a valid batch upload can report how many requests were created and how many sends were sent or failed; send failures do not erase the created batch or feedback rows; secret values and full provider credentials are never logged or stored. Dependencies: feedback-request-email-sender."
+    },
+    {
+      "id": "feedback-upload-non-browser-verification",
+      "title": "Verify Batch Upload Without Browser Execution",
+      "description": "Cover the batch upload workflow with approved non-browser checks only. Acceptance criteria: source-level tests cover file shape validation, unsupported type rejection, valid batch/feedback row creation, unique identifier generation, mocked email sending, and email failure status handling; `npx.cmd prisma validate` and `npx.cmd tsc --noEmit --incremental false` are run and recorded during delivery/test tasks; lint is run if available; browser, Playwright, app server startup, deployment, publishing, and real customer email sending remain not run for this task. Dependencies: feedback-email-status-tracking."
+    }
+  ]
+}

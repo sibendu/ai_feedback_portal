@@ -1,0 +1,21 @@
+{
+  "outcome": "blocked",
+  "summary": "Readiness review is blocked. I could not inspect the project root or .ai_factory artifacts because read-only shell inspection commands were rejected by execution policy before filesystem access occurred. Based on the supplied intake alone, the request is also underspecified for implementation: “Landing Home page / Build a web application with a nice landing page” does not define target audience, landing-page content, branding, navigation, feedback-portal entry points, acceptance criteria, or any iteration plan. Human clarification is required before the feedback module can be considered delivery-ready.",
+  "defects": [
+    {
+      "id": "blocked-filesystem-inspection-unavailable",
+      "layer": "both",
+      "severity": "critical",
+      "description": "Could not inspect source, AI Factory artifacts, requirements, design, dependencies, or iteration plan because local read-only commands were rejected by policy."
+    },
+    {
+      "id": "blocked-intake-requirements-underspecified",
+      "layer": "frontend",
+      "severity": "high",
+      "description": "The intake lacks concrete landing-page requirements and acceptance criteria, including audience, content sections, brand/style guidance, calls to action, navigation, and how the landing page connects to customer feedback submission or admin review workflows."
+    }
+  ],
+  "artifacts": [],
+  "retryable": false,
+  "workItems": null
+}

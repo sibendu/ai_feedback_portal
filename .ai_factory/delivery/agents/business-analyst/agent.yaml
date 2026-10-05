@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: business-analyst
+version: "1.0"
+baseRole: business-analyst
+promptFile: prompt.md
+config: {}

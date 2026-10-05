@@ -1,0 +1,21 @@
+{
+  "outcome": "succeeded",
+  "summary": "Tested current story `establish-bff-layer` for module `feedback`, iteration 1. Acceptance criteria pass by source review and non-browser checks: `src/app/api/landing/route.ts` defines `/api/landing`; `src/features/landing/types.ts` defines typed landing content contracts; `src/features/landing/client.ts` consumes `getLandingContentResponse()` through a typed normalization/fallback path; `src/app/page.tsx` awaits `fetchLandingPageContent()` instead of using UI-local constants; `src/app/loading.tsx` defines a loading fallback. Error/partial-data fallback behavior is present via `fallbackLandingContent`, `normalizeLandingContent()`, and the `try/catch` in `fetchLandingPageContent()`. Commands run in this Codex task: `npm run lint` passed, `npm exec tsc -- --noEmit --incremental false` passed, and `npm run build` passed with build output including both `/` and `/api/landing`. Per instruction, I did not run Playwright, launch browsers, or run `npm run test:e2e` inside Codex. Browser verification is pending the controller/local runner for this test step; available approved local-runner evidence from the prior build attempt reports exit code 0 with 3 expected Chromium tests, 0 skipped, 0 unexpected, and 0 flaky.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-2-delivery-1-test-1-faed7774-ef5b-4b3c-b0da-e9cd06921e4b.json.",
+  "defects": [],
+  "artifacts": [
+    "src/app/api/landing/route.ts",
+    "src/features/landing/types.ts",
+    "src/features/landing/content.ts",
+    "src/features/landing/client.ts",
+    "src/app/page.tsx",
+    "src/app/loading.tsx",
+    ".ai_factory/tests/functional/feedback/establish-bff-layer.spec.ts",
+    ".ai_factory/tests/functional/feedback/iteration-1-landing-home-test-design.md",
+    ".ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-2-delivery-1-build-2-1da6ccbe-6f17-4361-88e2-eb8f4a13e56f.json",
+    "package.json",
+    "playwright.config.ts",
+    ".ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-2-delivery-1-test-1-faed7774-ef5b-4b3c-b0da-e9cd06921e4b.json"
+  ],
+  "retryable": false,
+  "workItems": null
+}

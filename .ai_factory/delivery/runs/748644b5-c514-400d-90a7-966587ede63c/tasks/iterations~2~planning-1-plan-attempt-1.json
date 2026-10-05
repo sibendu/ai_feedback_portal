@@ -1,0 +1,40 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current delivery iteration only for `welcome-email`. Evidence reviewed: `package.json` confirms Next.js, TypeScript, Prisma, and Auth.js dependencies; `prisma/schema.prisma` includes the completed registration prerequisite fields `User.firstName` and `User.lastName`; `src/auth.ts` shows the first-time Google consent gate and existing-account bypass; `.env.local` contains the Gmail key names `GMAIL_USER`, `GMAIL_APP_PASSWORD`, and `GMAIL_FROM`; `npm.cmd ls nodemailer @types/nodemailer --depth=0` returned an empty dependency tree, so adding a mail sender dependency or equivalent implementation remains delivery work, not a planning blocker. No tests were run, and browser verification was not run per task constraints.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/auth.ts",
+    ".env.local",
+    ".ai_factory/docs/requirements/modules/registration/registration-profile-consent-requirements.md"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "welcome-email-sender-configuration",
+      "title": "Configure Gmail Welcome Sender",
+      "description": "Add a server-only, injectable email sender for welcome emails using Gmail settings from `.env.local`. Acceptance criteria: reads `GMAIL_USER`, `GMAIL_APP_PASSWORD`, and `GMAIL_FROM` from environment; does not expose secrets to client code; reports missing or invalid mail configuration through clear server-side errors/logging; provides a mockable sender interface for tests. Dependencies: registration-profile-consent."
+    },
+    {
+      "id": "welcome-email-registration-trigger",
+      "title": "Send Welcome After New Registration",
+      "description": "Trigger the welcome email only after a new user registration has been successfully created. Acceptance criteria: welcome email is attempted after successful manual registration and accepted first-time Google registration; existing-user login does not send a welcome email; rejected Google consent does not send a welcome email; registration success is not reversed by later mail-send handling. Dependencies: welcome-email-sender-configuration."
+    },
+    {
+      "id": "welcome-email-failure-handling",
+      "title": "Handle Welcome Email Failures Safely",
+      "description": "Ensure email delivery failures are clear but do not break successful registration. Acceptance criteria: sender failures are caught and logged with useful context; the user remains registered and can sign in when welcome delivery fails; no secret values are logged; failure handling returns or records a deterministic status that source-level tests can assert. Dependencies: welcome-email-registration-trigger."
+    },
+    {
+      "id": "welcome-email-duplicate-avoidance",
+      "title": "Avoid Duplicate Welcome Emails",
+      "description": "Add duplicate-prevention behavior so existing users and repeat auth callbacks do not receive multiple welcome emails. Acceptance criteria: existing accounts never receive a registration welcome during login; repeated callback/event execution for the same already-created user does not send another welcome; duplicate avoidance is implemented in a way that survives the current database-backed Auth.js flow; expected behavior is documented for any future retry/outbox enhancement. Dependencies: welcome-email-registration-trigger."
+    },
+    {
+      "id": "welcome-email-non-browser-verification",
+      "title": "Verify Welcome Email With Mocked Sender",
+      "description": "Cover the welcome email behavior with non-browser checks using a mocked or injectable sender. Acceptance criteria: tests cover env-based configuration, successful new-user welcome send, existing-user duplicate avoidance, and sender failure handling; tests do not contact Gmail or send real email; approved checks include `npx.cmd prisma validate` and `npx.cmd tsc --noEmit --incremental false`; browser, Playwright, app server startup, deployment, and real email sending remain not run for this task. Dependencies: welcome-email-failure-handling, welcome-email-duplicate-avoidance."
+    }
+  ]
+}

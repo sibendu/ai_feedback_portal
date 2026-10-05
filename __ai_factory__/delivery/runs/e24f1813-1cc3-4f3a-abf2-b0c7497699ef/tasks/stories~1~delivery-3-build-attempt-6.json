@@ -1,0 +1,22 @@
+{
+  "outcome": "blocked",
+  "summary": "Current story `bootstrap-nextjs-app` is implemented structurally: Next.js TypeScript App Router files exist under `src/app`, required package scripts are present, the home route contains Customer Feedback Portal content without starter boilerplate, `npm run lint` passed, `npm run build` passed and prerendered `/`, and `npm run test:e2e -- --list` discovered 1 Playwright test. Browser execution is blocked in this environment: exact command `npm run test:e2e` started Playwright and the configured managed web server, reached `[1/1] [chromium] ... bootstrap-nextjs-app.spec.ts`, then produced no further output for roughly two minutes after test start. I interrupted it with Ctrl+C to avoid leaving a stalled process running; the command exited with code 1. Evidence after interruption: `netstat -ano | Select-String ':3187'` returned no listener. Per instruction, this is an environment/test page-setup blocker, not an application defect. No application code changes were needed in this attempt.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "package-lock.json",
+    "next.config.ts",
+    "eslint.config.mjs",
+    "tsconfig.json",
+    "playwright.config.ts",
+    "next-env.d.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".gitignore",
+    ".ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts",
+    ".ai_factory/tests/reports/playwright-html/index.html"
+  ],
+  "retryable": false,
+  "workItems": null
+}

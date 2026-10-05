@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: back-end-developer
+version: "1.0"
+baseRole: back-end-developer
+promptFile: prompt.md
+config: {}

@@ -1,0 +1,26 @@
+{
+  "outcome": "blocked",
+  "summary": "Implemented the bootstrap source for `bootstrap-nextjs-app`: a Next.js TypeScript App Router structure at the project root, package scripts for `dev`, `build`, `lint`, and `test:e2e`, framework config files, and a Customer Feedback Portal home route with product-specific content instead of starter boilerplate. Evidence: `package.json` script validation passed via Node, and `rg` found no default Next.js starter boilerplate text. Runtime verification is blocked because `npm install` stalled with no output for about two minutes and was interrupted; no `node_modules` or `package-lock.json` was produced. As a result, `npm run lint` failed because `eslint` was unavailable and `npm run build` failed because `next` was unavailable. No tests passed or were claimed as passed.",
+  "defects": [
+    {
+      "id": "bootstrap-nextjs-app-dependency-install-blocked",
+      "layer": "both",
+      "severity": "high",
+      "description": "Dependency installation did not complete, leaving no `node_modules` or lockfile. This blocks verification that the Next.js home route renders and prevents build/lint/Playwright execution. Observed failures: `npm run lint` reported `eslint` not recognized; `npm run build` reported `next` not recognized."
+    }
+  ],
+  "artifacts": [
+    "package.json",
+    "tsconfig.json",
+    "next-env.d.ts",
+    "next.config.ts",
+    "eslint.config.mjs",
+    "playwright.config.ts",
+    ".gitignore",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css"
+  ],
+  "retryable": false,
+  "workItems": null
+}

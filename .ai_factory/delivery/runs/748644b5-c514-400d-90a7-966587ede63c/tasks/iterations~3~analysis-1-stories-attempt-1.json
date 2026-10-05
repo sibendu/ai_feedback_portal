@@ -1,0 +1,18 @@
+{
+  "outcome": "succeeded",
+  "summary": "Elaborated every planned story for iteration `authenticated-dashboard-shell` with requirements, acceptance criteria, edge cases, assumptions, cross-story rules, and evidence. Preserved planned story ids: `protect-dashboard-routing`, `dashboard-home-shell`, `collapsible-dashboard-navigation`, `dashboard-topbar-session-controls`, `dashboard-theme-toggle`, and `dashboard-non-browser-verification`. Updated stale evidence to reflect completed registration/welcome prerequisites and current source state: no dashboard route exists yet, auth/sign-in/register flows currently redirect to `/`, and dashboard shell/theme/navigation/logout work remains delivery scope. No tests, browser checks, Playwright, app server, deployment, publishing, or external contact were run for this business-analysis task.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md",
+    "package.json",
+    "src/auth.ts",
+    "src/app/sign-in/page.tsx",
+    "src/app/register/actions.ts",
+    "src/app/page.tsx",
+    "src/app/layout.tsx",
+    "src/app/globals.css",
+    "prisma/schema.prisma"
+  ],
+  "retryable": false,
+  "workItems": null
+}

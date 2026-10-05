@@ -1,0 +1,30 @@
+{
+  "outcome": "defects",
+  "summary": "Remediated the reported `No tests found` issue for `bootstrap-nextjs-app`. The Playwright regression spec exists at `.ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts`, and `npm run test:e2e -- --list` now discovers 1 test in 1 file. I also patched `eslint.config.mjs` to ignore local `.ai_factory/tests/*.cjs` probe scripts and generated report/output paths, so app linting is not broken by ad hoc evidence helpers. Verification run: `npm run lint` passed; `npm run build` passed and prerendered `/`; package script validation passed for `dev`, `build`, `lint`, and `test:e2e`; source boilerplate scan found no default starter copy. Full Playwright execution was attempted again with the default timeout and with `--timeout=90000`; both runs failed while setting up the Playwright `page` fixture, so I cannot claim e2e tests passed.",
+  "defects": [
+    {
+      "id": "DEF-bootstrap-nextjs-app-002",
+      "layer": "frontend",
+      "severity": "medium",
+      "description": "Full Playwright browser execution for the bootstrap home-route regression test does not complete in this environment. Evidence: `npm run test:e2e` reached the single discovered test but failed with `Test timeout of 30000ms exceeded while setting up \"page\"`; retrying with `npm run test:e2e -- --timeout=90000` failed the same way. The original `No tests found` defect is fixed, but the e2e test result is still not passing."
+    }
+  ],
+  "artifacts": [
+    "eslint.config.mjs",
+    ".ai_factory/tests/functional/feedback/bootstrap-nextjs-app.spec.ts",
+    "package.json",
+    "package-lock.json",
+    "next.config.ts",
+    "playwright.config.ts",
+    "tsconfig.json",
+    "next-env.d.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".gitignore",
+    "test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/error-context.md",
+    "test-results/feedback-bootstrap-nextjs--b9cd4-without-starter-boilerplate-chromium/trace.zip"
+  ],
+  "retryable": false,
+  "workItems": null
+}

@@ -1,0 +1,23 @@
+{
+  "outcome": "defects",
+  "summary": "Remediation re-test found that the four previously reported defects were mostly addressed, and approved non-browser checks passed: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, and `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-delivery-behavior.test.mjs .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs .ai_factory\\tests\\unit\\feedback\\feedback-request-batch-upload-source.test.mjs` with 22/22 passing. Source review confirmed duplicate required headers are rejected, product fields are bounded, and filenames are sanitized. However, `purchase_date` validation still has an invalid-calendar acceptance path through the fallback `new Date(value)` parser. Browser verification, Playwright, e2e tests, app server startup, production build, deployment, publishing, and real email delivery were not run per task constraints.",
+  "defects": [
+    {
+      "id": "FDB-DEFECT-005",
+      "layer": "backend",
+      "severity": "high",
+      "description": "Invalid calendar date-time strings can still be silently accepted. Requirement FDB-VALID-009 requires `purchase_date` to parse into a valid date without silently accepting invalid calendar values, and FDB-VALID-145 requires deterministic date parsing. `src/features/feedback-request/validation.ts:171-178` exact-checks only plain `YYYY-MM-DD` or `YYYY/MM/DD`, but `src/features/feedback-request/validation.ts:181-182` falls back to `new Date(value)` for all other strings. Evidence command: `node -e \"console.log(new Date('2026-02-30T00:00:00Z').toISOString()); console.log(new Date('Feb 30 2026').toISOString())\"` returned normalized dates `2026-03-02T00:00:00.000Z` and `2026-03-01T18:30:00.000Z`, so an uploaded `purchase_date` with an impossible calendar date plus time/text format can be persisted instead of rejected."
+    }
+  ],
+  "artifacts": [
+    "src/features/feedback-request/validation.ts",
+    "src/app/dashboard/feedback-request/actions.ts",
+    "src/features/feedback-request/service.ts",
+    ".ai_factory/tests/unit/feedback/feedback-request-batch-upload-source.test.mjs",
+    ".ai_factory/docs/requirements/modules/feedback/feedback-request-batch-upload-requirements.md",
+    "package.json",
+    "prisma/schema.prisma"
+  ],
+  "retryable": false,
+  "workItems": null
+}

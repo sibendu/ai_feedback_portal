@@ -1,0 +1,137 @@
+schemaVersion: 1
+id: feature-delivery
+version: "0.1"
+name: Feature delivery
+stages:
+  - id: readiness
+    name: Solution Architect readiness review
+    mode: sequential
+    steps:
+      - id: review-readiness
+        agent: solution-architect
+        action: review-intake-readiness
+        instructions: Review the whole intake end to end, including the iteration plan
+          when present. Check requirements, technical decisions, dependencies
+          and prerequisites. Identify technical blockers early and return
+          blocked when human clarification is needed.
+        access: read
+        when: always
+        config: {}
+  - id: planning
+    name: Plan iteration stories
+    mode: sequential
+    steps:
+      - id: plan
+        agent: scrum-master
+        action: plan-stories
+        instructions: Plan user stories for the current delivery iteration only (or the
+          narrow intake for single-iteration delivery). Return an ordered
+          workItems array of 1 to 20 unique ids, titles and descriptions with
+          acceptance criteria. Record dependencies and keep every story within
+          the iteration objectives.
+        access: write
+        when: always
+        config: {}
+  - id: analysis
+    name: Elaborate stories and design tests
+    mode: parallel
+    steps:
+      - id: stories
+        agent: business-analyst
+        action: analyze
+        instructions: Elaborate every planned story in this iteration with requirements,
+          acceptance criteria and edge cases. Preserve planned story ids. Own
+          requirement artifacts; do not edit test-design artifacts.
+        access: write
+        when: always
+        config: {}
+      - id: test-design
+        agent: test-architect
+        action: design-tests
+        instructions: Create traceable test cases for all planned stories in this
+          iteration, including failure cases. Own test-design artifacts; do not
+          edit requirement artifacts. Work from the shared story plan.
+        access: write
+        when: always
+        config: {}
+  - id: scope-review
+    name: Review iteration readiness
+    mode: sequential
+    steps:
+      - id: scope
+        agent: technical-architect
+        action: review-iteration-scope
+        instructions: Review all current iteration stories, elaborated requirements and
+          test cases for consistency, feasibility and technical readiness. Bound
+          this review to current iteration objectives. Missing prerequisites or
+          technical blockers must be reported as blocked.
+        access: read
+        when: always
+        config: {}
+  - id: delivery
+    name: Develop and test complete iteration
+    mode: iteration
+    steps:
+      - id: build
+        agent: full-stack-developer
+        action: implement
+        instructions: Implement every planned story in the current delivery iteration.
+          Follow the elaborated requirements, acceptance criteria and test
+          design. On remediation attempts fix the reported iteration test
+          defects and update regression tests.
+        access: write
+        when: always
+        config: {}
+      - id: test
+        agent: tester
+        action: test
+        instructions: After the developer completes all planned stories, execute
+          integrated, regression and acceptance tests for the complete
+          iteration. Report defects with evidence; never claim unexecuted tests
+          passed. Success requires every iteration objective to pass.
+        access: write
+        when: always
+        config: {}
+    exitWhen: testing.accepted
+    requiresPlan: plan-stories
+  - id: iteration-review
+    name: Technical Architect final iteration delivery review
+    mode: sequential
+    steps:
+      - id: review-delivery
+        agent: technical-architect
+        action: review-iteration-delivery
+        instructions: After the complete iteration passes testing, review the delivery
+          end to end, including all stories, cross-story architecture,
+          integration and test evidence. Report blockers for human review.
+          Approve only when the iteration objectives are satisfied.
+        access: read
+        when: always
+        config: {}
+  - id: solution-review
+    name: Review overall intake solution
+    mode: sequential
+    steps:
+      - id: review-solution
+        agent: solution-architect
+        action: review-intake-solution
+        instructions: Review the completed intake end to end across all delivery
+          iterations. Check requirements coverage, architecture, integration and
+          test evidence. Report unresolved issues as defects or blocked.
+        access: read
+        when: always
+        config: {}
+  - id: closure
+    name: Technical Project Manager intake closure
+    mode: sequential
+    steps:
+      - id: close
+        agent: technical-project-manager
+        action: close-intake
+        instructions: Close the intake only after the Solution Architect review passes.
+          Record delivered scope, story and iteration outcomes, test and review
+          evidence, decisions and any explicitly accepted limitations. Do not
+          deploy or publish.
+        access: write
+        when: always
+        config: {}

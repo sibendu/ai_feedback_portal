@@ -1,0 +1,53 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the feedback-request intake into seven ordered delivery iterations covering registration/profile consent, Gmail welcome email, authenticated dashboard shell, feedback Excel upload and persistence, request email delivery, public feedback submission, and non-browser verification/docs. Evidence reviewed: package.json shows Next.js 15, TypeScript, NextAuth, Prisma, Playwright scripts; prisma/schema.prisma currently has only auth User/Account/Session/VerificationToken models; src/auth.ts currently configures Google and GitHub providers with database sessions; src/app and src/features currently contain landing/sign-in/API baseline files. No tests were run and no files were changed. Browser verification is pending by instruction.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/auth.ts",
+    "src/app/page.tsx",
+    "src/app/sign-in/page.tsx",
+    "src/app/api/auth/[...nextauth]/route.ts",
+    "src/lib/prisma.ts",
+    ".ai_factory/docs/project-brief.md"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "registration-profile-consent",
+      "title": "Registration Profile And Google Consent",
+      "description": "Extend the registration flow to collect first name and last name for new users, and distinguish Google registration from Google login by requiring explicit consent before completing first-time Google account registration. Update the user model/session shape as needed so the authenticated app can reliably display the user's name. Acceptance: manual/email registration captures first and last name; first-time Google registration blocks completion until consent is accepted; returning Google login does not re-prompt unnecessarily; declined consent does not create or complete a registered user."
+    },
+    {
+      "id": "welcome-email-delivery",
+      "title": "Welcome Email Delivery",
+      "description": "Add Gmail-backed welcome email delivery for newly registered users using the Gmail parameters already expected in .env.local. Keep the mailer isolated behind a server-side utility, validate required environment variables, and avoid sending duplicate welcome emails for normal returning logins. Acceptance: successful new registration queues/sends one welcome email to the registered address through Gmail; missing Gmail configuration produces a clear server-side failure path; existing users do not receive repeated welcome emails."
+    },
+    {
+      "id": "authenticated-dashboard-shell",
+      "title": "Authenticated Dashboard Shell",
+      "description": "Implement the post-registration and post-login dashboard experience with protected routing, default Home content, a collapsible left navigation menu, top-right logged-in user name, theme icon toggle, and logout action. Include left-menu entries for Home, Feedback Request, and Configure, with Configure present but not functionally implemented beyond a placeholder/future state. Acceptance: successful login lands on Home dashboard; logged-in pages share the shell; menu collapse works; user name appears in the header; theme toggles light/dark; logout invalidates the session and returns to the landing page."
+    },
+    {
+      "id": "feedback-batch-upload",
+      "title": "Feedback Batch Upload",
+      "description": "Build the Feedback Request page and backend upload handling for Excel files containing email, type, product_code, product_name, and purchase_date. Validate that the initial supported type is purchase, reject malformed rows with useful feedback, create a feedback batch record, and create one feedback record per valid customer row with a unique request identifier. Add required Prisma schema models and migration planning for feedback batches and feedback records. Acceptance: an authenticated user can upload and submit a valid purchase feedback Excel file; the database records the batch and each feedback request; invalid file structure, unsupported type, bad email, or missing required values are reported without creating partial inconsistent data."
+    },
+    {
+      "id": "feedback-request-emails",
+      "title": "Feedback Request Emails",
+      "description": "Send feedback request emails to each uploaded customer email using the configured Gmail provider, including a link containing the unique feedback request identifier. Track email send status or failure information on the feedback records so operations can inspect which requests were sent. Acceptance: submitting a valid batch attempts an email for every valid row; each email includes the correct unique feedback link; send successes and failures are persisted; batch processing remains traceable to the uploading authenticated user."
+    },
+    {
+      "id": "public-feedback-form",
+      "title": "Public Feedback Form",
+      "description": "Create the public customer feedback page reached by the emailed unique link. Load the product name and purchase date from the feedback record, render a 1-10 star rating control and a feedback textarea capped at 200 characters, and update the existing feedback record on submit. Acceptance: valid links show the correct product details; invalid or already-completed links are handled cleanly; submission stores rating, message, and submitted timestamp; rating bounds and message length are enforced server-side as well as in the UI."
+    },
+    {
+      "id": "verification-and-docs",
+      "title": "Verification And Documentation",
+      "description": "Add or update focused non-browser verification for the new server-side logic, schema expectations, upload validation, and feedback submission behavior, plus AI Factory requirements/design notes for the feedback-request module. Browser and Playwright verification remain pending for an approved browser run per task constraints. Acceptance: TypeScript and lint checks are run with approved commands where feasible; unit or integration tests cover validation and persistence paths without launching a browser; documentation under .ai_factory reflects the implemented registration, dashboard, email, upload, and feedback form scope."
+    }
+  ]
+}

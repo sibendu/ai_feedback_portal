@@ -1,0 +1,919 @@
+{
+  "id": "39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c",
+  "tasks": [
+    {
+      "key": "readiness/1/review-readiness",
+      "step": {
+        "id": "review-readiness",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-readiness",
+        "config": {},
+        "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Registration intake is ready for delivery execution. Evidence reviewed: intake `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md`, plan `.ai_factory/delivery/planning/registration-baseline.md`, `package.json`, `.env.local` variable names, `src/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`, `src/app/sign-in/page.tsx`, `src/lib/prisma.ts`, `prisma/schema.prisma`, and Prisma migrations. Required prerequisites are present: OAuth env variables, `NEXTAUTH_SECRET`, `DATABASE_URL`, Auth.js/NextAuth dependencies, Prisma client dependency, provider wiring, Auth.js route handlers, sign-in UI, Prisma schema, and migration baseline. Verification commands succeeded: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. No Playwright/browser tests were run during this readiness review.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          "package.json",
+          ".env.local",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "src/lib/prisma.ts",
+          "prisma/schema.prisma",
+          "prisma/migrations/migration_lock.toml",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 9,
+      "stageId": "readiness",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:15:58.241Z",
+      "finishedAt": "2026-09-13T17:18:54.002Z",
+      "clarification": "Corrected OAuth provider wiring: src/auth.ts now explicitly maps GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET and GITHUB_ID/GITHUB_SECRET to Auth.js providers. Verified npm.cmd dependency listing, npx.cmd prisma validate, npx.cmd tsc --noEmit --incremental false, and npm.cmd run lint. Confirmed the prior portal dev-server process tree stopped before retry."
+    },
+    {
+      "key": "planning/1/plan",
+      "step": {
+        "id": "plan",
+        "when": "always",
+        "agent": "scrum-master",
+        "access": "write",
+        "action": "plan-stories",
+        "config": {},
+        "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Planned the current single delivery iteration for the feedback module Registration intake. Evidence reviewed: intake requests Google/GitHub registration; baseline plan defines Auth.js/NextAuth v5, Prisma/PostgreSQL persistence, database sessions, callback routes, redirect behavior, account-linking boundaries, and acceptance checks; package.json includes Next.js, TypeScript, Playwright, NextAuth/Auth.js, Prisma adapter, Prisma Client, and Prisma; src/auth.ts wires Google/GitHub providers and database sessions; route.ts exposes Auth.js handlers; sign-in page provides provider actions; Prisma schema and migration define User, Account, Session, and VerificationToken. No tests were run during this planning action.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          "package.json",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql"
+        ],
+        "retryable": false,
+        "workItems": [
+          {
+            "id": "registration-auth-foundation",
+            "title": "Configure Google and GitHub OAuth registration",
+            "description": "Implement Auth.js/NextAuth registration for customers using Google and GitHub providers within the feedback module. Acceptance criteria: Google provider uses GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET; GitHub provider uses GITHUB_ID and GITHUB_SECRET; auth secret resolves from AUTH_SECRET or NEXTAUTH_SECRET; Auth.js handlers are exposed at /api/auth/[...nextauth]; successful provider callbacks redirect to /. Dependencies: OAuth app credentials and callback URLs documented in the baseline plan."
+          },
+          {
+            "id": "registration-prisma-persistence",
+            "title": "Persist registered customer identities with Prisma",
+            "description": "Persist OAuth registration data in PostgreSQL through Prisma using Auth.js-compatible User, Account, Session, and VerificationToken models. Acceptance criteria: Prisma schema defines PostgreSQL datasource from DATABASE_URL; first successful OAuth registration creates User and Account rows; repeat sign-in reuses the existing provider account; Account rows are unique by provider and providerAccountId; cascading deletes preserve referential integrity. Dependencies: registration-auth-foundation."
+          },
+          {
+            "id": "registration-database-sessions",
+            "title": "Create and clear database-backed sessions",
+            "description": "Use database session strategy for registered customers. Acceptance criteria: successful registration/sign-in creates a Session row; session cookies resolve through Auth.js; sign-out removes or invalidates the database session; unauthenticated users can return to the sign-in page. Dependencies: registration-prisma-persistence."
+          },
+          {
+            "id": "registration-sign-in-experience",
+            "title": "Provide customer sign-in and registration UI",
+            "description": "Add a framework-native Next.js sign-in page that lets customers register or sign in with Google or GitHub. Acceptance criteria: /sign-in renders Customer Feedback Portal branding; Google and GitHub actions are visible and keyboard accessible; each action initiates the matching Auth.js provider; successful completion returns to /; UI copy stays scoped to customer access and does not introduce administrator authorization promises. Dependencies: registration-auth-foundation."
+          },
+          {
+            "id": "registration-failure-handling",
+            "title": "Handle cancelled or rejected provider registration",
+            "description": "Ensure provider cancellation, rejection, or OAuth failure does not create application identities or sessions. Acceptance criteria: cancelled Google or GitHub flow returns the user to an Auth.js error/sign-in state; no User, Account, or Session row is created for cancelled or rejected attempts; visible failure handling does not expose secrets or raw provider tokens. Dependencies: registration-auth-foundation and registration-prisma-persistence."
+          },
+          {
+            "id": "registration-verification-coverage",
+            "title": "Verify registration acceptance checks",
+            "description": "Add and run appropriate verification for the registration scope using project conventions. Acceptance criteria: dependency listing confirms next-auth, @auth/prisma-adapter, @prisma/client, and prisma are installed; Prisma schema validation succeeds; TypeScript check succeeds; lint succeeds; Playwright or equivalent functional coverage verifies sign-in provider options and error-safe behavior where local OAuth constraints allow. Dependencies: all implementation stories."
+          }
+        ]
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "planning",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:18:54.248Z",
+      "finishedAt": "2026-09-13T17:19:52.084Z"
+    },
+    {
+      "key": "analysis/1/stories",
+      "step": {
+        "id": "stories",
+        "when": "always",
+        "agent": "business-analyst",
+        "access": "write",
+        "action": "analyze",
+        "config": {},
+        "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Elaborated all six planned Registration stories for iteration 1 of the feedback module, preserving story ids and adding requirements, acceptance criteria, edge cases, scope, cross-story rules, and evidence. Created the requirements artifact at `.ai_factory/docs/requirements/modules/feedback/registration-requirements.md`. No tests were run for this business-analysis action.",
+        "artifacts": [
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:19:52.385Z",
+      "finishedAt": "2026-09-13T17:22:09.965Z"
+    },
+    {
+      "key": "analysis/1/test-design",
+      "step": {
+        "id": "test-design",
+        "when": "always",
+        "agent": "test-architect",
+        "access": "write",
+        "action": "design-tests",
+        "config": {},
+        "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Created the Registration test-design artifact for feedback iteration 1. It covers all six planned story ids with 47 traceable test cases, including OAuth provider startup, Prisma persistence, database sessions, sign-in UI accessibility, cancellation/rejection/error handling, and verification-command coverage. No tests were executed for this design-tests action.",
+        "artifacts": [
+          ".ai_factory/tests/functional/feedback/registration-test-design.md"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:22:10.001Z",
+      "finishedAt": "2026-09-13T17:24:21.625Z"
+    },
+    {
+      "key": "scope-review/1/scope",
+      "step": {
+        "id": "scope",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-scope",
+        "config": {},
+        "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration scope review completed for feedback iteration 1. The current iteration is internally consistent and technically ready within the Registration intake boundary: all six planned story ids are preserved across the plan, elaborated requirements, and test design; requirements remain scoped to customer Google/GitHub OAuth registration, Prisma/PostgreSQL identity persistence, database sessions, sign-in UI, failure handling, and verification coverage; out-of-scope items such as administrator authorization, passwords, customer profile enrichment, and manual account linking are clearly excluded. Evidence reviewed includes the intake, baseline plan, requirements artifact, test-design artifact, Auth.js route/configuration, sign-in page, Prisma schema, migration, and package dependencies. Verification commands run successfully: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. No Playwright/browser tests were run during this scope review, so browser behavior is not claimed as executed.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/tests/functional/feedback/registration-test-design.md",
+          "package.json",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "scope-review",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:24:21.706Z",
+      "finishedAt": "2026-09-13T17:25:31.006Z"
+    },
+    {
+      "key": "delivery/1/build",
+      "step": {
+        "id": "build",
+        "when": "always",
+        "agent": "full-stack-developer",
+        "access": "write",
+        "action": "implement",
+        "config": {},
+        "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Implemented and verified the Registration iteration scope for the feedback module. The existing implementation covers Google and GitHub Auth.js registration, Prisma/PostgreSQL identity persistence, database-backed sessions, customer sign-in UI, safe OAuth error messaging, and targeted functional coverage for the controller-owned browser runner. Non-browser verification completed successfully: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, and `npm.cmd run build`. Browser/Playwright verification was not run inside this task per instruction and remains pending for the control-plane runner.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-build-2-cf590d10-097b-4b18-8127-b9eae72ce8e4.json.",
+        "artifacts": [
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "src/lib/prisma.ts",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql",
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/tests/functional/feedback/registration.spec.ts",
+          "playwright.config.ts",
+          "prisma.config.ts",
+          "package.json",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-build-2-cf590d10-097b-4b18-8127-b9eae72ce8e4.json"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 2,
+      "stageId": "delivery",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:42:57.840Z",
+      "finishedAt": "2026-09-13T17:45:44.826Z",
+      "clarification": "Browser verification is now explicitly approved for this run. Codex must perform only non-browser checks; the control-plane local runner owns Playwright, the temporary server, its timeout, and cleanup. The project Playwright configuration now starts Next directly with Node rather than an npm shell command."
+    },
+    {
+      "key": "delivery/1/test",
+      "step": {
+        "id": "test",
+        "when": "always",
+        "agent": "tester",
+        "access": "write",
+        "action": "test",
+        "config": {},
+        "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Tester pass completed for feedback Registration iteration 1. Source review confirmed the planned registration scope is represented: Auth.js/NextAuth Google and GitHub providers use the requested environment variables, auth handlers are exposed at /api/auth/[...nextauth], Prisma adapter uses PostgreSQL-compatible User/Account/Session/VerificationToken models, database session strategy is configured, and /sign-in provides customer-scoped Google/GitHub actions with safe OAuth error copy. Non-browser verification passed: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, and `npm.cmd run build`. Browser/Playwright tests were not run inside this Codex task by instruction; controller-owned browser verification remains external to this sandbox.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/tests/functional/feedback/registration-test-design.md",
+          ".ai_factory/tests/functional/feedback/registration.spec.ts",
+          "package.json",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "src/lib/prisma.ts",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql",
+          "playwright.config.ts",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:45:45.028Z",
+      "finishedAt": "2026-09-13T17:48:04.339Z"
+    },
+    {
+      "key": "iteration-review/1/review-delivery",
+      "step": {
+        "id": "review-delivery",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-delivery",
+        "config": {},
+        "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Technical Architect review approved feedback iteration 1 for the Registration intake. Source review confirms the six planned stories are represented end to end: Auth.js/NextAuth is configured with Google and GitHub providers using the required environment variable names; handlers are exposed at /api/auth/[...nextauth]; Prisma/PostgreSQL persistence defines User, Account, Session, and VerificationToken with provider-account uniqueness and cascade deletes; database session strategy is enabled; /sign-in provides customer-scoped Google/GitHub actions and safe OAuth error copy; functional coverage verifies provider visibility, safe error rendering, and provider discovery. Non-browser checks run in this review passed: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. Browser tests were not launched inside this task per instruction; controller-owned Playwright evidence shows passed with code 0, 3 expected tests, 0 unexpected, 0 skipped, and no stderr in `.ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json`. No delivery blockers or application defects were found.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/tests/functional/feedback/registration-test-design.md",
+          ".ai_factory/tests/functional/feedback/registration.spec.ts",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-build-2-cf590d10-097b-4b18-8127-b9eae72ce8e4.json",
+          "package.json",
+          "playwright.config.ts",
+          "prisma.config.ts",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "src/lib/prisma.ts"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "iteration-review",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:48:04.480Z",
+      "finishedAt": "2026-09-13T17:49:44.496Z"
+    },
+    {
+      "key": "solution-review/1/review-solution",
+      "step": {
+        "id": "review-solution",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-solution",
+        "config": {},
+        "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Solution Architect intake review completed for feedback Registration iteration 1. Requirements coverage is traceable from intake through plan, elaborated requirements, implementation, and tests: Google/GitHub Auth.js providers use the required env names, Auth.js handlers are exposed at /api/auth/[...nextauth], Prisma/PostgreSQL persistence defines User/Account/Session/VerificationToken with provider-account uniqueness and cascade deletes, database session strategy is configured, and /sign-in provides customer-scoped Google/GitHub actions with safe OAuth error messaging. Fresh non-browser verification passed in this review: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. Browser verification was not launched in this task per instruction; controller-owned runner evidence shows Playwright passed with code 0, 3 expected tests, 0 unexpected, 0 skipped, and no stderr. No unresolved blockers or application defects were found.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+          ".ai_factory/delivery/planning/registration-baseline.md",
+          ".ai_factory/docs/requirements/modules/feedback/registration-requirements.md",
+          ".ai_factory/tests/functional/feedback/registration-test-design.md",
+          ".ai_factory/tests/functional/feedback/registration.spec.ts",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-build-2-cf590d10-097b-4b18-8127-b9eae72ce8e4.json",
+          "package.json",
+          "playwright.config.ts",
+          "prisma.config.ts",
+          "prisma/schema.prisma",
+          "prisma/migrations/20260913153623_registration_baseline/migration.sql",
+          "src/auth.ts",
+          "src/app/api/auth/[...nextauth]/route.ts",
+          "src/app/sign-in/page.tsx",
+          "src/lib/prisma.ts"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "solution-review",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:49:44.530Z",
+      "finishedAt": "2026-09-13T17:51:34.266Z"
+    },
+    {
+      "key": "closure/1/close",
+      "step": {
+        "id": "close",
+        "when": "always",
+        "agent": "technical-project-manager",
+        "access": "write",
+        "action": "close-intake",
+        "config": {},
+        "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Closed the feedback module Registration intake for iteration 1 after confirming the Solution Architect review passed with no defects. Recorded closeout details in `.ai_factory/delivery/releases/registration-intake-closeout.md`, including delivered scope, all six story outcomes, test and review evidence, decisions, and accepted limitations. Evidence reviewed in this closeout: Solution Architect review export reports `outcome: succeeded`; controller-owned Playwright evidence reports `passed: true`, code 0, 3 expected tests, 0 unexpected, 0 skipped, and empty stderr. No deployment, publishing, browser launch, or external contact was performed. `git status --short` was attempted for evidence but failed because the project root was not recognized as a Git repository: `fatal: not a git repository (or any of the parent directories): .git`.",
+        "artifacts": [
+          ".ai_factory/delivery/releases/registration-intake-closeout.md",
+          ".ai_factory/delivery/runs/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/tasks/solution-review-1-review-solution-attempt-1.json",
+          ".ai_factory/delivery/runs/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/tasks/iteration-review-1-review-delivery-attempt-1.json",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-test-1-a0b546d6-cc3e-49c5-8760-8900068812de.json",
+          ".ai_factory/tests/reports/local-runner/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/delivery-1-build-2-cf590d10-097b-4b18-8127-b9eae72ce8e4.json"
+        ],
+        "retryable": false,
+        "workItems": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "closure",
+      "iteration": 1,
+      "startedAt": "2026-09-13T17:51:34.336Z",
+      "finishedAt": "2026-09-13T17:53:06.770Z"
+    }
+  ],
+  "intake": {
+    "title": "Registration",
+    "description": "Add a Registration feature, allowing customers to register using their Google and Github accounts."
+  },
+  "module": "feedback",
+  "status": "completed",
+  "reviews": [
+    {
+      "id": "e472b033-f6da-4ed7-aee5-a29f463aeb60",
+      "kind": "blocker",
+      "prompt": "Intake readiness is blocked. The Registration intake exists at `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md`, and the project brief confirms Next.js, TypeScript, and Playwright. However, the requested Google/GitHub registration requires missing prerequisites and decisions: OAuth provider app credentials/callback configuration, auth/session strategy, and where registered customer identities will be persisted. Evidence: `rg -n \"next-auth|authjs|OAuth|Google|GitHub|Github|register|registration|auth\" .ai_factory src package.json` found only the intake and a landing-page note saying authentication is future work; `package.json` has no auth dependency; environment inspection found no Google/GitHub OAuth client IDs/secrets or auth secret. No tests were run for this readiness review.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T14:36:56.962Z",
+      "resolution": "retry: I added an  .env.local file with variables for \n1. Google oAuth\n2. Github oAuth\n3. Postgresql database to create customer records on successful registration with one of the above method",
+      "resolvedAt": "2026-09-13T14:42:18.685Z"
+    },
+    {
+      "id": "55416c4f-4b31-40cb-885b-54747faf9216",
+      "kind": "blocker",
+      "prompt": "Intake readiness remains blocked for Registration. Evidence reviewed: `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md` requests Google/GitHub registration for module `feedback`; `.env.local` now contains `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`, `GITHUB_ID`, and `GITHUB_SECRET`, but no PostgreSQL connection variable or auth/session secret was present by variable name. `package.json` has only Next/React dependencies and no auth or database integration library. Search across `.ai_factory`, `src`, `package.json`, `next.config.ts`, `playwright.config.ts`, and `tsconfig.json` found no existing registration/auth architecture, and `src/features/landing/content.ts` still describes authentication and persistence as future work. No iteration plan is present under `.ai_factory/delivery/planning/`. No tests were run for this readiness review.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T14:43:47.831Z",
+      "resolution": "retry: Added prisma to theproject and initilized, please proceed",
+      "resolvedAt": "2026-09-13T15:03:12.918Z"
+    },
+    {
+      "id": "81d82ea2-b2ee-483b-a236-b4cc8a6327ec",
+      "kind": "blocker",
+      "prompt": "Intake readiness is still blocked for Registration. Evidence reviewed: `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md` requests Google/GitHub registration for module `feedback`; `.ai_factory/docs/project-brief.md` confirms Next.js, TypeScript, and Playwright but leaves module constraints unspecified; `.ai_factory/delivery/planning` is missing. Prisma was added only partially: `package.json` includes `prisma` as a devDependency and `prisma.config.ts` exists, but there is no `prisma/` directory, no `schema.prisma`, no `@prisma/client`, and no customer/user/account model. `.env.local` contains OAuth variables, but PostgreSQL variables including `DATABASE_URL` are commented out, and no auth/session secret such as `AUTH_SECRET` or `NEXTAUTH_SECRET` was found. Search found no existing Auth.js/NextAuth provider wiring or registration architecture. No tests were run for this readiness review.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T15:04:09.057Z",
+      "resolution": "retry: Use database variales from .emv.local - uncommented now . Do necesary for usijg Prisma with the database to achieve the feature",
+      "resolvedAt": "2026-09-13T15:06:06.661Z"
+    },
+    {
+      "id": "a26102af-4b9d-413c-8c05-bff7a93fd6db",
+      "kind": "blocker",
+      "prompt": "Registration intake readiness remains blocked. Evidence reviewed: `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md` requests Google/GitHub registration for module `feedback`; `.ai_factory/docs/project-brief.md` confirms Next.js, TypeScript, and Playwright but leaves module constraints and acceptance expectations unspecified. `.env.local` now has active Google OAuth, GitHub OAuth, and `DATABASE_URL` variable names, so the prior database-variable blocker is resolved. Remaining blockers: no `AUTH_SECRET` or `NEXTAUTH_SECRET` variable was found; `package.json` has Prisma CLI only and no `@prisma/client` or auth dependency such as NextAuth/Auth.js; `Test-Path prisma` returned `False`, and targeted source search found no Prisma schema, `datasource db`, `generator client`, or `User`/`Account`/`Customer`/`Session` models. `.ai_factory/delivery/planning` is missing: `Get-ChildItem -Force .ai_factory\\delivery\\planning` failed with `Cannot find path 'C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\delivery\\planning' because it does not exist.` No tests were run for this readiness review.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T15:08:01.535Z",
+      "resolution": "retry: Added NEXTAUTH_URL and  NEXTAUTH_SECRET\ngo ahead, try to resolve any blocker",
+      "resolvedAt": "2026-09-13T15:10:23.662Z"
+    },
+    {
+      "id": "4a258cf3-6088-4e11-84e5-f111e930ad09",
+      "kind": "blocker",
+      "prompt": "Registration intake is not ready for delivery. Resolved since the last attempt: `.env.local` now contains `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, Google OAuth variables, GitHub OAuth variables, and `DATABASE_URL`. Remaining blockers: Prisma is still not initialized for application use (`Test-Path prisma` returned `False`; no `prisma/schema.prisma`; `npm ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0` showed only `prisma@8.0.0-rc.14`); no auth dependency or provider wiring exists; and `.ai_factory/delivery/planning` is missing. Evidence commands run: `Get-Content package.json`, `Get-Content prisma.config.ts`, `rg -n \"next-auth|NextAuth|authjs|@auth|OAuth|Google|GitHub|Github|register|registration|PrismaClient|datasource db|generator client|model User|model Account|model Customer|model Session|DATABASE_URL|NEXTAUTH_SECRET|AUTH_SECRET|NEXTAUTH_URL\" .ai_factory src package.json prisma.config.ts next.config.ts playwright.config.ts tsconfig.json .env.local`, `npm ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, and `Get-ChildItem -Force .ai_factory\\delivery\\planning`, which failed because the path does not exist. No tests were run for this readiness review.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T15:11:18.957Z",
+      "resolution": "retry: Registration baseline is set up in the Customer Feedback Portal. please go ahead and execute the feature",
+      "resolvedAt": "2026-09-13T15:53:02.109Z"
+    },
+    {
+      "id": "dc0f11f1-d0d2-420a-9233-51969843ce22",
+      "kind": "blocker",
+      "prompt": "Registration intake is not ready to proceed to delivery execution because required local execution prerequisites still fail. The baseline artifacts are now present: `.ai_factory/delivery/planning/registration-baseline.md` defines Auth.js/NextAuth v5, database sessions, Prisma/PostgreSQL persistence, callback routes, redirect behavior, and acceptance checks; `package.json` includes `next-auth`, `@auth/prisma-adapter`, `@prisma/client`, and `prisma`; `prisma/schema.prisma` and the `registration_baseline` migration define standard `User`, `Account`, `Session`, and `VerificationToken` tables; `src/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`, and `src/app/sign-in/page.tsx` wire Google/GitHub sign-in. However, `npx prisma validate` failed with `Failed to load config file \"C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\" as a TypeScript/JavaScript module. Error: PrismaConfigEnvError: Missing required environment variable: DATABASE_URL`. Evidence shows only `.env.local` exists, and Prisma config reads `env(\"DATABASE_URL\")`; Prisma CLI did not load `.env.local` for this command. TypeScript verification also could not run in this read-only environment: `npx tsc --noEmit` failed with `error TS5033: Could not write file 'C:/workspace/AI/ai_factory_projects/customer-feedback-portal/tsconfig.tsbuildinfo': EPERM: operation not permitted`. No Playwright or application tests were run.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T15:54:48.309Z",
+      "resolution": "retry: resolved, go ahead with the feature",
+      "resolvedAt": "2026-09-13T16:49:42.960Z"
+    },
+    {
+      "id": "63f3bb9b-574c-450e-b99c-5eadb1fdd872",
+      "kind": "blocker",
+      "prompt": "Intake readiness review is blocked by local command execution policy, not by an application defect. Current intake prerequisites appear materially improved: `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md` requests Google/GitHub registration for module `feedback`; `.ai_factory/delivery/planning/registration-baseline.md` now defines Auth.js/NextAuth v5, Prisma/PostgreSQL persistence, database sessions, callbacks, redirects, and acceptance checks; `package.json` includes `next-auth`, `@auth/prisma-adapter`, `@prisma/client`, and `prisma`; `prisma/schema.prisma` and migration `prisma/migrations/20260913153623_registration_baseline/migration.sql` define `User`, `Account`, `Session`, and `VerificationToken`; `src/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`, `src/app/sign-in/page.tsx`, and `src/lib/prisma.ts` wire the baseline feature. However, required verification could not run because PowerShell script execution is disabled. Exact failed commands: `npm ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0` failed with `npm.ps1 cannot be loaded because running scripts is disabled on this system`; `npx prisma validate` failed with `npx.ps1 cannot be loaded because running scripts is disabled on this system`; `npx tsc --noEmit --incremental false` failed with the same `npx.ps1` execution policy error. No tests or validation commands passed, so readiness cannot be confirmed.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T16:51:45.977Z",
+      "resolution": "retry: go ahead with the feature, blocker emoved",
+      "resolvedAt": "2026-09-13T16:58:41.116Z"
+    },
+    {
+      "id": "c2c5ee36-35f7-483a-9bee-65502659886d",
+      "kind": "failure",
+      "prompt": "Solution Architect readiness review reported unresolved defects. Review before retrying.",
+      "taskKey": "readiness/1/review-readiness",
+      "createdAt": "2026-09-13T17:02:15.942Z",
+      "resolution": "retry: Corrected OAuth provider wiring: src/auth.ts now explicitly maps GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET and GITHUB_ID/GITHUB_SECRET to Auth.js providers. Verified npm.cmd dependency listing, npx.cmd prisma validate, npx.cmd tsc --noEmit --incremental false, and npm.cmd run lint. Confirmed the prior portal dev-server process tree stopped before retry.",
+      "resolvedAt": "2026-09-13T17:15:58.125Z"
+    },
+    {
+      "id": "971fba50-43b2-4e2b-9787-9f9fba21dcd2",
+      "kind": "blocker",
+      "prompt": "Implemented Registration iteration scope: Auth.js remains wired for Google and GitHub with Prisma database sessions, provider discovery now supports the local test host via `trustHost: true`, `/sign-in` now renders customer-safe Auth.js error messages, and a targeted Registration Playwright spec covers provider visibility, safe error rendering, and configured provider discovery. Verification passed for `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. Functional verification is blocked because `npx.cmd playwright test .ai_factory/tests/functional/feedback/registration.spec.ts` stalled after listing all 3 tests through `[3/3]` with no pass/fail summary or process exit; the foreground command was stopped with Ctrl+C and returned exit code 1, with no additional error output.",
+      "taskKey": "delivery/1/build",
+      "createdAt": "2026-09-13T17:36:18.957Z",
+      "resolution": "retry: Browser verification is now explicitly approved for this run. Codex must perform only non-browser checks; the control-plane local runner owns Playwright, the temporary server, its timeout, and cleanup. The project Playwright configuration now starts Next directly with Node rather than an npm shell command.",
+      "resolvedAt": "2026-09-13T17:42:57.649Z"
+    }
+  ],
+  "intakeId": "13612888-96ef-4fa4-a304-4a400d9f2e24",
+  "scenario": "happy-path",
+  "snapshot": {
+    "brief": "# Customer Feedback Portal\n\n## Purpose\nCollect customer feedback, validate submissions, and provide an administrative review dashboard.\n\n## Technology and source layout\nNext.js, TypeScript, and Playwright. Follow framework-native source conventions.\n\n## Modules and constraints\nDocument modules, integrations, and acceptance expectations here.\n",
+    "agents": {
+      "tester": {
+        "id": "tester",
+        "config": {},
+        "prompt": "Act as the project's Tester. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "tester",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "scrum-master": {
+        "id": "scrum-master",
+        "config": {},
+        "prompt": "Act as the project's Scrum Master. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "scrum-master",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "test-architect": {
+        "id": "test-architect",
+        "config": {},
+        "prompt": "Act as the project's Test Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "test-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "business-analyst": {
+        "id": "business-analyst",
+        "config": {},
+        "prompt": "Act as the project's Business Analyst. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "business-analyst",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "solution-architect": {
+        "id": "solution-architect",
+        "config": {},
+        "prompt": "Act as the project's Solution Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "solution-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-architect": {
+        "id": "technical-architect",
+        "config": {},
+        "prompt": "Act as the project's Technical Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "full-stack-developer": {
+        "id": "full-stack-developer",
+        "config": {},
+        "prompt": "Act as the project's Full-stack Developer. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "full-stack-developer",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-project-manager": {
+        "id": "technical-project-manager",
+        "config": {},
+        "prompt": "Act as the project's Technical Project Manager. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-project-manager",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      }
+    },
+    "digest": "68780b6c2238f4fb685eb123506a9beeddac1079ac5af833cf795b77a22ce2c5",
+    "process": {
+      "id": "feature-delivery",
+      "name": "Feature delivery",
+      "stages": [
+        {
+          "id": "readiness",
+          "mode": "sequential",
+          "name": "Solution Architect readiness review",
+          "steps": [
+            {
+              "id": "review-readiness",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-readiness",
+              "config": {},
+              "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "mode": "sequential",
+          "name": "Plan iteration stories",
+          "steps": [
+            {
+              "id": "plan",
+              "when": "always",
+              "agent": "scrum-master",
+              "access": "write",
+              "action": "plan-stories",
+              "config": {},
+              "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+            }
+          ]
+        },
+        {
+          "id": "analysis",
+          "mode": "parallel",
+          "name": "Elaborate stories and design tests",
+          "steps": [
+            {
+              "id": "stories",
+              "when": "always",
+              "agent": "business-analyst",
+              "access": "write",
+              "action": "analyze",
+              "config": {},
+              "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+            },
+            {
+              "id": "test-design",
+              "when": "always",
+              "agent": "test-architect",
+              "access": "write",
+              "action": "design-tests",
+              "config": {},
+              "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+            }
+          ]
+        },
+        {
+          "id": "scope-review",
+          "mode": "sequential",
+          "name": "Review iteration readiness",
+          "steps": [
+            {
+              "id": "scope",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-scope",
+              "config": {},
+              "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+            }
+          ]
+        },
+        {
+          "id": "delivery",
+          "mode": "iteration",
+          "name": "Develop and test complete iteration",
+          "steps": [
+            {
+              "id": "build",
+              "when": "always",
+              "agent": "full-stack-developer",
+              "access": "write",
+              "action": "implement",
+              "config": {},
+              "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+            },
+            {
+              "id": "test",
+              "when": "always",
+              "agent": "tester",
+              "access": "write",
+              "action": "test",
+              "config": {},
+              "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+            }
+          ],
+          "exitWhen": "testing.accepted",
+          "requiresPlan": "plan-stories"
+        },
+        {
+          "id": "iteration-review",
+          "mode": "sequential",
+          "name": "Technical Architect final iteration delivery review",
+          "steps": [
+            {
+              "id": "review-delivery",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-delivery",
+              "config": {},
+              "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+            }
+          ]
+        },
+        {
+          "id": "solution-review",
+          "mode": "sequential",
+          "name": "Review overall intake solution",
+          "steps": [
+            {
+              "id": "review-solution",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-solution",
+              "config": {},
+              "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+            }
+          ]
+        },
+        {
+          "id": "closure",
+          "mode": "sequential",
+          "name": "Technical Project Manager intake closure",
+          "steps": [
+            {
+              "id": "close",
+              "when": "always",
+              "agent": "technical-project-manager",
+              "access": "write",
+              "action": "close-intake",
+              "config": {},
+              "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+            }
+          ]
+        }
+      ],
+      "version": "0.1",
+      "schemaVersion": 1
+    },
+    "taxonomy": "# Project Taxonomy\n\n- Version: 1.0\n- Previous version: none\n\n## Documentation\n\nAll AI Factory artifacts live under .ai_factory/.\nUse .ai_factory/docs/project-brief.md for evolving purpose, scope, technology, integrations and source layout.\nUse .ai_factory/docs/architecture/, .ai_factory/docs/requirements/, .ai_factory/docs/design/, .ai_factory/docs/decisions/, .ai_factory/docs/security/, and .ai_factory/docs/operations/ as appropriate.\nFor large projects use requirements/modules/<module>/ and design/modules/<module>/; put cross-cutting work under shared/.\n\n## Delivery\n\nUse .ai_factory/delivery/intakes/, .ai_factory/delivery/planning/, .ai_factory/delivery/processes/, .ai_factory/delivery/agents/, .ai_factory/delivery/actions/, .ai_factory/delivery/runs/, .ai_factory/delivery/reviews/, and .ai_factory/delivery/releases/.\nRun-specific evidence belongs under .ai_factory/delivery/runs/<run-id>/; iteration and task identifiers must remain traceable.\nPostgreSQL owns live execution state. Files under .ai_factory/delivery/runs/ are reviewable exports, not recovery checkpoints.\n\n## Tests and source\n\nUse .ai_factory/tests/functional/ for Playwright browser tests by default, and .ai_factory/tests/reports/ for evidence.\nUse .ai_factory/tests/unit/, .ai_factory/tests/integration/, and .ai_factory/tests/fixtures/ where the technology allows it.\nNative conventions take precedence for source and co-located tests (for example src/test/ in Java).\nAdd or update tests during feature and defect-remediation iterations. Keep module identifiers consistent across requirements, design and tests.\n\n## Versioning\n\nIncrement the human-readable version for changes. Use a minor increment for compatible additions and a major increment for restructuring.\nProcess runs keep an immutable copy of the taxonomy version used at their start.\n",
+    "agentYamls": {
+      "tester": "schemaVersion: 1\nid: tester\nversion: \"1.0\"\nbaseRole: tester\npromptFile: prompt.md\nconfig: {}\n",
+      "scrum-master": "schemaVersion: 1\nid: scrum-master\nversion: \"1.0\"\nbaseRole: scrum-master\npromptFile: prompt.md\nconfig: {}\n",
+      "test-architect": "schemaVersion: 1\nid: test-architect\nversion: \"1.0\"\nbaseRole: test-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "business-analyst": "schemaVersion: 1\nid: business-analyst\nversion: \"1.0\"\nbaseRole: business-analyst\npromptFile: prompt.md\nconfig: {}\n",
+      "solution-architect": "schemaVersion: 1\nid: solution-architect\nversion: \"1.0\"\nbaseRole: solution-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-architect": "schemaVersion: 1\nid: technical-architect\nversion: \"1.0\"\nbaseRole: technical-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "full-stack-developer": "schemaVersion: 1\nid: full-stack-developer\nversion: \"1.0\"\nbaseRole: full-stack-developer\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-project-manager": "schemaVersion: 1\nid: technical-project-manager\nversion: \"1.0\"\nbaseRole: technical-project-manager\npromptFile: prompt.md\nconfig: {}\n"
+    },
+    "processYaml": "schemaVersion: 1\nid: feature-delivery\nversion: \"0.1\"\nname: Feature delivery\nstages:\n  - id: readiness\n    name: Solution Architect readiness review\n    mode: sequential\n    steps:\n      - id: review-readiness\n        agent: solution-architect\n        action: review-intake-readiness\n        instructions: Review the whole intake end to end, including the iteration plan\n          when present. Check requirements, technical decisions, dependencies\n          and prerequisites. Identify technical blockers early and return\n          blocked when human clarification is needed.\n        access: read\n        when: always\n        config: {}\n  - id: planning\n    name: Plan iteration stories\n    mode: sequential\n    steps:\n      - id: plan\n        agent: scrum-master\n        action: plan-stories\n        instructions: Plan user stories for the current delivery iteration only (or the\n          narrow intake for single-iteration delivery). Return an ordered\n          workItems array of 1 to 20 unique ids, titles and descriptions with\n          acceptance criteria. Record dependencies and keep every story within\n          the iteration objectives.\n        access: write\n        when: always\n        config: {}\n  - id: analysis\n    name: Elaborate stories and design tests\n    mode: parallel\n    steps:\n      - id: stories\n        agent: business-analyst\n        action: analyze\n        instructions: Elaborate every planned story in this iteration with requirements,\n          acceptance criteria and edge cases. Preserve planned story ids. Own\n          requirement artifacts; do not edit test-design artifacts.\n        access: write\n        when: always\n        config: {}\n      - id: test-design\n        agent: test-architect\n        action: design-tests\n        instructions: Create traceable test cases for all planned stories in this\n          iteration, including failure cases. Own test-design artifacts; do not\n          edit requirement artifacts. Work from the shared story plan.\n        access: write\n        when: always\n        config: {}\n  - id: scope-review\n    name: Review iteration readiness\n    mode: sequential\n    steps:\n      - id: scope\n        agent: technical-architect\n        action: review-iteration-scope\n        instructions: Review all current iteration stories, elaborated requirements and\n          test cases for consistency, feasibility and technical readiness. Bound\n          this review to current iteration objectives. Missing prerequisites or\n          technical blockers must be reported as blocked.\n        access: read\n        when: always\n        config: {}\n  - id: delivery\n    name: Develop and test complete iteration\n    mode: iteration\n    steps:\n      - id: build\n        agent: full-stack-developer\n        action: implement\n        instructions: Implement every planned story in the current delivery iteration.\n          Follow the elaborated requirements, acceptance criteria and test\n          design. On remediation attempts fix the reported iteration test\n          defects and update regression tests.\n        access: write\n        when: always\n        config: {}\n      - id: test\n        agent: tester\n        action: test\n        instructions: After the developer completes all planned stories, execute\n          integrated, regression and acceptance tests for the complete\n          iteration. Report defects with evidence; never claim unexecuted tests\n          passed. Success requires every iteration objective to pass.\n        access: write\n        when: always\n        config: {}\n    exitWhen: testing.accepted\n    requiresPlan: plan-stories\n  - id: iteration-review\n    name: Technical Architect final iteration delivery review\n    mode: sequential\n    steps:\n      - id: review-delivery\n        agent: technical-architect\n        action: review-iteration-delivery\n        instructions: After the complete iteration passes testing, review the delivery\n          end to end, including all stories, cross-story architecture,\n          integration and test evidence. Report blockers for human review.\n          Approve only when the iteration objectives are satisfied.\n        access: read\n        when: always\n        config: {}\n  - id: solution-review\n    name: Review overall intake solution\n    mode: sequential\n    steps:\n      - id: review-solution\n        agent: solution-architect\n        action: review-intake-solution\n        instructions: Review the completed intake end to end across all delivery\n          iterations. Check requirements coverage, architecture, integration and\n          test evidence. Report unresolved issues as defects or blocked.\n        access: read\n        when: always\n        config: {}\n  - id: closure\n    name: Technical Project Manager intake closure\n    mode: sequential\n    steps:\n      - id: close\n        agent: technical-project-manager\n        action: close-intake\n        instructions: Close the intake only after the Solution Architect review passes.\n          Record delivered scope, story and iteration outcomes, test and review\n          evidence, decisions and any explicitly accepted limitations. Do not\n          deploy or publish.\n        access: write\n        when: always\n        config: {}\n",
+    "factoryConfig": {
+      "provider": "simulated",
+      "maxAttempts": 2,
+      "timeoutSeconds": 300
+    },
+    "projectConfig": {
+      "defaults": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "timeoutSeconds": 900
+      },
+      "engineVersion": "0.1.0",
+      "maxIterations": 3,
+      "schemaVersion": 1,
+      "enabledProcesses": [
+        ".ai_factory/delivery/processes/feature-delivery/0.1.yaml"
+      ],
+      "configurationVersion": 1
+    },
+    "resolvedConfigs": {
+      "closure/close": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/test": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "planning/plan": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/build": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/stories": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "scope-review/scope": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/test-design": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "readiness/review-readiness": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "solution-review/review-solution": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "iteration-review/review-delivery": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      }
+    },
+    "taxonomyVersion": "1.0"
+  },
+  "createdAt": "2026-09-13T14:35:23.673Z",
+  "iteration": 1,
+  "projectId": "374c27f5-fe28-4ae1-94d4-2ad24fb9d490",
+  "updatedAt": "2026-09-13T17:53:06.809Z",
+  "stageIndex": 8,
+  "engineVersion": "0.1.0",
+  "iterationLimits": {},
+  "executionOverrides": {
+    "localBrowserTests": true
+  }
+}

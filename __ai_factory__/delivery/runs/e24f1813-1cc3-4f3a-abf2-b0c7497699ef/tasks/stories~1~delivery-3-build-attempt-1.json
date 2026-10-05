@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "Error: Codex interrupted. Verify external effects before retry.",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}

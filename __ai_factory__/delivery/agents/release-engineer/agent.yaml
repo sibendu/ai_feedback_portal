@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: release-engineer
+version: "1.0"
+baseRole: release-engineer
+promptFile: prompt.md
+config: {}

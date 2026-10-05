@@ -1,0 +1,32 @@
+{
+  "outcome": "defects",
+  "summary": "Reviewed iteration `welcome-email` as Technical Architect. Source satisfies most delivery objectives: Gmail env keys are read server-side, welcome delivery is triggered from Auth.js `events.createUser` after a persisted new user exists, duplicate attempts are claimed through `welcomeEmailAttemptedAt`, and sender failures are caught into status values. Fresh checks passed: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs` with 9/9 passing, and `npm.cmd run lint`. Production build, browser verification, Playwright, app server startup, deployment, publishing, and real Gmail delivery were not run per task constraints. I cannot approve the iteration yet because email timeout handling can hang the auth-side delivery path, and the mocked/injectable sender behavior is not actually exercised by tests.",
+  "defects": [
+    {
+      "id": "welcome-email-smtp-command-timeout-can-hang-registration",
+      "layer": "backend",
+      "severity": "high",
+      "description": "`src/features/registration/welcome-email.ts` sets a socket timeout in `SmtpClient.connect`, but `expect()` polls with `setTimeout(check, 25)` indefinitely and does not reject on socket timeout/error/close after connect. `sendWithGmailSmtp()` awaits `client.expect()` and `client.command()` during the welcome send, and `src/auth.ts` awaits `deliverWelcomeEmailForNewUser()` from `events.createUser`. If Gmail connects but stops responding during SMTP negotiation or DATA, the welcome-send promise can remain unresolved instead of returning a deterministic `failed` status. This violates the iteration requirement that registration succeeds with clear handling of email-send failures. Evidence: `src/features/registration/welcome-email.ts` lines 122-145 and 223-246; `src/auth.ts` lines 124-138."
+    },
+    {
+      "id": "welcome-email-mocked-sender-behavior-not-tested",
+      "layer": "backend",
+      "severity": "medium",
+      "description": "The required mocked/injectable sender coverage is only static regex inspection. `.ai_factory/tests/unit/registration/welcome-email-source.test.mjs` reads source files and asserts patterns; it does not import or execute `createWelcomeEmailSender`, `renderWelcomeEmail`, or `deliverWelcomeEmailForNewUser` with a mocked sender, mocked Prisma claim/update behavior, missing env, invalid recipient, duplicate skip, or thrown sender failure. This leaves acceptance criteria for mocked sender behavior, safe failure handling, and duplicate avoidance insufficiently verified despite the source test suite passing. Evidence: `.ai_factory/tests/unit/registration/welcome-email-source.test.mjs` lines 20-66."
+    }
+  ],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260914183000_welcome_email_status/migration.sql",
+    "src/auth.ts",
+    "src/features/registration/welcome-email.ts",
+    "src/features/registration/welcome-delivery.ts",
+    ".ai_factory/tests/unit/registration/welcome-email-source.test.mjs",
+    ".ai_factory/tests/unit/registration/registration-profile-consent-source.test.mjs",
+    ".ai_factory/docs/requirements/modules/registration/welcome-email-requirements.md",
+    ".ai_factory/tests/functional/registration/welcome-email-test-design.md"
+  ],
+  "retryable": false,
+  "workItems": null
+}

@@ -1,0 +1,28 @@
+{
+  "outcome": "succeeded",
+  "summary": "Authenticated dashboard shell test passed for the approved non-browser scope. Evidence: source review confirmed `src/app/dashboard/layout.tsx` protects dashboard routes with `auth()` and redirects unauthenticated users to `/sign-in?callbackUrl=/dashboard`; `src/app/sign-in/page.tsx` and `src/app/register/actions.ts` redirect successful auth/registration to `/dashboard`; `src/app/dashboard/page.tsx` renders Home with a welcome message; `src/features/dashboard/shell.tsx` provides collapsible Home/Feedback Request/Configure navigation, top-right user identity, Auth.js logout, and icon-only persisted theme toggle; placeholder pages exist for Feedback Request and Configure; `src/app/globals.css` includes expanded/collapsed, dark/light, and responsive dashboard styles. Commands passed: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`; `npx.cmd prisma validate`; `npx.cmd tsc --noEmit --incremental false`; `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-delivery-behavior.test.mjs .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs` with 17/17 passing; `npm.cmd run lint`. Browser verification, Playwright, e2e tests, app server startup, production build, deployment, publishing, and real email sending were not run per task constraints and are not claimed as passed.",
+  "defects": [],
+  "artifacts": [
+    "src/app/dashboard/layout.tsx",
+    "src/app/dashboard/page.tsx",
+    "src/app/dashboard/actions.ts",
+    "src/app/dashboard/feedback-request/page.tsx",
+    "src/app/dashboard/configure/page.tsx",
+    "src/features/dashboard/shell.tsx",
+    "src/features/dashboard/session.ts",
+    "src/features/dashboard/icons.tsx",
+    "src/app/sign-in/page.tsx",
+    "src/app/register/actions.ts",
+    "src/app/globals.css",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    ".ai_factory/tests/unit/registration/registration-profile-consent-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-email-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs",
+    ".ai_factory/tests/functional/dashboard/dashboard-authenticated-shell-test-design.md",
+    ".ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md",
+    "package.json",
+    "prisma/schema.prisma"
+  ],
+  "retryable": false,
+  "workItems": null
+}

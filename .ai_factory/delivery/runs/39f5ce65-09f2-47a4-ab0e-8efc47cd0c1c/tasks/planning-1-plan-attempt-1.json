@@ -1,0 +1,48 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current single delivery iteration for the feedback module Registration intake. Evidence reviewed: intake requests Google/GitHub registration; baseline plan defines Auth.js/NextAuth v5, Prisma/PostgreSQL persistence, database sessions, callback routes, redirect behavior, account-linking boundaries, and acceptance checks; package.json includes Next.js, TypeScript, Playwright, NextAuth/Auth.js, Prisma adapter, Prisma Client, and Prisma; src/auth.ts wires Google/GitHub providers and database sessions; route.ts exposes Auth.js handlers; sign-in page provides provider actions; Prisma schema and migration define User, Account, Session, and VerificationToken. No tests were run during this planning action.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+    ".ai_factory/delivery/planning/registration-baseline.md",
+    "package.json",
+    "src/auth.ts",
+    "src/app/api/auth/[...nextauth]/route.ts",
+    "src/app/sign-in/page.tsx",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260913153623_registration_baseline/migration.sql"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "registration-auth-foundation",
+      "title": "Configure Google and GitHub OAuth registration",
+      "description": "Implement Auth.js/NextAuth registration for customers using Google and GitHub providers within the feedback module. Acceptance criteria: Google provider uses GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET; GitHub provider uses GITHUB_ID and GITHUB_SECRET; auth secret resolves from AUTH_SECRET or NEXTAUTH_SECRET; Auth.js handlers are exposed at /api/auth/[...nextauth]; successful provider callbacks redirect to /. Dependencies: OAuth app credentials and callback URLs documented in the baseline plan."
+    },
+    {
+      "id": "registration-prisma-persistence",
+      "title": "Persist registered customer identities with Prisma",
+      "description": "Persist OAuth registration data in PostgreSQL through Prisma using Auth.js-compatible User, Account, Session, and VerificationToken models. Acceptance criteria: Prisma schema defines PostgreSQL datasource from DATABASE_URL; first successful OAuth registration creates User and Account rows; repeat sign-in reuses the existing provider account; Account rows are unique by provider and providerAccountId; cascading deletes preserve referential integrity. Dependencies: registration-auth-foundation."
+    },
+    {
+      "id": "registration-database-sessions",
+      "title": "Create and clear database-backed sessions",
+      "description": "Use database session strategy for registered customers. Acceptance criteria: successful registration/sign-in creates a Session row; session cookies resolve through Auth.js; sign-out removes or invalidates the database session; unauthenticated users can return to the sign-in page. Dependencies: registration-prisma-persistence."
+    },
+    {
+      "id": "registration-sign-in-experience",
+      "title": "Provide customer sign-in and registration UI",
+      "description": "Add a framework-native Next.js sign-in page that lets customers register or sign in with Google or GitHub. Acceptance criteria: /sign-in renders Customer Feedback Portal branding; Google and GitHub actions are visible and keyboard accessible; each action initiates the matching Auth.js provider; successful completion returns to /; UI copy stays scoped to customer access and does not introduce administrator authorization promises. Dependencies: registration-auth-foundation."
+    },
+    {
+      "id": "registration-failure-handling",
+      "title": "Handle cancelled or rejected provider registration",
+      "description": "Ensure provider cancellation, rejection, or OAuth failure does not create application identities or sessions. Acceptance criteria: cancelled Google or GitHub flow returns the user to an Auth.js error/sign-in state; no User, Account, or Session row is created for cancelled or rejected attempts; visible failure handling does not expose secrets or raw provider tokens. Dependencies: registration-auth-foundation and registration-prisma-persistence."
+    },
+    {
+      "id": "registration-verification-coverage",
+      "title": "Verify registration acceptance checks",
+      "description": "Add and run appropriate verification for the registration scope using project conventions. Acceptance criteria: dependency listing confirms next-auth, @auth/prisma-adapter, @prisma/client, and prisma are installed; Prisma schema validation succeeds; TypeScript check succeeds; lint succeeds; Playwright or equivalent functional coverage verifies sign-in provider options and error-safe behavior where local OAuth constraints allow. Dependencies: all implementation stories."
+    }
+  ]
+}

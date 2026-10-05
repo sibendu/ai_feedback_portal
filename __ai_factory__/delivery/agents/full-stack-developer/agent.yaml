@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: full-stack-developer
+version: "1.0"
+baseRole: full-stack-developer
+promptFile: prompt.md
+config: {}

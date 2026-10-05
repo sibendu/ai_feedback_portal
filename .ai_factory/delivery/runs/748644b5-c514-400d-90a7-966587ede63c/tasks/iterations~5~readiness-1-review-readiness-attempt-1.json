@@ -1,0 +1,16 @@
+{
+  "outcome": "blocked",
+  "summary": "Readiness for `customer-feedback-form` is blocked by missing product rules that are required by the iteration acceptance. The prerequisite `feedback-request-batch-upload` is complete and approved: `FeedbackBatch`/`Feedback` models exist, feedback rows have `productName`, `purchaseDate`, unique `linkIdentifier`, nullable `rating`, `feedbackMessage`, and `submittedAt`, and prior review approved the `/feedback/{linkIdentifier}` email link contract. Current source has no public `/feedback` route yet, which is expected delivery work. However, the intake requires expired identifiers and repeat submissions to follow defined rules, and no artifact or clarification defines the expiry policy/window or whether repeat submission should be rejected, overwrite the prior response, or show the existing response. Evidence: `.ai_factory/docs/requirements/modules/feedback/customer-feedback-form-requirements.md` is missing; `prisma/schema.prisma` has no feedback expiry field; the initial iteration plan only repeats the need for a defined repeat-submission rule. Approved non-browser checks run successfully: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`; `npx.cmd prisma validate`; `npx.cmd tsc --noEmit --incremental false`; `npm.cmd run lint`; and `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-delivery-behavior.test.mjs .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs .ai_factory\\tests\\unit\\feedback\\feedback-request-batch-upload-source.test.mjs` with 22/22 passing. Browser verification, Playwright, e2e tests, app server startup, deployment, publishing, and real email delivery were not run per task constraints. `rg --files` was unavailable (`rg : The term 'rg' is not recognized...`), so source discovery used PowerShell `Get-ChildItem`.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/features/feedback-request/service.ts",
+    "src/features/feedback-request/email.ts",
+    "src/app/dashboard/feedback-request/page.tsx",
+    ".ai_factory/delivery/runs/748644b5-c514-400d-90a7-966587ede63c/tasks/iterations~4~iteration-review-1-review-delivery-attempt-1.json",
+    ".ai_factory/docs/requirements/modules/feedback/feedback-request-batch-upload-requirements.md"
+  ],
+  "retryable": false,
+  "workItems": null
+}

@@ -1,0 +1,266 @@
+{
+  "runId": "e24f1813-1cc3-4f3a-abf2-b0c7497699ef",
+  "taskKey": "stories~2~delivery/1/build",
+  "attempt": 1,
+  "environment": "approved-local-runner",
+  "startedAt": "2026-09-12T18:18:17.138Z",
+  "finishedAt": "2026-09-12T18:18:52.091Z",
+  "code": 1,
+  "timedOut": false,
+  "truncated": false,
+  "passed": false,
+  "stderr": "",
+  "report": {
+    "config": {
+      "argv": [
+        "C:\\nvm4w\\nodejs\\node.exe",
+        "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\node_modules\\@playwright\\test\\cli.js",
+        "test",
+        "--reporter=json",
+        "--global-timeout=180000"
+      ],
+      "configFile": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\playwright.config.ts",
+      "rootDir": "C:/workspace/AI/ai_factory_projects/customer-feedback-portal/.ai_factory/tests/functional",
+      "failOnFlakyTests": false,
+      "forbidOnly": false,
+      "fullyParallel": false,
+      "globalSetup": null,
+      "globalTeardown": null,
+      "globalTimeout": 180000,
+      "grep": {},
+      "grepInvert": null,
+      "maxFailures": 0,
+      "metadata": {
+        "actualWorkers": 2
+      },
+      "preserveOutput": "always",
+      "projects": [
+        {
+          "outputDir": "C:/workspace/AI/ai_factory_projects/customer-feedback-portal/test-results",
+          "repeatEach": 1,
+          "retries": 0,
+          "metadata": {
+            "actualWorkers": 2
+          },
+          "id": "chromium",
+          "name": "chromium",
+          "testDir": "C:/workspace/AI/ai_factory_projects/customer-feedback-portal/.ai_factory/tests/functional",
+          "testIgnore": [],
+          "testMatch": [
+            "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+          ],
+          "timeout": 30000
+        }
+      ],
+      "quiet": false,
+      "reporter": [
+        [
+          "json"
+        ]
+      ],
+      "reportSlowTests": {
+        "max": 5,
+        "threshold": 300000
+      },
+      "shard": null,
+      "tags": [],
+      "updateSnapshots": "missing",
+      "updateSourceMethod": "patch",
+      "version": "1.63.0",
+      "workers": 14,
+      "webServer": {
+        "command": "npm run build && npm run start -- --hostname 127.0.0.1 --port 3187",
+        "url": "http://127.0.0.1:3187",
+        "reuseExistingServer": false,
+        "timeout": 120000
+      }
+    },
+    "suites": [
+      {
+        "title": "feedback\\bootstrap-nextjs-app.spec.ts",
+        "file": "feedback/bootstrap-nextjs-app.spec.ts",
+        "column": 0,
+        "line": 0,
+        "specs": [],
+        "suites": [
+          {
+            "title": "bootstrap-nextjs-app",
+            "file": "feedback/bootstrap-nextjs-app.spec.ts",
+            "line": 3,
+            "column": 6,
+            "specs": [
+              {
+                "title": "renders the Customer Feedback Portal home route without starter boilerplate",
+                "ok": true,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 0,
+                        "parallelIndex": 0,
+                        "status": "passed",
+                        "duration": 2135,
+                        "errors": [],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-09-12T18:18:47.434Z",
+                        "annotations": [],
+                        "attachments": []
+                      }
+                    ],
+                    "status": "expected"
+                  }
+                ],
+                "id": "3eea4e75b8f9e897fd6c-634699449fcc5aaf28b0",
+                "file": "feedback/bootstrap-nextjs-app.spec.ts",
+                "line": 4,
+                "column": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "feedback\\establish-bff-layer.spec.ts",
+        "file": "feedback/establish-bff-layer.spec.ts",
+        "column": 0,
+        "line": 0,
+        "specs": [],
+        "suites": [
+          {
+            "title": "establish-bff-layer",
+            "file": "feedback/establish-bff-layer.spec.ts",
+            "line": 3,
+            "column": 6,
+            "specs": [
+              {
+                "title": "serves typed landing-page configuration from the BFF endpoint",
+                "ok": true,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 1,
+                        "parallelIndex": 1,
+                        "status": "passed",
+                        "duration": 47,
+                        "errors": [],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-09-12T18:18:47.507Z",
+                        "annotations": [],
+                        "attachments": []
+                      }
+                    ],
+                    "status": "expected"
+                  }
+                ],
+                "id": "1a2ea0e25f7fe0d9243d-5d7254c6b4e550762c52",
+                "file": "feedback/establish-bff-layer.spec.ts",
+                "line": 4,
+                "column": 7
+              },
+              {
+                "title": "renders the home page from the landing BFF data path",
+                "ok": false,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 1,
+                        "parallelIndex": 1,
+                        "status": "failed",
+                        "duration": 1750,
+                        "error": {
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Product' })\nExpected pattern: \u001b[32m/#product$/\u001b[39m\nError: strict mode violation: getByRole('link', { name: 'Product' }) resolved to 2 elements:\n    1) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', { name: 'Product' })\n    2) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'Product' })\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" getByRole('link', { name: 'Product' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Product' })\u001b[22m\n",
+                          "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Product' })\nExpected pattern: \u001b[32m/#product$/\u001b[39m\nError: strict mode violation: getByRole('link', { name: 'Product' }) resolved to 2 elements:\n    1) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', { name: 'Product' })\n    2) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'Product' })\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" getByRole('link', { name: 'Product' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Product' })\u001b[22m\n\n    at C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\establish-bff-layer.spec.ts:36:63",
+                          "location": {
+                            "file": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\establish-bff-layer.spec.ts",
+                            "column": 63,
+                            "line": 36
+                          },
+                          "snippet": "  34 |     await page.goto(\"/\");\n  35 |\n> 36 |     await expect(page.getByRole(\"link\", { name: \"Product\" })).toHaveAttribute(\n     |                                                               ^\n  37 |       \"href\",\n  38 |       /#product$/\n  39 |     );"
+                        },
+                        "errors": [
+                          {
+                            "location": {
+                              "file": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\establish-bff-layer.spec.ts",
+                              "column": 63,
+                              "line": 36
+                            },
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Product' })\nExpected pattern: \u001b[32m/#product$/\u001b[39m\nError: strict mode violation: getByRole('link', { name: 'Product' }) resolved to 2 elements:\n    1) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', { name: 'Product' })\n    2) <a href=\"#product\">Product</a> aka getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'Product' })\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" getByRole('link', { name: 'Product' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Product' })\u001b[22m\n\n\n  34 |     await page.goto(\"/\");\n  35 |\n> 36 |     await expect(page.getByRole(\"link\", { name: \"Product\" })).toHaveAttribute(\n     |                                                               ^\n  37 |       \"href\",\n  38 |       /#product$/\n  39 |     );\n    at C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\establish-bff-layer.spec.ts:36:63"
+                          }
+                        ],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-09-12T18:18:47.583Z",
+                        "annotations": [],
+                        "attachments": [
+                          {
+                            "name": "screenshot",
+                            "contentType": "image/png",
+                            "path": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\test-results\\feedback-establish-bff-lay-42571-m-the-landing-BFF-data-path-chromium\\test-failed-1.png"
+                          },
+                          {
+                            "name": "error-context",
+                            "contentType": "text/markdown",
+                            "path": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\test-results\\feedback-establish-bff-lay-42571-m-the-landing-BFF-data-path-chromium\\error-context.md"
+                          },
+                          {
+                            "name": "trace",
+                            "contentType": "application/zip",
+                            "path": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\test-results\\feedback-establish-bff-lay-42571-m-the-landing-BFF-data-path-chromium\\trace.zip"
+                          }
+                        ],
+                        "errorLocation": {
+                          "file": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\establish-bff-layer.spec.ts",
+                          "column": 63,
+                          "line": 36
+                        }
+                      }
+                    ],
+                    "status": "unexpected"
+                  }
+                ],
+                "id": "1a2ea0e25f7fe0d9243d-46f4ff5050f1ca1231e8",
+                "file": "feedback/establish-bff-layer.spec.ts",
+                "line": 33,
+                "column": 7
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stats": {
+      "startTime": "2026-09-12T18:18:17.658Z",
+      "duration": 34419.367000000006,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    }
+  }
+}

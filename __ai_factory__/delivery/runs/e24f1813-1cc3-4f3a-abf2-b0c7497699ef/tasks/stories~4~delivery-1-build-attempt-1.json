@@ -1,0 +1,16 @@
+{
+  "outcome": "blocked",
+  "summary": "Implemented `add-header-navigation-footer`. The landing page now has a sticky responsive SaaS header with horizontal primary navigation and a demo action, plus a grouped footer with product, resources, company, and legal navigation content supplied through the typed landing BFF contract. Updated normalization/fallback handling for the expanded footer shape and added Playwright coverage for the controller/local runner to execute. Non-browser checks passed in Codex: `npm run lint`, `npm exec tsc -- --noEmit --incremental false`, and `npm run build`. Per instruction, I did not launch browsers, run Playwright, or run `test:e2e`; browser verification is pending the approved local runner.\n\nApproved local Playwright runner failed (exit 1). No passing browser result is claimed.\nTest location: C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\bootstrap-nextjs-app.spec.ts:12\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Customer Feedback Portal home' })\nExpected: visible\nError: strict mode violation: getByRole('link', { name: 'Customer Feedback Portal home' }) resolved to 2 elements:\n    1) <a href=\"/\" class=\"brand\" aria-label=\"Customer Feedback Portal home\">…</a> aka getByRole('banner').getByRole('link', { name: 'Customer Feedback Portal home' })\n    2) <a href=\"/\" class=\"brand footer-logo\" aria-label=\"Customer Feedback Portal home\">…</a> aka getByRole('contentinfo').getByRole('link', { name: 'Customer Feedback Portal home' })\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('link', { name: 'Customer Feedback Portal home' }) with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Customer Feedback Portal home' })\n\n\n  10 |     await expect(\n  11 |       page.getByRole(\"link\", { name: \"Customer Feedback Portal home\" })\n> 12 |     ).toBeVisible();\n     |       ^\n  13 |     await expect(\n  14 |       page.getByRole(\"heading\", {\n  15 |         name: \"Turn every customer signal into a clearer next move.\"\n    at C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.ai_factory\\tests\\functional\\feedback\\bootstrap-nextjs-app.spec.ts:12:7\nFull evidence: .ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-4-delivery-1-build-1-f3dd6c07-03df-44ff-b6e5-b5157a485ce6.json.",
+  "defects": [],
+  "artifacts": [
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    "src/features/landing/types.ts",
+    "src/features/landing/content.ts",
+    "src/features/landing/client.ts",
+    ".ai_factory/tests/functional/feedback/add-header-navigation-footer.spec.ts",
+    ".ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-4-delivery-1-build-1-f3dd6c07-03df-44ff-b6e5-b5157a485ce6.json"
+  ],
+  "retryable": false,
+  "workItems": null
+}

@@ -1,0 +1,24 @@
+{
+  "outcome": "succeeded",
+  "summary": "Readiness review for iteration `authenticated-dashboard-shell` succeeded. The scope is clear and bounded to the authenticated dashboard shell: protected `/dashboard` experience, Home default content, collapsible left navigation with Home/Feedback Request/Configure, user identity, logout to landing page, and icon-only light/dark theme toggle. Prior prerequisites are present: registration profile persistence and Google consent gating are implemented in `src/auth.ts`, `src/app/register/actions.ts`, and `prisma/schema.prisma`; welcome email delivery is implemented and approved as a prior dependency. Current source has no `src/app/dashboard` route and auth redirects still target `/`, but those are expected implementation work for this iteration, not readiness blockers. Evidence reviewed: dashboard requirements artifact, package dependencies, Prisma schema, Auth.js config, landing/sign-in/register pages, app layout/styles, and existing registration/welcome unit tests. Checks run successfully: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`; `npx.cmd prisma validate`; `npx.cmd tsc --noEmit --incremental false`; `npm.cmd run lint`; and `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-email-source.test.mjs .ai_factory\\tests\\unit\\registration\\welcome-delivery-behavior.test.mjs` with 13/13 passing. Browser verification, Playwright, app server startup, build, deployment, publishing, and real email sending were not run per task constraints.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md",
+    "package.json",
+    "prisma/schema.prisma",
+    "src/auth.ts",
+    "src/app/api/auth/[...nextauth]/route.ts",
+    "src/app/page.tsx",
+    "src/app/sign-in/page.tsx",
+    "src/app/register/actions.ts",
+    "src/app/register/page.tsx",
+    "src/app/register/google-consent/page.tsx",
+    "src/app/layout.tsx",
+    "src/app/globals.css",
+    ".ai_factory/tests/unit/registration/registration-profile-consent-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-email-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs"
+  ],
+  "retryable": false,
+  "workItems": null
+}

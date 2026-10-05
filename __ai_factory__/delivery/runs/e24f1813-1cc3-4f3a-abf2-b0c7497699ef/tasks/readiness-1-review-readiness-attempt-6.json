@@ -1,0 +1,15 @@
+{
+  "outcome": "blocked",
+  "summary": "Blocked: this readiness review matches the required graphify skill, but the sandbox rejected reading its required instructions at `C:/Users/320086703/.codex/skills/graphify/SKILL.md`. With read-only workspace permissions and no approvals available, I cannot satisfy the mandated skill workflow or complete the intake review reliably.",
+  "defects": [
+    {
+      "id": "blocker-graphify-skill-unreadable",
+      "layer": "both",
+      "severity": "high",
+      "description": "Required graphify skill instructions are outside the permitted workspace and could not be read, preventing the mandated architecture/project-content review workflow."
+    }
+  ],
+  "artifacts": [],
+  "retryable": false,
+  "workItems": null
+}

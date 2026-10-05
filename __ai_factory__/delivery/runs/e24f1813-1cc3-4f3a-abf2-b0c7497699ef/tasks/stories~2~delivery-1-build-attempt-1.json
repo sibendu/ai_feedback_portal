@@ -1,0 +1,18 @@
+{
+  "outcome": "blocked",
+  "summary": "Implemented `establish-bff-layer`. Added a typed landing-page content contract, a `/api/landing` Next.js route handler, a typed server-side landing content client with normalization/fallback behavior, and an App Router loading fallback. Rewired the home page to render from the typed BFF data path instead of component-local constants. Added Playwright spec coverage for the BFF endpoint and page consumption for the controller/local runner to execute later. Non-browser verification passed: `npm run lint`, `npm exec tsc -- --noEmit --incremental false`, and `npm run build`; build output includes `/api/landing`. Browser verification remains pending the approved local Playwright runner.\n\nApproved local Playwright runner failed (exit 1). No passing browser result is claimed. Inspect the test errors and output in .ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-2-delivery-1-build-1-caf6ce7d-a426-49cc-8e79-8f0914c9b4c8.json. ",
+  "defects": [],
+  "artifacts": [
+    "src/app/api/landing/route.ts",
+    "src/app/loading.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    "src/features/landing/types.ts",
+    "src/features/landing/content.ts",
+    "src/features/landing/client.ts",
+    ".ai_factory/tests/functional/feedback/establish-bff-layer.spec.ts",
+    ".ai_factory/tests/reports/local-runner/e24f1813-1cc3-4f3a-abf2-b0c7497699ef/stories-2-delivery-1-build-1-caf6ce7d-a426-49cc-8e79-8f0914c9b4c8.json"
+  ],
+  "retryable": false,
+  "workItems": null
+}

@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: technical-architect
+version: "1.0"
+baseRole: technical-architect
+promptFile: prompt.md
+config: {}

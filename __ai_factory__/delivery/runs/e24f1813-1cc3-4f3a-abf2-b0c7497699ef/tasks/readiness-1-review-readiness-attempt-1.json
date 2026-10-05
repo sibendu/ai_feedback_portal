@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "Error: Codex exited 1: 2026-09-12T09:54:21.555227Z  WARN codex_models_manager::model_info: Unknown model GPT-5.5 is used. This will use fallback model metadata.\n2026-09-12T09:54:21.559438Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell\n2026-09-12T09:54:21.697096Z  WARN codex_models_manager::model_info: Unknown model GPT-5.5 is used. This will use fallback model metadata.\n2026-09-12T09:54:21.710839Z  WARN codex_models_manager::model_info: Unknown model GPT-5.5 is used. This will use fallback model metadata.\n2026-09-12T09:54:22.498573Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=file:///C:/Users/320086703/.codex/plugins/cache/openai-curated-remote/workspace-agents/0.1.13/.codex-plugin/plugin.json\n2026-09-12T09:54:22.505192Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=file:///C:/Users/320086703/.codex/plugins/cache/openai-curated-remote/workspace-agents/0.1.13/.codex-plugin/plugin.json\n2026-09-12T09:54:24.096323Z  WARN codex_core::session_startup_prewarm: startup websocket prewarm setup failed: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'GPT-5.5' model is not supported when using Codex with a ChatGPT account.\"}}\n",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}

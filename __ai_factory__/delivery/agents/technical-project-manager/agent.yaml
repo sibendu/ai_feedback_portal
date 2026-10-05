@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: technical-project-manager
+version: "1.0"
+baseRole: technical-project-manager
+promptFile: prompt.md
+config: {}

@@ -1,0 +1,24 @@
+{
+  "outcome": "blocked",
+  "summary": "Release-readiness is blocked by unapplied database migration status. Passed checks: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`; `npx.cmd prisma validate`; `npx.cmd tsc --noEmit --incremental false`; `npm.cmd run lint`; full source suite `node --test ...` with 28/28 passing; and final production build `npm.cmd run build`, which completed successfully and generated routes including `/dashboard`, `/dashboard/feedback-request`, and `/feedback/[identifier]`. Blocker command: `npx.cmd prisma migrate status`. Error/evidence: exit code 1; Prisma found 5 migrations and reported `Following migration have not yet been applied: 20260915100000_feedback_request_batch_upload`. Per instruction, I did not deploy or run `prisma migrate deploy`. Browser verification, Playwright/e2e, app server startup, deployment, publishing, and real email/customer contact were not run.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma.config.ts",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260913153623_registration_baseline",
+    "prisma/migrations/20260914170000_registration_profile_names",
+    "prisma/migrations/20260914183000_welcome_email_status",
+    "prisma/migrations/20260915020000_registration_delivery_failure_audit",
+    "prisma/migrations/20260915100000_feedback_request_batch_upload",
+    ".ai_factory/tests/unit/registration/registration-profile-consent-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-email-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    ".ai_factory/tests/unit/feedback/feedback-request-batch-upload-source.test.mjs",
+    ".ai_factory/tests/unit/feedback/customer-feedback-form-source.test.mjs",
+    ".next"
+  ],
+  "retryable": false,
+  "workItems": null
+}

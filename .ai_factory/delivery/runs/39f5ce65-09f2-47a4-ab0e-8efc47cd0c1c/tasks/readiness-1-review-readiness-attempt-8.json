@@ -1,0 +1,26 @@
+{
+  "outcome": "defects",
+  "summary": "Registration intake is close to ready, but one implementation defect remains. Evidence reviewed: intake `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md`, plan `.ai_factory/delivery/planning/registration-baseline.md`, dependencies in `package.json`, Prisma schema and migration, `src/auth.ts`, auth route, sign-in page, and `.env.local` variable names. Successful checks run: `npm.cmd ls next-auth @auth/core @auth/prisma-adapter @prisma/client prisma --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. No Playwright/browser tests were run. Defect evidence: installed NextAuth v5 docs in `node_modules/next-auth/index.d.ts` state OAuth provider inference uses `AUTH_{PROVIDER}_{ID|SECRET}`, but `.env.local` exposes `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_ID`, and `GITHUB_SECRET`; `src/auth.ts` calls providers as `[Google, GitHub]` without explicit credentials, so the configured OAuth secrets will not be picked up by the current implementation.",
+  "defects": [
+    {
+      "id": "oauth-provider-credentials-not-wired",
+      "layer": "backend",
+      "severity": "high",
+      "description": "`src/auth.ts` relies on NextAuth/Auth.js v5 provider environment inference by passing `[Google, GitHub]`, but the available env names are legacy/custom names rather than `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_GITHUB_ID`, and `AUTH_GITHUB_SECRET`. Evidence from installed package docs: `node_modules/next-auth/index.d.ts` says OAuth inference uses `AUTH_{PROVIDER}_{ID|SECRET}`. OAuth registration may start with missing provider credentials unless the env names are aliased or credentials are passed explicitly."
+    }
+  ],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+    ".ai_factory/delivery/planning/registration-baseline.md",
+    "package.json",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260913153623_registration_baseline/migration.sql",
+    "prisma.config.ts",
+    "src/auth.ts",
+    "src/app/api/auth/[...nextauth]/route.ts",
+    "src/app/sign-in/page.tsx",
+    "src/lib/prisma.ts"
+  ],
+  "retryable": false,
+  "workItems": null
+}

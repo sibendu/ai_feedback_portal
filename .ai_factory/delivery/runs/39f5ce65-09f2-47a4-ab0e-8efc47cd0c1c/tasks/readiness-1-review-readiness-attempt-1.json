@@ -1,0 +1,27 @@
+{
+  "outcome": "blocked",
+  "summary": "Intake readiness is blocked. The Registration intake exists at `.ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md`, and the project brief confirms Next.js, TypeScript, and Playwright. However, the requested Google/GitHub registration requires missing prerequisites and decisions: OAuth provider app credentials/callback configuration, auth/session strategy, and where registered customer identities will be persisted. Evidence: `rg -n \"next-auth|authjs|OAuth|Google|GitHub|Github|register|registration|auth\" .ai_factory src package.json` found only the intake and a landing-page note saying authentication is future work; `package.json` has no auth dependency; environment inspection found no Google/GitHub OAuth client IDs/secrets or auth secret. No tests were run for this readiness review.",
+  "defects": [
+    {
+      "id": "missing-oauth-provider-prerequisites",
+      "layer": "backend",
+      "severity": "critical",
+      "description": "Google and GitHub registration cannot be implemented or validated end to end until OAuth application credentials, callback URLs, and required auth secrets are provided or an explicit mock-only/test strategy is approved."
+    },
+    {
+      "id": "missing-registration-identity-decisions",
+      "layer": "backend",
+      "severity": "high",
+      "description": "The intake does not define the account model, session strategy, or persistence target for registered customers, and the current project has no authentication or storage architecture documented under `.ai_factory/docs/`."
+    }
+  ],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/13612888-96ef-4fa4-a304-4a400d9f2e24.md",
+    ".ai_factory/docs/project-brief.md",
+    ".ai_factory/delivery/runs/39f5ce65-09f2-47a4-ab0e-8efc47cd0c1c/snapshot.json",
+    "package.json",
+    "src/features/landing/content.ts"
+  ],
+  "retryable": false,
+  "workItems": null
+}

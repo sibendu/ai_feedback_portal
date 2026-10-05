@@ -1,0 +1,46 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current delivery iteration only for `authenticated-dashboard-shell`. Evidence reviewed: `.ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md` already elaborates the dashboard shell scope; `src/app` has no dashboard route yet; `src/auth.ts` exports Auth.js helpers and uses database sessions; `src/app/sign-in/page.tsx` still redirects providers to `/`, so dashboard post-auth routing is implementation work; `package.json` confirms Next.js, TypeScript, Prisma, NextAuth, ESLint, and Playwright dependencies. No tests, browser checks, app server, deployment, or publishing were run for this planning action.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md",
+    "package.json",
+    "src/auth.ts",
+    "src/app/sign-in/page.tsx",
+    "src/app/page.tsx",
+    "src/app/layout.tsx"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "protect-dashboard-routing",
+      "title": "Protect Dashboard Routing",
+      "description": "Create the authenticated dashboard destination and make it the post-login and post-registration target. Acceptance criteria: authenticated users land on `/dashboard` after successful login or registration; unauthenticated or expired-session users opening `/dashboard` are redirected to the sign-in flow; protected dashboard content is never rendered without a valid Auth.js session; redirect behavior avoids loops and does not expose tokens or secrets. Dependencies: completed registration and welcome-email iterations."
+    },
+    {
+      "id": "dashboard-home-shell",
+      "title": "Render Dashboard Home",
+      "description": "Build the default Home content inside the logged-in dashboard shell. Acceptance criteria: `/dashboard` shows Home by default; Home displays a welcome message using the user's name when available, otherwise a safe email or generic fallback; Home is visually selected in navigation; long names or missing session user fields do not break rendering; Feedback Request upload functionality is not implied as complete in this iteration. Dependencies: protect-dashboard-routing."
+    },
+    {
+      "id": "collapsible-dashboard-navigation",
+      "title": "Add Collapsible Left Navigation",
+      "description": "Add a collapsible left menu for authenticated dashboard pages with Home, Feedback Request, and Configure entries. Acceptance criteria: the menu expands and collapses without hiding or overlapping main content; Home, Feedback Request, and Configure are reachable from the shell; the active route is visually identifiable; Feedback Request and Configure render protected future-ready placeholders only; collapsed/icon controls remain keyboard accessible with accessible names. Dependencies: dashboard-home-shell."
+    },
+    {
+      "id": "dashboard-topbar-session-controls",
+      "title": "Show User Identity And Logout",
+      "description": "Add top-right session controls to the dashboard shell. Acceptance criteria: the user's display name appears at top right with email fallback; Logout appears after the identity; activating Logout uses the framework-native Auth.js sign-out path, invalidates the active session, and returns the user to `/`; after logout, `/dashboard` requires sign-in again; long identity text does not cover adjacent controls. Dependencies: protect-dashboard-routing."
+    },
+    {
+      "id": "dashboard-theme-toggle",
+      "title": "Add Icon Theme Toggle",
+      "description": "Add an icon-only dark/light theme toggle alongside the dashboard session controls. Acceptance criteria: the control uses a recognizable icon without visible instructional text; it has an accessible name; activating it switches between light and dark dashboard themes; the selected theme persists across dashboard navigation and refresh where technically feasible; toggling theme does not disrupt session, route, menu state, or main content. Dependencies: dashboard-home-shell, dashboard-topbar-session-controls."
+    },
+    {
+      "id": "dashboard-non-browser-verification",
+      "title": "Verify Dashboard Without Browser Execution",
+      "description": "Cover the dashboard shell with approved source-level checks only for this run. Acceptance criteria: run `npx.cmd tsc --noEmit --incremental false` and record the result; run `npm.cmd run lint` if available and record the result; run `npx.cmd prisma validate` if schema/auth persistence changes are involved; add or update targeted non-browser tests/source checks for protected routing, default Home, placeholders, logout wiring, and theme/menu state where feasible; browser, Playwright, app server startup, deployment, and publishing remain not run/pending unless separately approved by the controller. Dependencies: collapsible-dashboard-navigation, dashboard-topbar-session-controls, dashboard-theme-toggle."
+    }
+  ]
+}

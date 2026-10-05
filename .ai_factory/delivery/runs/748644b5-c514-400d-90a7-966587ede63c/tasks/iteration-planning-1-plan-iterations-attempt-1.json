@@ -1,0 +1,41 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the intake into five ordered delivery iterations because the scope spans auth/profile data, outbound email, authenticated navigation, batch upload/database work, and public feedback submission. Evidence reviewed: package.json shows Next.js/TypeScript/Prisma/NextAuth/Playwright; prisma/schema.prisma currently has standard NextAuth User/Account/Session tables only; src/auth.ts currently configures Google and GitHub providers with PrismaAdapter; src/app contains landing, sign-in, auth API, and landing API only, so dashboard, upload, and feedback form work are new. No tests were run and browser verification was not run per instruction.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/auth.ts",
+    "src/app/page.tsx",
+    "src/app/sign-in/page.tsx",
+    "src/app/api/auth/[...nextauth]/route.ts"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "registration-profile-consent",
+      "title": "Registration Profile And Google Consent",
+      "description": "Extend registration so first name and last name are captured and stored. For Google registration, distinguish first-time registration from login, require explicit consent before using Google-provided profile fields, and complete account creation only after acceptance. Acceptance: database user records retain firstName/lastName, existing login remains available for registered users, rejected Google consent does not create/complete registration, and registration behavior is covered by non-browser checks plus pending browser verification."
+    },
+    {
+      "id": "welcome-email",
+      "title": "Welcome Email On Registration",
+      "description": "Add Gmail-provider email delivery using parameters from .env.local and send a welcome email only after successful new-user registration. Depends on registration-profile-consent. Acceptance: email configuration is read from environment, registration succeeds even with clear handling of email-send failures, duplicate welcomes are avoided for existing users, and mail behavior is covered with a mocked or injectable sender test."
+    },
+    {
+      "id": "authenticated-dashboard-shell",
+      "title": "Authenticated Dashboard Shell",
+      "description": "Create the post-login dashboard experience. After successful registration or login, route users to a dashboard with Home as the default content, a collapsible left menu containing Home, Feedback Request, and Configure, user name at top right, logout control that invalidates the session and returns to the landing page, and an icon-based dark/light theme toggle. Configure is present but not implemented beyond a future-ready placeholder. Acceptance: authenticated routes are protected, unauthenticated users return to sign-in/landing flow, Home shows a welcome message, layout remains usable collapsed/expanded, and logout clears the session."
+    },
+    {
+      "id": "feedback-request-batch-upload",
+      "title": "Feedback Request Batch Upload",
+      "description": "Implement the Feedback Request page for uploading Excel files with email, type, product_code, product_name, and purchase_date columns. Validate rows with initial support for type=purchase only, create a feedback batch in the database, create feedback records for each valid customer row, and email each customer a unique feedback-link identifier. Depends on authenticated-dashboard-shell. Acceptance: invalid file shape and unsupported types are rejected with useful errors, valid uploads create traceable batch and feedback rows, generated links are unique, and email sending is testable without contacting real customers."
+    },
+    {
+      "id": "customer-feedback-form",
+      "title": "Customer Feedback Form Submission",
+      "description": "Add the public unique-link feedback form. Resolve the feedback record by identifier, display product name and purchase date from the uploaded purchase record, accept a 1-10 star rating and feedback message up to 200 characters, then update the existing feedback table record on submit. Depends on feedback-request-batch-upload. Acceptance: invalid/expired/unknown identifiers are handled safely, submitted rating and message are validated server-side, repeat submissions follow a defined rule, and database updates are covered by source-level tests."
+    }
+  ]
+}

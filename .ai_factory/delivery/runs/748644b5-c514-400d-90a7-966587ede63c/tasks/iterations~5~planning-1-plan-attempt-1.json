@@ -1,0 +1,51 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current delivery iteration only for `customer-feedback-form`. Evidence reviewed: `prisma/schema.prisma` already contains `FeedbackBatch` and `Feedback` with `productName`, `purchaseDate`, unique `linkIdentifier`, nullable `rating`, nullable `feedbackMessage`, and `submittedAt`; `src/features/feedback-request/email.ts` sends customer links to `/feedback/{linkIdentifier}`; `src/app` currently has no public `/feedback` route; the approved prerequisite `feedback-request-batch-upload` is complete; recorded human decisions define link validity as 30 days and repeat visits after submission as showing existing feedback. No tests, browser checks, app server, deployment, publishing, or real email delivery were run for this planning action.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/features/feedback-request/email.ts",
+    "src/features/feedback-request/service.ts",
+    "src/app/dashboard/feedback-request/page.tsx",
+    ".ai_factory/docs/requirements/modules/feedback/feedback-request-batch-upload-requirements.md"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "feedback-public-link-resolution",
+      "title": "Resolve Public Feedback Links",
+      "description": "Create the public `/feedback/{identifier}` route that looks up an existing feedback record by its unique link identifier without requiring authentication. Acceptance criteria: unknown, malformed, or missing identifiers render a safe unavailable state; valid identifiers load only the fields needed for the customer form; the page does not expose internal batch, admin, or database details; lookup behavior is covered by source-level tests. Dependencies: feedback-request-batch-upload."
+    },
+    {
+      "id": "feedback-link-expiry-rule",
+      "title": "Enforce Thirty Day Link Validity",
+      "description": "Apply the approved rule that customer feedback links remain valid for 30 days. Acceptance criteria: links older than 30 days are treated as expired; expired links cannot submit or change feedback; expired, unknown, and invalid links have distinct safe handling where feasible; the expiry calculation is deterministic and covered by source-level tests. Dependencies: feedback-public-link-resolution."
+    },
+    {
+      "id": "feedback-form-display",
+      "title": "Display Purchase Feedback Form",
+      "description": "Render the customer feedback form for valid, unexpired feedback requests. Acceptance criteria: the form displays product name and purchase date from the stored feedback row; rating is presented as a 1-10 star scale; feedback message is a textarea with a 200 character limit; the page is usable without an authenticated session; missing optional values do not break rendering. Dependencies: feedback-link-expiry-rule."
+    },
+    {
+      "id": "feedback-server-validation",
+      "title": "Validate Feedback Submission Server Side",
+      "description": "Validate all submitted feedback values on the server before updating the feedback record. Acceptance criteria: rating must be an integer from 1 through 10; feedback message must be present or follow the documented empty-message rule and must not exceed 200 characters after normalization; invalid payloads return useful form errors without updating the database; client-side constraints are treated as convenience only, not security. Dependencies: feedback-form-display."
+    },
+    {
+      "id": "feedback-record-update",
+      "title": "Update Existing Feedback Record On Submit",
+      "description": "Persist a valid customer response to the existing feedback table row. Acceptance criteria: submit updates only the resolved feedback record; `rating`, `feedbackMessage`, and `submittedAt` are stored; product, purchase, email, batch, and link identifier fields are not overwritten by the public form; updates are atomic and safe under normal repeat-click behavior; successful submission shows confirmation. Dependencies: feedback-server-validation."
+    },
+    {
+      "id": "feedback-repeat-submission-display",
+      "title": "Show Existing Feedback After Submission",
+      "description": "Implement the approved repeat-submission rule: after feedback has already been submitted, repeat visits show the existing feedback instead of allowing a new edit. Acceptance criteria: records with `submittedAt` render a submitted/read-only state; existing rating and message are displayed safely; additional submits for an already-submitted record are rejected or ignored without changing stored values; this behavior is covered by source-level tests. Dependencies: feedback-record-update."
+    },
+    {
+      "id": "feedback-form-non-browser-verification",
+      "title": "Verify Feedback Form Without Browser Execution",
+      "description": "Add focused non-browser verification for the public feedback form iteration. Acceptance criteria: source-level tests cover unknown identifiers, expired identifiers, valid form display data, rating bounds, message length, successful database update behavior, and repeat-submission display; run and record `npx.cmd prisma validate` and `npx.cmd tsc --noEmit --incremental false`; run lint if available; browser, Playwright, app server startup, deployment, publishing, and real email delivery remain not run for this task. Dependencies: feedback-repeat-submission-display."
+    }
+  ]
+}

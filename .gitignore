@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+.next-production/
+out/
+
+# production
+dist/
+
+# testing
+test-results/
+playwright-report/
+.ai_factory/tests/reports/playwright-html/
+
+# environment
+.env*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# operating system
+.DS_Store
+Thumbs.db

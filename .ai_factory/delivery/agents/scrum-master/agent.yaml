@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: scrum-master
+version: "1.0"
+baseRole: scrum-master
+promptFile: prompt.md
+config: {}

@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: validation-engineer
+version: "1.0"
+baseRole: validation-engineer
+promptFile: prompt.md
+config: {}

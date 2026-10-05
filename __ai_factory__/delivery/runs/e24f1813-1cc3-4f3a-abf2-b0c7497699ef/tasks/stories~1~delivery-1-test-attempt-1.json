@@ -1,0 +1,24 @@
+{
+  "outcome": "defects",
+  "summary": "Tested current story `bootstrap-nextjs-app`. Structural acceptance criteria pass: project root contains a Next.js TypeScript App Router app (`src/app/layout.tsx`, `src/app/page.tsx`, `tsconfig.json`, `next.config.ts`), required package scripts exist (`dev`, `build`, `lint`, `test:e2e`), default home content is Customer Feedback Portal-specific, and starter boilerplate scan found no matches. Evidence: `npm run lint` passed; `npm run build` passed and prerendered `/`; script validation passed. However, the current story test design includes a Playwright functional home-route test (`FB-I1-TC-003`), and `npm run test:e2e` failed with `Error: No tests found`, so the current story test set is not fully executable.",
+  "defects": [
+    {
+      "id": "DEF-bootstrap-nextjs-app-001",
+      "layer": "frontend",
+      "severity": "medium",
+      "description": "Playwright functional test execution for the current story fails because no executable tests exist under the configured `.ai_factory/tests/functional` test directory. Evidence: `playwright.config.ts` sets `testDir: \".ai_factory/tests/functional\"`; `.ai_factory/tests/functional/feedback/iteration-1-landing-home-test-design.md` defines `FB-I1-TC-003` as a Playwright functional home-route test; running `npm run test:e2e` exited with code 1 and `Error: No tests found`."
+    }
+  ],
+  "artifacts": [
+    "package.json",
+    "tsconfig.json",
+    "next.config.ts",
+    "playwright.config.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".ai_factory/tests/functional/feedback/iteration-1-landing-home-test-design.md"
+  ],
+  "retryable": false,
+  "workItems": null
+}

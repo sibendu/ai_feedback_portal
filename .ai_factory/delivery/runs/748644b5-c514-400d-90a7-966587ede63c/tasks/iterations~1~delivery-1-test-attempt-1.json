@@ -1,0 +1,21 @@
+{
+  "outcome": "succeeded",
+  "summary": "Registration iteration test passed for the approved non-browser scope. Evidence: source review confirmed `User.firstName`/`User.lastName` schema and migration, registration name capture UI/actions, Google consent page/actions, existing Google account bypass, first-time Google consent gate, accepted-consent name persistence path, and rejection cleanup path. Commands run successfully: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`; `npx.cmd prisma validate`; `npx.cmd tsc --noEmit --incremental false`; `node --test .ai_factory\\tests\\unit\\registration\\registration-profile-consent-source.test.mjs` with 4/4 passing; `npm.cmd run lint`; `npm.cmd run build`. Browser verification, Playwright, e2e tests, and temporary app server execution were not run because this task explicitly disallows browser execution; browser verification remains pending and is not reported as passed.",
+  "defects": [],
+  "artifacts": [
+    "prisma/schema.prisma",
+    "prisma/migrations/20260914170000_registration_profile_names/migration.sql",
+    "src/features/registration/profile.ts",
+    "src/app/register/actions.ts",
+    "src/app/register/page.tsx",
+    "src/app/register/google-consent/page.tsx",
+    "src/auth.ts",
+    "src/app/sign-in/page.tsx",
+    ".ai_factory/tests/unit/registration/registration-profile-consent-source.test.mjs",
+    ".ai_factory/tests/functional/registration/registration-profile-consent-test-design.md",
+    ".ai_factory/docs/requirements/modules/registration/registration-profile-consent-requirements.md",
+    "package.json"
+  ],
+  "retryable": false,
+  "workItems": null
+}

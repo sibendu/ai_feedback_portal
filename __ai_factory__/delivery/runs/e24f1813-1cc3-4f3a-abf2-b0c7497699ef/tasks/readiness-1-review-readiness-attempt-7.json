@@ -1,0 +1,15 @@
+{
+  "outcome": "blocked",
+  "summary": "Readiness review is blocked. I could not inspect the project files or tool outputs needed to verify the intake end to end. Read-only inspection commands from the project root, including `Get-ChildItem`, `rg --files`, and `git status --short`, were rejected by policy before execution. Because required information is unavailable and missing prerequisites must be reported as blocked, I cannot produce evidence-backed readiness conclusions for the feedback module.",
+  "defects": [
+    {
+      "id": "blocked-readonly-inspection-unavailable",
+      "layer": "both",
+      "severity": "high",
+      "description": "Execution policy rejected read-only repository inspection commands, preventing verification of intake artifacts, iteration plan, requirements, technical decisions, dependencies, prerequisites, and source layout."
+    }
+  ],
+  "artifacts": [],
+  "retryable": false,
+  "workItems": null
+}

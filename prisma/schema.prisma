@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  firstName     String?
+  lastName      String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  welcomeEmailAttemptedAt DateTime?
+  welcomeEmailSentAt      DateTime?
+  welcomeEmailStatus      String?
+  welcomeEmailError       String?
+  accounts      Account[]
+  sessions      Session[]
+  feedbackBatches FeedbackBatch[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model FeedbackBatch {
+  id               String     @id @default(cuid())
+  uploadedById     String
+  uploadedBy       User       @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  sourceFileName   String
+  totalRows        Int
+  createdCount     Int        @default(0)
+  emailSentCount   Int        @default(0)
+  emailFailedCount Int        @default(0)
+  status           String     @default("created")
+  feedbacks        Feedback[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([uploadedById, createdAt])
+  @@map("feedback_batches")
+}
+
+model Feedback {
+  id                String        @id @default(cuid())
+  batchId           String
+  batch             FeedbackBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  email             String
+  type              String
+  productCode       String
+  productName       String
+  purchaseDate      DateTime
+  linkIdentifier    String        @unique
+  emailStatus       String        @default("pending")
+  emailAttemptedAt  DateTime?
+  emailSentAt       DateTime?
+  emailError        String?
+  rating            Int?
+  feedbackMessage   String?
+  submittedAt       DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([batchId])
+  @@index([email])
+  @@map("feedback")
+}
+
+model RegistrationFailure {
+  id             String   @id @default(cuid())
+  registrationId String
+  stage          String
+  errorCode      String
+  errorMessage   String
+  occurredAt     DateTime @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

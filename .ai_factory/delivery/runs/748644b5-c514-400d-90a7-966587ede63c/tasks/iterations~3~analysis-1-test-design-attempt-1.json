@@ -1,0 +1,16 @@
+{
+  "outcome": "succeeded",
+  "summary": "Created the authenticated dashboard shell test-design artifact with 60 traceable test cases covering all planned stories and failure paths: protected dashboard routing, default Home behavior, collapsible left navigation, topbar identity/logout, icon theme toggle, and approved non-browser verification. Evidence reviewed included the dashboard requirements, package dependencies, Auth.js config, sign-in/register redirect sources, current app route layout, and existing test-design conventions. Checks run successfully: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, and `npm.cmd run lint`. Browser verification, Playwright, e2e tests, temporary app server startup, production build, deployment, and publishing were not run per task constraints.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/tests/functional/dashboard/dashboard-authenticated-shell-test-design.md",
+    ".ai_factory/docs/requirements/modules/dashboard/dashboard-authenticated-shell-requirements.md",
+    "package.json",
+    "src/auth.ts",
+    "src/app/sign-in/page.tsx",
+    "src/app/register/actions.ts",
+    "src/app/page.tsx"
+  ],
+  "retryable": false,
+  "workItems": null
+}

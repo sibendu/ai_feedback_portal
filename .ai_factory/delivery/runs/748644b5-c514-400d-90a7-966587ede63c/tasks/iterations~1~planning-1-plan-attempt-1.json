@@ -1,0 +1,39 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned the current delivery iteration only: registration profile persistence and Google consent gating. Evidence reviewed: package.json confirms Next.js, TypeScript, Prisma, NextAuth, and Playwright; prisma/schema.prisma currently has the standard NextAuth User model without firstName/lastName; src/auth.ts uses PrismaAdapter with Google and GitHub providers and database sessions; src/app/sign-in/page.tsx currently sends Google directly through signIn(\"google\") with no registration/login distinction or consent gate. No tests were run during this planning action, and browser verification remains pending per instruction.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "prisma/schema.prisma",
+    "src/auth.ts",
+    "src/app/sign-in/page.tsx"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "registration-profile-schema",
+      "title": "Persist Registration Profile Names",
+      "description": "Add firstName and lastName fields to user persistence for registration. Acceptance criteria: Prisma User model includes nullable or required fields appropriate for existing accounts; migration updates the users table without breaking current records; server-side registration code writes firstName and lastName; existing registered-user login still succeeds without forcing re-registration. Dependencies: none."
+    },
+    {
+      "id": "registration-name-capture-ui",
+      "title": "Capture Names During Registration",
+      "description": "Update the registration path so users can provide first name and last name when creating an account. Acceptance criteria: registration UI collects firstName and lastName with validation; values are submitted to the server through a typed path; validation errors are shown without creating an incomplete account; successful registration stores both fields and continues to the existing post-auth flow. Dependencies: registration-profile-schema."
+    },
+    {
+      "id": "google-registration-consent-gate",
+      "title": "Gate First-Time Google Registration With Consent",
+      "description": "Distinguish first-time Google registration from existing Google login and require explicit consent before using Google-provided profile fields. Acceptance criteria: existing Google-linked users can log in normally; first-time Google users are routed through a consent step before account creation is completed; consent text clearly covers use of Google first name, last name, and profile email for account setup; accepting consent creates or completes the account with retained names; rejecting consent leaves no completed registration and returns the user to a safe unauthenticated state. Dependencies: registration-profile-schema."
+    },
+    {
+      "id": "auth-flow-routing-and-session-safety",
+      "title": "Preserve Login And Registration Session Behavior",
+      "description": "Align redirects and session handling for the updated registration and consent flow. Acceptance criteria: successful email/profile registration and accepted Google registration end in an authenticated session; rejected Google consent does not leave an authenticated session; existing OAuth login remains available for registered users; auth errors produce clear messages on the sign-in or registration surface; callback behavior does not bypass the consent gate. Dependencies: google-registration-consent-gate."
+    },
+    {
+      "id": "registration-non-browser-verification",
+      "title": "Cover Registration With Non-Browser Checks",
+      "description": "Add source-level verification for the registration profile and consent behavior, leaving browser verification pending as required by this run. Acceptance criteria: Prisma schema validation is run with npx.cmd prisma validate; TypeScript verification is run with npx.cmd tsc --noEmit --incremental false; targeted non-browser tests or equivalent source checks cover name persistence, existing Google login, first-time Google consent acceptance, and consent rejection; browser verification is documented as not run/pending, not passed. Dependencies: registration-name-capture-ui, auth-flow-routing-and-session-safety."
+    }
+  ]
+}

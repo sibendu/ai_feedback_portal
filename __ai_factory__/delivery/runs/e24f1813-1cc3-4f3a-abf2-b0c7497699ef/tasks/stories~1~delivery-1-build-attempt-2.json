@@ -1,0 +1,20 @@
+{
+  "outcome": "succeeded",
+  "summary": "Implemented and verified `bootstrap-nextjs-app`. The project root now has a Next.js TypeScript App Router application with framework-native `src/app` structure, package scripts for `dev`, `build`, `lint`, and `test:e2e`, and a Customer Feedback Portal home route without default starter boilerplate. Fixed bootstrap verification issues by using `next/link` for the root route, ignoring generated Next artifacts in ESLint, and pinning Next output tracing to the project root. Evidence: `npm run lint` passed; `npm run build` passed; required script validation passed; boilerplate text scan returned no matches. Playwright tests were not run for this story because the current acceptance criterion only requires the execution script to exist.",
+  "defects": [],
+  "artifacts": [
+    "package.json",
+    "package-lock.json",
+    "next.config.ts",
+    "eslint.config.mjs",
+    "tsconfig.json",
+    "playwright.config.ts",
+    "next-env.d.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/globals.css",
+    ".gitignore"
+  ],
+  "retryable": false,
+  "workItems": null
+}

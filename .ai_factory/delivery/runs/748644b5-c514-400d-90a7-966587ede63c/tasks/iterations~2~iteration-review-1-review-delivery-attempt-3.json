@@ -1,0 +1,33 @@
+{
+  "outcome": "defects",
+  "summary": "Reviewed iteration `welcome-email` as Technical Architect. The iteration cannot be approved because the delivered failure handling contradicts the acceptance criteria: welcome-email failures roll back/delete the newly created user and Auth.js throws from `events.createUser`, instead of preserving successful registration with a clear logged/deterministic send failure. Evidence: `src/features/registration/welcome-delivery.ts` deletes the user in a transaction on any non-sent result and returns `rolled-back`; `src/auth.ts` throws when delivery status is `rolled-back`; `.ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs` asserts rollback as expected behavior. Allowed checks run successfully: `npm.cmd ls next next-auth @auth/prisma-adapter @prisma/client prisma typescript --depth=0`, `npx.cmd prisma validate`, `npx.cmd tsc --noEmit --incremental false`, targeted node tests with 13/13 passing, and `npm.cmd run lint`. Production build, browser verification, Playwright, app server startup, deployment, publishing, and real Gmail delivery were not run per task constraints.",
+  "defects": [
+    {
+      "id": "welcome-email-failure-rolls-back-registration",
+      "layer": "backend",
+      "severity": "high",
+      "description": "Welcome email failure handling violates the iteration acceptance criteria that registration must succeed even when email sending fails. `src/features/registration/welcome-delivery.ts:41` starts failure handling for all non-sent results, `src/features/registration/welcome-delivery.ts:51` deletes the just-created user, and `src/features/registration/welcome-delivery.ts:58` returns `rolled-back`. `src/auth.ts:140` then throws for `rolled-back`, which can break the auth/create-user flow. The requirements explicitly state failed welcome email must not delete the newly created user, linked account, or session and must not prevent later sign-in."
+    },
+    {
+      "id": "welcome-email-tests-assert-invalid-failure-semantics",
+      "layer": "backend",
+      "severity": "medium",
+      "description": "The mocked delivery tests encode the wrong expected behavior, so the passing test suite does not prove the requested acceptance criteria. `.ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs:33` tests that sender failure rolls back registration, `.ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs:65` tests missing Gmail configuration also rolls back registration, and `.ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs:104` asserts `rolled-back`. These should instead assert that the user remains registered while safe failure status/audit information is recorded."
+    }
+  ],
+  "artifacts": [
+    ".ai_factory/docs/requirements/modules/registration/welcome-email-requirements.md",
+    ".ai_factory/tests/functional/registration/welcome-email-test-design.md",
+    ".ai_factory/tests/unit/registration/welcome-email-source.test.mjs",
+    ".ai_factory/tests/unit/registration/welcome-delivery-behavior.test.mjs",
+    "package.json",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260914183000_welcome_email_status/migration.sql",
+    "prisma/migrations/20260915020000_registration_delivery_failure_audit/migration.sql",
+    "src/auth.ts",
+    "src/features/registration/welcome-email.ts",
+    "src/features/registration/welcome-delivery.ts"
+  ],
+  "retryable": false,
+  "workItems": null
+}
