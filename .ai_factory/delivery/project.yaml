@@ -1,12 +1,15 @@
 schemaVersion: 1
 engineVersion: 0.1.0
+executionPolicy: autonomous-development
+bootstrapProfile: nextjs-prisma
+requireIterationPlanReview: true
 defaults:
   provider: codex-cli
   model: gpt-5.5
   reasoning: medium
   timeoutSeconds: 900
 maxIterations: 3
-configurationVersion: 3
+configurationVersion: 4
 enabledProcesses:
   - .ai_factory/delivery/processes/feature-delivery/0.1.yaml
   - .ai_factory/delivery/processes/multi-iteration-delivery/1.1.yaml
