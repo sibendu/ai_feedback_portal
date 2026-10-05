@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-05T18:41:47.731Z",
+  "project": {
+    "id": "374c27f5-fe28-4ae1-94d4-2ad24fb9d490",
+    "git": {
+      "remote": "origin",
+      "baseBranch": "main"
+    },
+    "name": "Customer Feedback Portal",
+    "root": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal",
+    "flavor": "brownfield",
+    "status": "active",
+    "revision": 3,
+    "createdAt": "2026-09-13T14:31:44.743Z",
+    "updatedAt": "2026-10-05T18:36:14.193Z"
+  },
+  "brief": "# Customer Feedback Portal\n\n## Purpose\nCollect customer feedback, validate submissions, and provide an administrative review dashboard.\n\n## Technology and source layout\nNext.js, TypeScript, and Playwright. Follow framework-native source conventions.\n\n## Modules and constraints\nDocument modules, integrations, and acceptance expectations here.\n",
+  "projectYaml": "schemaVersion: 1\nengineVersion: 0.1.0\nexecutionPolicy: autonomous-development\nbootstrapProfile: nextjs-prisma\nAD_HOC_FILES: \"\"\nrequireIterationPlanReview: true\ndefaults:\n  provider: codex-cli\n  model: gpt-5.5\n  reasoning: medium\n  timeoutSeconds: 900\nmaxIterations: 3\nconfigurationVersion: 5\nenabledProcesses:\n  - .ai_factory/delivery/processes/feature-delivery/0.1.yaml\n  - .ai_factory/delivery/processes/multi-iteration-delivery/1.1.yaml\n"
+}
