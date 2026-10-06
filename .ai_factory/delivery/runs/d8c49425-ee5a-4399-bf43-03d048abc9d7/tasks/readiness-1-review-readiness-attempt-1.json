@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "Task timed out after 900 seconds. The controller requested termination.\nElapsed: 903 seconds.\nLast observed activity: item.started (command_execution) at 2026-10-06T11:22:54.762Z.\nAgent process exit observed; descendant processes and file changes still require verification.\nError: No confirmed task result. Verify external effects before retry.",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}

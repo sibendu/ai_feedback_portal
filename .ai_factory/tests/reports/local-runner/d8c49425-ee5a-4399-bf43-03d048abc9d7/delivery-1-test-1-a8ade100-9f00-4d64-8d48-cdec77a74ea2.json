@@ -1,0 +1,209 @@
+{
+  "runId": "d8c49425-ee5a-4399-bf43-03d048abc9d7",
+  "taskKey": "delivery/1/test",
+  "attempt": 1,
+  "environment": "approved-local-runner",
+  "startedAt": "2026-10-06T12:09:24.482Z",
+  "finishedAt": "2026-10-06T12:09:55.950Z",
+  "code": 0,
+  "timedOut": false,
+  "truncated": false,
+  "passed": true,
+  "stderr": "",
+  "report": {
+    "config": {
+      "argv": [
+        "C:\\nvm4w\\nodejs\\node.exe",
+        "C:\\workspace\\AI\\ai_factory_workspace\\customer-feedback-portal\\d8c49425-ee5a-4399-bf43-03d048abc9d7\\node_modules\\@playwright\\test\\cli.js",
+        "test",
+        "--reporter=json",
+        "--global-timeout=180000"
+      ],
+      "configFile": "C:\\workspace\\AI\\ai_factory_workspace\\customer-feedback-portal\\d8c49425-ee5a-4399-bf43-03d048abc9d7\\playwright.config.ts",
+      "rootDir": "C:/workspace/AI/ai_factory_workspace/customer-feedback-portal/d8c49425-ee5a-4399-bf43-03d048abc9d7/.ai_factory/tests/functional",
+      "failOnFlakyTests": false,
+      "forbidOnly": false,
+      "fullyParallel": false,
+      "globalSetup": null,
+      "globalTeardown": null,
+      "globalTimeout": 180000,
+      "grep": {},
+      "grepInvert": null,
+      "maxFailures": 0,
+      "metadata": {
+        "actualWorkers": 1
+      },
+      "preserveOutput": "always",
+      "projects": [
+        {
+          "outputDir": "C:/workspace/AI/ai_factory_workspace/customer-feedback-portal/d8c49425-ee5a-4399-bf43-03d048abc9d7/test-results",
+          "repeatEach": 1,
+          "retries": 0,
+          "metadata": {
+            "actualWorkers": 1
+          },
+          "id": "chromium",
+          "name": "chromium",
+          "testDir": "C:/workspace/AI/ai_factory_workspace/customer-feedback-portal/d8c49425-ee5a-4399-bf43-03d048abc9d7/.ai_factory/tests/functional",
+          "testIgnore": [],
+          "testMatch": [
+            "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+          ],
+          "timeout": 30000
+        }
+      ],
+      "quiet": false,
+      "reporter": [
+        [
+          "json"
+        ]
+      ],
+      "reportSlowTests": {
+        "max": 5,
+        "threshold": 300000
+      },
+      "shard": null,
+      "tags": [],
+      "updateSnapshots": "missing",
+      "updateSourceMethod": "patch",
+      "version": "1.63.0",
+      "workers": 14,
+      "webServer": {
+        "command": "node ./node_modules/next/dist/bin/next build && node ./node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3187",
+        "url": "http://127.0.0.1:3187",
+        "reuseExistingServer": false,
+        "timeout": 120000
+      }
+    },
+    "suites": [
+      {
+        "title": "feedback\\registration.spec.ts",
+        "file": "feedback/registration.spec.ts",
+        "column": 0,
+        "line": 0,
+        "specs": [],
+        "suites": [
+          {
+            "title": "feedback registration",
+            "file": "feedback/registration.spec.ts",
+            "line": 13,
+            "column": 6,
+            "specs": [
+              {
+                "title": "renders customer registration actions for Google and GitHub",
+                "ok": true,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 0,
+                        "parallelIndex": 0,
+                        "status": "passed",
+                        "duration": 1185,
+                        "errors": [],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-10-06T12:09:51.696Z",
+                        "annotations": [],
+                        "attachments": []
+                      }
+                    ],
+                    "status": "expected"
+                  }
+                ],
+                "id": "576ec3d1b0299e0ae8ef-5e0a8a6334ea45c2b0d2",
+                "file": "feedback/registration.spec.ts",
+                "line": 14,
+                "column": 7
+              },
+              {
+                "title": "shows a safe provider failure message",
+                "ok": true,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 0,
+                        "parallelIndex": 0,
+                        "status": "passed",
+                        "duration": 672,
+                        "errors": [],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-10-06T12:09:53.483Z",
+                        "annotations": [],
+                        "attachments": []
+                      }
+                    ],
+                    "status": "expected"
+                  }
+                ],
+                "id": "576ec3d1b0299e0ae8ef-b357978a39cafb7159ee",
+                "file": "feedback/registration.spec.ts",
+                "line": 24,
+                "column": 7
+              },
+              {
+                "title": "exposes only the expected OAuth providers through Auth.js",
+                "ok": true,
+                "tags": [],
+                "tests": [
+                  {
+                    "timeout": 30000,
+                    "annotations": [],
+                    "expectedStatus": "passed",
+                    "projectId": "chromium",
+                    "projectName": "chromium",
+                    "results": [
+                      {
+                        "workerIndex": 0,
+                        "parallelIndex": 0,
+                        "status": "passed",
+                        "duration": 44,
+                        "errors": [],
+                        "stdout": [],
+                        "stderr": [],
+                        "retry": 0,
+                        "startTime": "2026-10-06T12:09:54.162Z",
+                        "annotations": [],
+                        "attachments": []
+                      }
+                    ],
+                    "status": "expected"
+                  }
+                ],
+                "id": "576ec3d1b0299e0ae8ef-65db38d6130bc61d65a5",
+                "file": "feedback/registration.spec.ts",
+                "line": 37,
+                "column": 7
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stats": {
+      "startTime": "2026-10-06T12:09:25.027Z",
+      "duration": 30892.468,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  }
+}

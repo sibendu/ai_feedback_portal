@@ -1,0 +1,31 @@
+{
+  "outcome": "blocked",
+  "summary": "Close-intake remains blocked by the required review gate. I reviewed the run artifacts and found only Solution Architect review outcomes of `defects` with defect counts 1 and 2. No source changes, tests, browser runs, deployments, publishing, commits, branch changes, or external contacts were performed during this close-intake action.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/solution-review-1-review-solution-attempt-1.json",
+    ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/solution-review-1-review-solution-attempt-2.json",
+    ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/iteration-review-2-review-delivery-attempt-1.json",
+    ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/delivery-2-test-attempt-1.json",
+    ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/closure-1-close-attempt-1.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": {
+    "title": "Passing Solution Architect review missing",
+    "reason": "Close-intake cannot proceed because the required Solution Architect review has not passed. Evidence in the run directory shows both available Solution Architect review artifacts ended with defects: `solution-review-1-review-solution-attempt-1.json` and `solution-review-1-review-solution-attempt-2.json`. Later delivery and iteration review artifacts succeeded, and the latest human direction says to run Solution Architect review and retry close-intake after it passes, but no passing Solution Architect review artifact is present yet.",
+    "decisions": [
+      {
+        "id": "run-solution-review-before-close",
+        "question": "How should this intake proceed before close-intake is retried?",
+        "choices": [
+          "Run Solution Architect review and retry close-intake after it passes",
+          "Override the close gate using the accepted-risk decision",
+          "Return to delivery remediation for more changes"
+        ],
+        "recommended": "Run Solution Architect review and retry close-intake after it passes"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned one delivery iteration for Left menu 4. Evidence reviewed: the current dashboard shell uses a flat `navItems` array with Home, Feedback Request, and Configure; dashboard pages already exist for Home, Feedback Request, and Configure; the intake requires a two-level menu and prior readiness found no blocker. No tests were run for this planning action.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/79c6bb5e-3ef7-4777-85dd-9b30fd20ee75.md",
+    "src/features/dashboard/shell.tsx",
+    "src/app/dashboard/layout.tsx",
+    "src/app/dashboard/page.tsx",
+    "src/app/dashboard/feedback-request/page.tsx",
+    "src/app/dashboard/configure/page.tsx",
+    "package.json"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "define-two-level-navigation-model",
+      "title": "Define two-level dashboard navigation model",
+      "description": "Replace the flat dashboard navigation definition with a model that supports Level 1 items and optional Level 2 children. Acceptance criteria: Level 1 items are Home, Feedback, and Configure; Feedback replaces the current Feedback Request label; Home has no submenu; Feedback has Provide Feedback and Past Feedbacks children; Configure has Profile and Change Password children; route and active-state metadata are explicit enough to support current page highlighting."
+    },
+    {
+      "id": "implement-expand-collapse-menu-behavior",
+      "title": "Implement Level 1 expand and collapse behavior",
+      "description": "Update the dashboard sidebar so Level 1 items with children expand and collapse their Level 2 menu without changing main content. Acceptance criteria: clicking Feedback toggles its submenu visibility and does not navigate; clicking Configure toggles its submenu visibility and does not navigate; clicking Home navigates to the Home page because it has no submenu; expanded state is accessible through button semantics, aria-expanded, and clear focus behavior; the existing sidebar collapse control continues to work."
+    },
+    {
+      "id": "add-submenu-destination-pages",
+      "title": "Add submenu destination pages with matching headings",
+      "description": "Create or map dashboard content pages for each Level 2 option. Acceptance criteria: Provide Feedback opens a page whose main content heading is Provide Feedback; Past Feedbacks opens a page whose main content heading is Past Feedbacks; Profile opens a page whose main content heading is Profile; Change Password opens a page whose main content heading is Change Password; existing Feedback Request upload functionality is preserved under the Provide Feedback destination unless implementation review finds a better local mapping."
+    },
+    {
+      "id": "update-dashboard-navigation-styling",
+      "title": "Style nested menu states consistently",
+      "description": "Extend existing dashboard styles for nested menu rows, active child state, expanded parent state, and collapsed-sidebar display. Acceptance criteria: Level 2 items are visually subordinate to Level 1 items; active submenu selection is distinguishable; text does not overlap or wrap poorly at supported desktop widths; collapsed sidebar behavior remains usable through icons or titles; visual changes stay within the current dashboard design language."
+    },
+    {
+      "id": "verify-navigation-and-routing",
+      "title": "Verify menu behavior with non-browser checks and planned browser coverage",
+      "description": "Add or update focused tests where practical, and run allowed non-browser verification. Acceptance criteria: TypeScript verification uses `npx.cmd tsc --noEmit --incremental false`; lint or unit checks are run if available and safe; browser and Playwright verification are explicitly left to the controller per task restriction; implementation notes identify the key paths checked manually through source review."
+    }
+  ],
+  "planningBrief": null,
+  "blocker": null
+}

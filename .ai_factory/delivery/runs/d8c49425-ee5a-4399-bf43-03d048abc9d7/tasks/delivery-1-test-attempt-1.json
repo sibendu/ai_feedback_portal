@@ -1,0 +1,21 @@
+{
+  "outcome": "succeeded",
+  "summary": "Tester pass completed for Left menu 4. Source review confirms Level 1 navigation is Home, Feedback, and Configure; Feedback and Configure are expandable buttons with submenu routes; Home remains a direct dashboard link; submenu destination pages render matching main headings; Provide Feedback preserves the existing feedback upload workflow. Allowed non-browser checks passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node dashboard source test passed 4/4, and full Node unit suite passed 28/28. Browser/Playwright was not run in this sandbox per task restriction and remains for the controller.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json.",
+  "defects": [],
+  "artifacts": [
+    "src/features/dashboard/shell.tsx",
+    "src/app/globals.css",
+    "src/app/dashboard/feedback/provide/page.tsx",
+    "src/app/dashboard/feedback/past/page.tsx",
+    "src/app/dashboard/configure/profile/page.tsx",
+    "src/app/dashboard/configure/change-password/page.tsx",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

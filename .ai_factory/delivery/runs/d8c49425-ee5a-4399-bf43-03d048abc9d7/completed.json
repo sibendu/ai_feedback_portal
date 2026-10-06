@@ -1,0 +1,1342 @@
+{
+  "id": "d8c49425-ee5a-4399-bf43-03d048abc9d7",
+  "tasks": [
+    {
+      "key": "readiness/1/review-readiness",
+      "step": {
+        "id": "review-readiness",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-readiness",
+        "config": {},
+        "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Intake readiness review succeeded. The requested two-level left menu is technically feasible in the current Next.js dashboard shell. Existing source has a protected dashboard layout at `src/app/dashboard/layout.tsx`, client navigation in `src/features/dashboard/shell.tsx`, current first-level entries Home, Feedback Request, and Configure, and existing dashboard pages for Home, Feedback Request, and Configure. The intake can proceed as a single delivery iteration focused on renaming Feedback Request to Feedback, adding expandable Level 2 entries, preserving Level 1 expand/collapse behavior, and showing the matching page heading in main content for submenu selections. The prior attempt timed out, and the recorded human decision is `retry: try again`; no ambiguous, unsafe, or technically blocking conflict was found. Browser verification was not run per task restriction.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/79c6bb5e-3ef7-4777-85dd-9b30fd20ee75.md",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/snapshot.json",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/readiness-1-review-readiness-attempt-1.json",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/layout.tsx",
+          "src/app/dashboard/page.tsx",
+          "src/app/dashboard/feedback-request/page.tsx",
+          "src/app/dashboard/configure/page.tsx"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 2,
+      "stageId": "readiness",
+      "activity": {
+        "at": "2026-10-06T11:57:58.526Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T11:56:30.188Z",
+      "finishedAt": "2026-10-06T11:57:58.816Z",
+      "clarification": "try again",
+      "detailedTranscript": true
+    },
+    {
+      "key": "planning/1/plan",
+      "step": {
+        "id": "plan",
+        "when": "always",
+        "agent": "scrum-master",
+        "access": "write",
+        "action": "plan-stories",
+        "config": {},
+        "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Planned one delivery iteration for Left menu 4. Evidence reviewed: the current dashboard shell uses a flat `navItems` array with Home, Feedback Request, and Configure; dashboard pages already exist for Home, Feedback Request, and Configure; the intake requires a two-level menu and prior readiness found no blocker. No tests were run for this planning action.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/79c6bb5e-3ef7-4777-85dd-9b30fd20ee75.md",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/layout.tsx",
+          "src/app/dashboard/page.tsx",
+          "src/app/dashboard/feedback-request/page.tsx",
+          "src/app/dashboard/configure/page.tsx",
+          "package.json"
+        ],
+        "retryable": false,
+        "workItems": [
+          {
+            "id": "define-two-level-navigation-model",
+            "title": "Define two-level dashboard navigation model",
+            "description": "Replace the flat dashboard navigation definition with a model that supports Level 1 items and optional Level 2 children. Acceptance criteria: Level 1 items are Home, Feedback, and Configure; Feedback replaces the current Feedback Request label; Home has no submenu; Feedback has Provide Feedback and Past Feedbacks children; Configure has Profile and Change Password children; route and active-state metadata are explicit enough to support current page highlighting."
+          },
+          {
+            "id": "implement-expand-collapse-menu-behavior",
+            "title": "Implement Level 1 expand and collapse behavior",
+            "description": "Update the dashboard sidebar so Level 1 items with children expand and collapse their Level 2 menu without changing main content. Acceptance criteria: clicking Feedback toggles its submenu visibility and does not navigate; clicking Configure toggles its submenu visibility and does not navigate; clicking Home navigates to the Home page because it has no submenu; expanded state is accessible through button semantics, aria-expanded, and clear focus behavior; the existing sidebar collapse control continues to work."
+          },
+          {
+            "id": "add-submenu-destination-pages",
+            "title": "Add submenu destination pages with matching headings",
+            "description": "Create or map dashboard content pages for each Level 2 option. Acceptance criteria: Provide Feedback opens a page whose main content heading is Provide Feedback; Past Feedbacks opens a page whose main content heading is Past Feedbacks; Profile opens a page whose main content heading is Profile; Change Password opens a page whose main content heading is Change Password; existing Feedback Request upload functionality is preserved under the Provide Feedback destination unless implementation review finds a better local mapping."
+          },
+          {
+            "id": "update-dashboard-navigation-styling",
+            "title": "Style nested menu states consistently",
+            "description": "Extend existing dashboard styles for nested menu rows, active child state, expanded parent state, and collapsed-sidebar display. Acceptance criteria: Level 2 items are visually subordinate to Level 1 items; active submenu selection is distinguishable; text does not overlap or wrap poorly at supported desktop widths; collapsed sidebar behavior remains usable through icons or titles; visual changes stay within the current dashboard design language."
+          },
+          {
+            "id": "verify-navigation-and-routing",
+            "title": "Verify menu behavior with non-browser checks and planned browser coverage",
+            "description": "Add or update focused tests where practical, and run allowed non-browser verification. Acceptance criteria: TypeScript verification uses `npx.cmd tsc --noEmit --incremental false`; lint or unit checks are run if available and safe; browser and Playwright verification are explicitly left to the controller per task restriction; implementation notes identify the key paths checked manually through source review."
+          }
+        ],
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "planning",
+      "activity": {
+        "at": "2026-10-06T11:59:11.403Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T11:57:59.050Z",
+      "finishedAt": "2026-10-06T11:59:11.706Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "analysis/1/stories",
+      "step": {
+        "id": "stories",
+        "when": "always",
+        "agent": "business-analyst",
+        "access": "write",
+        "action": "analyze",
+        "config": {},
+        "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Elaborated all planned iteration stories for Left menu 4 with requirements, acceptance criteria, edge cases, evidence, assumptions, and cross-story rules. Preserved planned story ids exactly. Created a focused dashboard requirements artifact and did not edit test-design artifacts. No tests were run because this was a business-analysis requirements task.",
+        "artifacts": [
+          ".ai_factory/docs/requirements/modules/dashboard/left-menu-two-level-requirements.md",
+          ".ai_factory/delivery/intakes/79c6bb5e-3ef7-4777-85dd-9b30fd20ee75.md",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/planning-1-plan-attempt-1.json",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/layout.tsx",
+          "src/app/dashboard/page.tsx",
+          "src/app/dashboard/feedback-request/page.tsx",
+          "src/app/dashboard/configure/page.tsx",
+          "src/app/globals.css",
+          "package.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "activity": {
+        "at": "2026-10-06T12:01:24.984Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T11:59:11.807Z",
+      "finishedAt": "2026-10-06T12:01:25.319Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "analysis/1/test-design",
+      "step": {
+        "id": "test-design",
+        "when": "always",
+        "agent": "test-architect",
+        "access": "write",
+        "action": "design-tests",
+        "config": {},
+        "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Created a traceable functional test-design artifact for Left menu 4 covering all planned stories, including navigation model, Level 1 expand/collapse behavior, submenu destination headings, styling/accessibility, route protection, regression coverage for existing Feedback Request upload mapping, and failure cases. No tests, browser runs, Playwright, app server startup, deployment, publishing, or external contact were executed.",
+        "artifacts": [
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/planning-1-plan-attempt-1.json",
+          ".ai_factory/delivery/intakes/79c6bb5e-3ef7-4777-85dd-9b30fd20ee75.md",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/layout.tsx",
+          "src/app/dashboard/page.tsx",
+          "src/app/dashboard/feedback-request/page.tsx",
+          "src/app/dashboard/configure/page.tsx",
+          "package.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "activity": {
+        "at": "2026-10-06T12:01:35.584Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T11:59:11.807Z",
+      "finishedAt": "2026-10-06T12:01:35.946Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "scope-review/1/scope",
+      "step": {
+        "id": "scope",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-scope",
+        "config": {},
+        "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration scope review succeeded. The current iteration stories, elaborated requirements, and functional test design are consistent with the Left menu 4 intake and technically feasible within the existing Next.js dashboard shell. The planned story ids are preserved across planning, requirements, and test design. The intake typo `Provide Feedvack` is explicitly documented and normalized to `Provide Feedback`, matching the planned delivery story and test expectations. Existing source evidence confirms the dashboard currently uses a flat menu in `src/features/dashboard/shell.tsx`, protected dashboard layout in `src/app/dashboard/layout.tsx`, and existing pages for Home, Feedback Request, and Configure, so the requested two-level menu can be implemented without a prerequisite architecture change. Browser and Playwright verification were not run per task restriction; controller browser verification remains pending after implementation.",
+        "artifacts": [
+          ".ai_factory/docs/requirements/modules/dashboard/left-menu-two-level-requirements.md",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/planning-1-plan-attempt-1.json",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/layout.tsx",
+          "src/app/dashboard/page.tsx",
+          "src/app/dashboard/feedback-request/page.tsx",
+          "src/app/dashboard/configure/page.tsx",
+          "src/app/globals.css",
+          "package.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "scope-review",
+      "activity": {
+        "at": "2026-10-06T12:02:35.415Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T12:01:36.031Z",
+      "finishedAt": "2026-10-06T12:02:36.143Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/1/build",
+      "step": {
+        "id": "build",
+        "when": "always",
+        "agent": "full-stack-developer",
+        "access": "write",
+        "action": "implement",
+        "config": {},
+        "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Implemented Left menu 4 as a two-level dashboard menu. Level 1 now shows Home, Feedback, and Configure; Feedback and Configure expand/collapse submenu links without navigating, while Home remains a direct navigation item. Added submenu destination pages with matching headings: Provide Feedback, Past Feedbacks, Profile, and Change Password. Preserved the existing feedback request upload workflow under Provide Feedback. Updated nested menu styling and source-level regression coverage. Verification run: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, `node --test .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs`, and `node --test (Get-ChildItem -Recurse -File .ai_factory\\tests\\unit -Filter *.mjs).FullName` all passed. Browser/Playwright verification was not run per task restriction and remains pending for the controller.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-10-06T12:07:09.154Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T12:02:36.272Z",
+      "finishedAt": "2026-10-06T12:07:47.562Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/1/test",
+      "step": {
+        "id": "test",
+        "when": "always",
+        "agent": "tester",
+        "access": "write",
+        "action": "test",
+        "config": {},
+        "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Tester pass completed for Left menu 4. Source review confirms Level 1 navigation is Home, Feedback, and Configure; Feedback and Configure are expandable buttons with submenu routes; Home remains a direct dashboard link; submenu destination pages render matching main headings; Provide Feedback preserves the existing feedback upload workflow. Allowed non-browser checks passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node dashboard source test passed 4/4, and full Node unit suite passed 28/28. Browser/Playwright was not run in this sandbox per task restriction and remains for the controller.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-10-06T12:09:24.121Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T12:07:47.712Z",
+      "finishedAt": "2026-10-06T12:09:55.955Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "iteration-review/1/review-delivery",
+      "step": {
+        "id": "review-delivery",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-delivery",
+        "config": {},
+        "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration delivery review approved for Left menu 4. Source review confirms the dashboard now has Level 1 items Home, Feedback, and Configure; Feedback replaces Feedback Request; Feedback and Configure expand/collapse Level 2 menu items without navigating; Home remains direct navigation; submenu pages render matching main headings for Provide Feedback, Past Feedbacks, Profile, and Change Password; the existing upload workflow is preserved under Provide Feedback. Evidence reviewed includes implementation source, updated source-level unit tests, and controller-approved local Playwright runner reports. Checks run during review passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused dashboard source unit test 4/4, and full Node unit suite 28/28. No defects or blockers found.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "iteration-review",
+      "activity": {
+        "at": "2026-10-06T12:11:17.773Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T12:09:56.051Z",
+      "finishedAt": "2026-10-06T12:11:18.082Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "solution-review/1/review-solution",
+      "step": {
+        "id": "review-solution",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-solution",
+        "config": {},
+        "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [
+          {
+            "id": "left-menu-submenus-remain-visible-when-collapsed",
+            "layer": "frontend",
+            "severity": "high",
+            "description": "Core acceptance is not met: clicking Feedback or Configure should display/hide Level 2 menu options, but the implementation can leave all submenus visible. Evidence: `src/features/dashboard/shell.tsx` renders `<div className=\"dashboard-nav-children\" hidden={!isExpanded}>`, while `src/app/globals.css` sets `.dashboard-nav-children { display: grid; }`; author CSS display rules can override native hidden rendering, matching the recorded manual finding that only the arrow changes while Level 2 options remain visible."
+          },
+          {
+            "id": "left-menu-collapse-regression-not-covered-by-effective-test",
+            "layer": "frontend",
+            "severity": "medium",
+            "description": "The focused source test passed but does not verify the actual collapsed visual state or CSS-hidden interaction. Evidence: `.ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs` asserts that `aria-expanded`, state toggling, and `.dashboard-nav-children` styles exist, but it does not assert an explicit `[hidden]` or collapsed-state CSS rule that forces submenu content out of layout when `isExpanded` is false."
+          }
+        ],
+        "outcome": "defects",
+        "summary": "Intake-wide solution review found an unresolved core UI defect matching the human clarification. The implementation added the requested Level 1 and Level 2 menu structure and submenu destination pages with matching source-level headings, but the submenu show/hide behavior is not reliably implemented: `src/features/dashboard/shell.tsx` relies on the HTML `hidden` attribute while `src/app/globals.css` assigns `.dashboard-nav-children { display: grid; }`, which can override hidden behavior and leave Level 2 menus visible. Non-browser checks passed (`npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node source test 4/4), but those checks did not catch the visual collapse defect. Browser/Playwright was not run in this task per restriction.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 2,
+      "stageId": "solution-review",
+      "activity": {
+        "at": "2026-10-06T12:46:16.545Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T12:44:52.668Z",
+      "finishedAt": "2026-10-06T12:46:16.828Z",
+      "clarification": "as i tested manually the code from worktree folder, seems it not quite done-\n1. submenus are added as per intake description\n2. however, all menus ae always expanded. clicking on Level 1 menu options onyl changes the aroow, but does not actually show/hide submenu at Level 2 \n\nAlso this is not implemented - For each sub-menu, when the option is clicked, the main content section of the page should display the corrresponding Page Heading",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/2/build",
+      "step": {
+        "id": "build",
+        "when": "always",
+        "agent": "full-stack-developer",
+        "access": "write",
+        "action": "implement",
+        "config": {},
+        "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Remediated Left menu 4 iteration 2 defects. Added an explicit `.dashboard-nav-children[hidden] { display: none; }` rule so Feedback and Configure Level 2 menus actually hide when collapsed instead of only changing the arrow. Strengthened the dashboard source regression test to assert the hidden submenu CSS rule. Source review also confirms submenu destination pages render the requested headings: Provide Feedback, Past Feedbacks, Profile, and Change Password. Browser/Playwright was not run per task restriction and remains pending for the controller. Verification passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, `node --test .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs` 4/4, and full unit suite `node --test (Get-ChildItem -Recurse -File .ai_factory\\tests\\unit -Filter *.mjs).FullName` 28/28.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json.",
+        "artifacts": [
+          "src/app/globals.css",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          "src/features/dashboard/shell.tsx",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-10-06T12:58:57.854Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 2,
+      "startedAt": "2026-10-06T12:57:21.455Z",
+      "finishedAt": "2026-10-06T12:59:30.526Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/2/test",
+      "step": {
+        "id": "test",
+        "when": "always",
+        "agent": "tester",
+        "access": "write",
+        "action": "test",
+        "config": {},
+        "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration 2 tester pass completed with no defects found. Source review confirms the Level 2 submenu collapse defect was remediated with `.dashboard-nav-children[hidden] { display: none; }`, the shell still toggles `hidden={!isExpanded}`, Feedback and Configure remain expandable Level 1 buttons, Home remains a direct dashboard link, and submenu destination pages render matching headings for Provide Feedback, Past Feedbacks, Profile, and Change Password. Allowed non-browser verification passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused dashboard source test 4/4, and full Node unit suite 28/28. Browser/Playwright was not run in this sandbox per task restriction and remains pending for the controller.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-test-1-6372d456-10e7-4c25-a83f-8670165128ed.json.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-test-1-6372d456-10e7-4c25-a83f-8670165128ed.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-10-06T13:01:02.505Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 2,
+      "startedAt": "2026-10-06T12:59:30.645Z",
+      "finishedAt": "2026-10-06T13:01:34.332Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "iteration-review/2/review-delivery",
+      "step": {
+        "id": "review-delivery",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-delivery",
+        "config": {},
+        "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration 2 delivery review approved for Left menu 4. Source review confirms the unresolved iteration 1 defect was remediated: submenu containers still use `hidden={!isExpanded}` and CSS now explicitly applies `.dashboard-nav-children[hidden] { display: none; }`, so Feedback and Configure Level 2 menus are hidden when collapsed. The dashboard menu still matches the intake and current human direction: Level 1 items are Home, Feedback, and Configure; Feedback and Configure expand/collapse without navigating; Home remains a direct navigation item; submenu routes render matching headings for Provide Feedback, Past Feedbacks, Profile, and Change Password; the existing upload workflow remains under Provide Feedback. Review checks passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused dashboard source test 4/4, and full Node unit suite 28/28. Browser/Playwright was not launched in this task; reviewed controller-approved local runner evidence reports iteration 2 test passed.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-test-1-6372d456-10e7-4c25-a83f-8670165128ed.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "iteration-review",
+      "activity": {
+        "at": "2026-10-06T13:02:57.129Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 2,
+      "startedAt": "2026-10-06T13:01:34.524Z",
+      "finishedAt": "2026-10-06T13:02:57.474Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "closure/1/close",
+      "step": {
+        "id": "close",
+        "when": "always",
+        "agent": "technical-project-manager",
+        "access": "write",
+        "action": "close-intake",
+        "config": {},
+        "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+      },
+      "config": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 1800
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Closing intake for Left menu 4 using the latest recorded operational direction: override the close gate with the accepted-risk decision. Delivered scope covers the requested two-level left menu: Level 1 items Home, Feedback, and Configure; Feedback replaces Feedback Request; Feedback and Configure expose Level 2 submenu entries; submenu selections display matching page headings; Home remains direct navigation. Iteration 1 implemented the feature, Solution Architect review later found a submenu collapse defect, and iteration 2 remediated it with explicit hidden-state CSS plus strengthened source regression coverage. The prior gate wording required a passing Solution Architect review, but the latest human decision explicitly directs close-intake to proceed by accepted-risk override after manual review reported the work is working. No deployment, publishing, external contact, browser launch, Playwright run, source edits, commits, pushes, or branch changes were performed during this close-intake action.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-test-1-6372d456-10e7-4c25-a83f-8670165128ed.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 3,
+      "stageId": "closure",
+      "activity": {
+        "at": "2026-10-06T13:18:36.754Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-10-06T13:18:08.056Z",
+      "finishedAt": "2026-10-06T13:18:37.510Z",
+      "clarification": "How should this intake proceed before close-intake is retried? Override the close gate using the accepted-risk decision.",
+      "detailedTranscript": true
+    }
+  ],
+  "intake": {
+    "title": "Left menu 4",
+    "description": "Turn left menu into a two level menu. \nCurrently after login, user can see following menu options at first level (Level 1)- Home, Feedback Request and Configure. Rename  Feedback Request to Feedback. \nUnder each, show sub-menu (e.g. Level 2) options as below:\nHome - no further sub-menu\nFeedback - Clicking on should expand and display sub-menu : Provide Feedvack, Past Feedbacks\nConfigure -  Clicking on should expand and display sub-menu : Profile, Change Password \nFor each sub-menu, when the option is clicked, the main content section of the page should display the corrresponding Page Heading \nClicking on Level 1 meu should display/hide Level 2 menu options. but not change main content section, unless a Level 1 menu has no sub-menu at Level 1 e.h. Home"
+  },
+  "module": "Left menu 4",
+  "status": "completed",
+  "reviews": [
+    {
+      "id": "6cec4405-c5d7-46a1-bdf5-bcdde9741908",
+      "kind": "uncertain",
+      "prompt": "Task time limit reached. Inspect the failure details and prior changes before confirming a safe retry.",
+      "finding": {
+        "defects": [],
+        "summary": "Task timed out after 900 seconds. The controller requested termination.\nElapsed: 903 seconds.\nLast observed activity: item.started (command_execution) at 2026-10-06T11:22:54.762Z.\nAgent process exit observed; descendant processes and file changes still require verification.\nError: No confirmed task result. Verify external effects before retry.",
+        "artifacts": []
+      },
+      "stageId": "readiness",
+      "taskKey": "readiness/1/review-readiness",
+      "decision": {
+        "at": "2026-10-06T11:56:29.933Z",
+        "note": "try again",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-10-06T11:37:32.843Z",
+      "resolution": "retry: try again",
+      "resolvedAt": "2026-10-06T11:56:29.933Z"
+    },
+    {
+      "id": "51266271-acda-47cb-856b-1cc3a66aaef2",
+      "kind": "failure",
+      "prompt": "Review overall intake solution reported unresolved defects. Review before retrying.",
+      "finding": {
+        "defects": [
+          {
+            "id": "missing-executed-left-menu-browser-coverage",
+            "layer": "frontend",
+            "severity": "medium",
+            "description": "The intake requires interactive menu behavior, but there is no executed functional/browser spec for Left menu 4. `.ai_factory/tests/functional/dashboard/left-menu-4-test-design.md` is design-only, `.ai_factory/tests/functional` contains only `feedback/registration.spec.ts` as an executable spec, and both controller Playwright reports show only the registration spec executed. Source/static tests cover labels, routes, and code patterns, but they do not exercise expanding/collapsing Feedback or Configure, preserving main content on parent clicks, or navigating submenu items in a browser."
+          }
+        ],
+        "summary": "Solution review found the delivered source covers the Left menu 4 requirements: Level 1 items are Home, Feedback, and Configure; Feedback replaces Feedback Request; Feedback and Configure are button-based expandable parents; Home remains a direct dashboard link; submenu routes render matching headings; Provide Feedback preserves the existing upload workflow. Review checks passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused dashboard source test 4/4, and full Node unit suite 28/28. Browser execution was not run in this sandbox. Recorded controller Playwright reports passed, but they only executed `feedback/registration.spec.ts`, so they do not provide executed browser coverage for the new left-menu interaction.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ]
+      },
+      "stageId": "solution-review",
+      "taskKey": "solution-review/1/review-solution",
+      "decision": {
+        "at": "2026-10-06T12:44:52.637Z",
+        "note": "as i tested manually the code from worktree folder, seems it not quite done-\n1. submenus are added as per intake description\n2. however, all menus ae always expanded. clicking on Level 1 menu options onyl changes the aroow, but does not actually show/hide submenu at Level 2 \n\nAlso this is not implemented - For each sub-menu, when the option is clicked, the main content section of the page should display the corrresponding Page Heading",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-10-06T12:13:02.169Z",
+      "resolution": "retry: as i tested manually the code from worktree folder, seems it not quite done-\n1. submenus are added as per intake description\n2. however, all menus ae always expanded. clicking on Level 1 menu options onyl changes the aroow, but does not actually show/hide submenu at Level 2 \n\nAlso this is not implemented - For each sub-menu, when the option is clicked, the main content section of the page should display the corrresponding Page Heading",
+      "resolvedAt": "2026-10-06T12:44:52.637Z"
+    },
+    {
+      "id": "723cbd8c-773a-439c-821a-31ef4b76e86e",
+      "kind": "failure",
+      "prompt": "Review overall intake solution reported unresolved defects. Review before retrying.",
+      "finding": {
+        "defects": [
+          {
+            "id": "left-menu-submenus-remain-visible-when-collapsed",
+            "layer": "frontend",
+            "severity": "high",
+            "description": "Core acceptance is not met: clicking Feedback or Configure should display/hide Level 2 menu options, but the implementation can leave all submenus visible. Evidence: `src/features/dashboard/shell.tsx` renders `<div className=\"dashboard-nav-children\" hidden={!isExpanded}>`, while `src/app/globals.css` sets `.dashboard-nav-children { display: grid; }`; author CSS display rules can override native hidden rendering, matching the recorded manual finding that only the arrow changes while Level 2 options remain visible."
+          },
+          {
+            "id": "left-menu-collapse-regression-not-covered-by-effective-test",
+            "layer": "frontend",
+            "severity": "medium",
+            "description": "The focused source test passed but does not verify the actual collapsed visual state or CSS-hidden interaction. Evidence: `.ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs` asserts that `aria-expanded`, state toggling, and `.dashboard-nav-children` styles exist, but it does not assert an explicit `[hidden]` or collapsed-state CSS rule that forces submenu content out of layout when `isExpanded` is false."
+          }
+        ],
+        "summary": "Intake-wide solution review found an unresolved core UI defect matching the human clarification. The implementation added the requested Level 1 and Level 2 menu structure and submenu destination pages with matching source-level headings, but the submenu show/hide behavior is not reliably implemented: `src/features/dashboard/shell.tsx` relies on the HTML `hidden` attribute while `src/app/globals.css` assigns `.dashboard-nav-children { display: grid; }`, which can override hidden behavior and leave Level 2 menus visible. Non-browser checks passed (`npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node source test 4/4), but those checks did not catch the visual collapse defect. Browser/Playwright was not run in this task per restriction.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ]
+      },
+      "stageId": "solution-review",
+      "taskKey": "solution-review/1/review-solution",
+      "decision": {
+        "at": "2026-10-06T12:57:21.421Z",
+        "note": "fix the defects",
+        "actor": "local-owner",
+        "action": "rework"
+      },
+      "createdAt": "2026-10-06T12:46:17.039Z",
+      "resolution": "rework: fix the defects",
+      "resolvedAt": "2026-10-06T12:57:21.421Z"
+    },
+    {
+      "id": "1a2848b0-e1a0-4ca4-9c38-c571a41c50d5",
+      "kind": "failure",
+      "prompt": "Review overall intake solution reported unresolved defects. Review before retrying.",
+      "finding": {
+        "defects": [
+          {
+            "id": "left-menu-submenus-remain-visible-when-collapsed",
+            "layer": "frontend",
+            "severity": "high",
+            "description": "Core acceptance is not met: clicking Feedback or Configure should display/hide Level 2 menu options, but the implementation can leave all submenus visible. Evidence: `src/features/dashboard/shell.tsx` renders `<div className=\"dashboard-nav-children\" hidden={!isExpanded}>`, while `src/app/globals.css` sets `.dashboard-nav-children { display: grid; }`; author CSS display rules can override native hidden rendering, matching the recorded manual finding that only the arrow changes while Level 2 options remain visible."
+          },
+          {
+            "id": "left-menu-collapse-regression-not-covered-by-effective-test",
+            "layer": "frontend",
+            "severity": "medium",
+            "description": "The focused source test passed but does not verify the actual collapsed visual state or CSS-hidden interaction. Evidence: `.ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs` asserts that `aria-expanded`, state toggling, and `.dashboard-nav-children` styles exist, but it does not assert an explicit `[hidden]` or collapsed-state CSS rule that forces submenu content out of layout when `isExpanded` is false."
+          }
+        ],
+        "summary": "Intake-wide solution review found an unresolved core UI defect matching the human clarification. The implementation added the requested Level 1 and Level 2 menu structure and submenu destination pages with matching source-level headings, but the submenu show/hide behavior is not reliably implemented: `src/features/dashboard/shell.tsx` relies on the HTML `hidden` attribute while `src/app/globals.css` assigns `.dashboard-nav-children { display: grid; }`, which can override hidden behavior and leave Level 2 menus visible. Non-browser checks passed (`npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node source test 4/4), but those checks did not catch the visual collapse defect. Browser/Playwright was not run in this task per restriction.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+        ]
+      },
+      "stageId": "solution-review",
+      "taskKey": "solution-review/1/review-solution",
+      "decision": {
+        "at": "2026-10-06T13:13:51.226Z",
+        "note": "reviewed , working",
+        "actor": "local-owner",
+        "action": "accept-risk"
+      },
+      "createdAt": "2026-10-06T13:02:57.545Z",
+      "resolution": "accept-risk: reviewed , working",
+      "resolvedAt": "2026-10-06T13:13:51.226Z"
+    },
+    {
+      "id": "c2b0be7a-5af5-40da-83b4-0a3ce2cdf58f",
+      "kind": "blocker",
+      "prompt": "Close-intake is blocked because the required passing Solution Architect review is missing. Evidence reviewed from prior task results: `solution-review/1/review-solution` ended with frontend defects; `delivery/2/build`, `delivery/2/test`, and `iteration-review/2/review-delivery` later succeeded; the latest human decision records `accept-risk: reviewed , working`, but there is no subsequent `solution-review/2/review-solution` pass in the provided history. No source changes, tests, browser runs, deployment, or publishing were performed during this close-intake action.",
+      "finding": {
+        "defects": [],
+        "summary": "Close-intake is blocked because the required passing Solution Architect review is missing. Evidence reviewed from prior task results: `solution-review/1/review-solution` ended with frontend defects; `delivery/2/build`, `delivery/2/test`, and `iteration-review/2/review-delivery` later succeeded; the latest human decision records `accept-risk: reviewed , working`, but there is no subsequent `solution-review/2/review-solution` pass in the provided history. No source changes, tests, browser runs, deployment, or publishing were performed during this close-intake action.",
+        "artifacts": [
+          "src/features/dashboard/shell.tsx",
+          "src/app/globals.css",
+          "src/app/dashboard/feedback/provide/page.tsx",
+          "src/app/dashboard/feedback/past/page.tsx",
+          "src/app/dashboard/configure/profile/page.tsx",
+          "src/app/dashboard/configure/change-password/page.tsx",
+          ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json",
+          ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-test-1-6372d456-10e7-4c25-a83f-8670165128ed.json"
+        ]
+      },
+      "stageId": "closure",
+      "taskKey": "closure/1/close",
+      "decision": {
+        "at": "2026-10-06T13:15:32.740Z",
+        "note": "How should this intake proceed before close-intake? Run Solution Architect review and retry close-intake after it passes.",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-10-06T13:14:21.901Z",
+      "resolution": "retry: How should this intake proceed before close-intake? Run Solution Architect review and retry close-intake after it passes.",
+      "resolvedAt": "2026-10-06T13:15:32.740Z"
+    },
+    {
+      "id": "facabdd2-d847-4777-81ef-2577bf22ee3d",
+      "kind": "blocker",
+      "prompt": "Close-intake remains blocked by the required review gate. I reviewed the run artifacts and found only Solution Architect review outcomes of `defects` with defect counts 1 and 2. No source changes, tests, browser runs, deployments, publishing, commits, branch changes, or external contacts were performed during this close-intake action.",
+      "finding": {
+        "defects": [],
+        "summary": "Close-intake remains blocked by the required review gate. I reviewed the run artifacts and found only Solution Architect review outcomes of `defects` with defect counts 1 and 2. No source changes, tests, browser runs, deployments, publishing, commits, branch changes, or external contacts were performed during this close-intake action.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/solution-review-1-review-solution-attempt-1.json",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/solution-review-1-review-solution-attempt-2.json",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/iteration-review-2-review-delivery-attempt-1.json",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/delivery-2-test-attempt-1.json",
+          ".ai_factory/delivery/runs/d8c49425-ee5a-4399-bf43-03d048abc9d7/tasks/closure-1-close-attempt-1.json"
+        ]
+      },
+      "stageId": "closure",
+      "taskKey": "closure/1/close",
+      "decision": {
+        "at": "2026-10-06T13:18:07.854Z",
+        "note": "How should this intake proceed before close-intake is retried? Override the close gate using the accepted-risk decision.",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-10-06T13:16:41.670Z",
+      "resolution": "retry: How should this intake proceed before close-intake is retried? Override the close gate using the accepted-risk decision.",
+      "resolvedAt": "2026-10-06T13:18:07.854Z"
+    }
+  ],
+  "intakeId": "79c6bb5e-3ef7-4777-85dd-9b30fd20ee75",
+  "scenario": "happy-path",
+  "snapshot": {
+    "brief": "# Customer Feedback Portal\n\n## Purpose\nCollect customer feedback, validate submissions, and provide an administrative review dashboard.\n\n## Technology and source layout\nNext.js, TypeScript, and Playwright. Follow framework-native source conventions.\n\n## Modules and constraints\nDocument modules, integrations, and acceptance expectations here.\n",
+    "agents": {
+      "tester": {
+        "id": "tester",
+        "config": {},
+        "prompt": "Act as the project's Tester. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "tester",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "scrum-master": {
+        "id": "scrum-master",
+        "config": {},
+        "prompt": "Act as the project's Scrum Master. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "scrum-master",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "test-architect": {
+        "id": "test-architect",
+        "config": {},
+        "prompt": "Act as the project's Test Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "test-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "business-analyst": {
+        "id": "business-analyst",
+        "config": {},
+        "prompt": "Act as the project's Business Analyst. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "business-analyst",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "solution-architect": {
+        "id": "solution-architect",
+        "config": {},
+        "prompt": "Act as the project's Solution Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "solution-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-architect": {
+        "id": "technical-architect",
+        "config": {},
+        "prompt": "Act as the project's Technical Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "full-stack-developer": {
+        "id": "full-stack-developer",
+        "config": {},
+        "prompt": "Act as the project's Full-stack Developer. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "full-stack-developer",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-project-manager": {
+        "id": "technical-project-manager",
+        "config": {},
+        "prompt": "Act as the project's Technical Project Manager. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-project-manager",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      }
+    },
+    "digest": "cfd387c2520a3657a005a86a973f77ba1d1ee26d65af91446dd505c72ebcd075",
+    "process": {
+      "id": "feature-delivery",
+      "name": "Feature delivery",
+      "stages": [
+        {
+          "id": "readiness",
+          "mode": "sequential",
+          "name": "Solution Architect readiness review",
+          "steps": [
+            {
+              "id": "review-readiness",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-readiness",
+              "config": {},
+              "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "mode": "sequential",
+          "name": "Plan iteration stories",
+          "steps": [
+            {
+              "id": "plan",
+              "when": "always",
+              "agent": "scrum-master",
+              "access": "write",
+              "action": "plan-stories",
+              "config": {},
+              "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+            }
+          ]
+        },
+        {
+          "id": "analysis",
+          "mode": "parallel",
+          "name": "Elaborate stories and design tests",
+          "steps": [
+            {
+              "id": "stories",
+              "when": "always",
+              "agent": "business-analyst",
+              "access": "write",
+              "action": "analyze",
+              "config": {},
+              "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+            },
+            {
+              "id": "test-design",
+              "when": "always",
+              "agent": "test-architect",
+              "access": "write",
+              "action": "design-tests",
+              "config": {},
+              "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+            }
+          ]
+        },
+        {
+          "id": "scope-review",
+          "mode": "sequential",
+          "name": "Review iteration readiness",
+          "steps": [
+            {
+              "id": "scope",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-scope",
+              "config": {},
+              "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+            }
+          ]
+        },
+        {
+          "id": "delivery",
+          "mode": "iteration",
+          "name": "Develop and test complete iteration",
+          "steps": [
+            {
+              "id": "build",
+              "when": "always",
+              "agent": "full-stack-developer",
+              "access": "write",
+              "action": "implement",
+              "config": {},
+              "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+            },
+            {
+              "id": "test",
+              "when": "always",
+              "agent": "tester",
+              "access": "write",
+              "action": "test",
+              "config": {},
+              "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+            }
+          ],
+          "exitWhen": "testing.accepted",
+          "requiresPlan": "plan-stories"
+        },
+        {
+          "id": "iteration-review",
+          "mode": "sequential",
+          "name": "Technical Architect final iteration delivery review",
+          "steps": [
+            {
+              "id": "review-delivery",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-delivery",
+              "config": {},
+              "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+            }
+          ]
+        },
+        {
+          "id": "solution-review",
+          "mode": "sequential",
+          "name": "Review overall intake solution",
+          "steps": [
+            {
+              "id": "review-solution",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-solution",
+              "config": {},
+              "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+            }
+          ]
+        },
+        {
+          "id": "closure",
+          "mode": "sequential",
+          "name": "Technical Project Manager intake closure",
+          "steps": [
+            {
+              "id": "close",
+              "when": "always",
+              "agent": "technical-project-manager",
+              "access": "write",
+              "action": "close-intake",
+              "config": {},
+              "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+            }
+          ]
+        }
+      ],
+      "version": "0.1",
+      "schemaVersion": 1
+    },
+    "taxonomy": "# Project Taxonomy\n\n- Version: 1.0\n- Previous version: none\n\n## Documentation\n\nAll AI Factory artifacts live under .ai_factory/.\nUse .ai_factory/docs/project-brief.md for evolving purpose, scope, technology, integrations and source layout.\nUse .ai_factory/docs/architecture/, .ai_factory/docs/requirements/, .ai_factory/docs/design/, .ai_factory/docs/decisions/, .ai_factory/docs/security/, and .ai_factory/docs/operations/ as appropriate.\nFor large projects use requirements/modules/<module>/ and design/modules/<module>/; put cross-cutting work under shared/.\n\n## Delivery\n\nUse .ai_factory/delivery/intakes/, .ai_factory/delivery/planning/, .ai_factory/delivery/processes/, .ai_factory/delivery/agents/, .ai_factory/delivery/actions/, .ai_factory/delivery/runs/, .ai_factory/delivery/reviews/, and .ai_factory/delivery/releases/.\nRun-specific evidence belongs under .ai_factory/delivery/runs/<run-id>/; iteration and task identifiers must remain traceable.\nPostgreSQL owns live execution state. Files under .ai_factory/delivery/runs/ are reviewable exports, not recovery checkpoints.\n\n## Tests and source\n\nUse .ai_factory/tests/functional/ for Playwright browser tests by default, and .ai_factory/tests/reports/ for evidence.\nUse .ai_factory/tests/unit/, .ai_factory/tests/integration/, and .ai_factory/tests/fixtures/ where the technology allows it.\nNative conventions take precedence for source and co-located tests (for example src/test/ in Java).\nAdd or update tests during feature and defect-remediation iterations. Keep module identifiers consistent across requirements, design and tests.\n\n## Versioning\n\nIncrement the human-readable version for changes. Use a minor increment for compatible additions and a major increment for restructuring.\nProcess runs keep an immutable copy of the taxonomy version used at their start.\n",
+    "agentYamls": {
+      "tester": "schemaVersion: 1\nid: tester\nversion: \"1.0\"\nbaseRole: tester\npromptFile: prompt.md\nconfig: {}\n",
+      "scrum-master": "schemaVersion: 1\nid: scrum-master\nversion: \"1.0\"\nbaseRole: scrum-master\npromptFile: prompt.md\nconfig: {}\n",
+      "test-architect": "schemaVersion: 1\nid: test-architect\nversion: \"1.0\"\nbaseRole: test-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "business-analyst": "schemaVersion: 1\nid: business-analyst\nversion: \"1.0\"\nbaseRole: business-analyst\npromptFile: prompt.md\nconfig: {}\n",
+      "solution-architect": "schemaVersion: 1\nid: solution-architect\nversion: \"1.0\"\nbaseRole: solution-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-architect": "schemaVersion: 1\nid: technical-architect\nversion: \"1.0\"\nbaseRole: technical-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "full-stack-developer": "schemaVersion: 1\nid: full-stack-developer\nversion: \"1.0\"\nbaseRole: full-stack-developer\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-project-manager": "schemaVersion: 1\nid: technical-project-manager\nversion: \"1.0\"\nbaseRole: technical-project-manager\npromptFile: prompt.md\nconfig: {}\n"
+    },
+    "processYaml": "schemaVersion: 1\nid: feature-delivery\nversion: \"0.1\"\nname: Feature delivery\nstages:\n  - id: readiness\n    name: Solution Architect readiness review\n    mode: sequential\n    steps:\n      - id: review-readiness\n        agent: solution-architect\n        action: review-intake-readiness\n        instructions: Review the whole intake end to end, including the iteration plan\n          when present. Check requirements, technical decisions, dependencies\n          and prerequisites. Identify technical blockers early and return\n          blocked when human clarification is needed.\n        access: read\n        when: always\n        config: {}\n  - id: planning\n    name: Plan iteration stories\n    mode: sequential\n    steps:\n      - id: plan\n        agent: scrum-master\n        action: plan-stories\n        instructions: Plan user stories for the current delivery iteration only (or the\n          narrow intake for single-iteration delivery). Return an ordered\n          workItems array of 1 to 20 unique ids, titles and descriptions with\n          acceptance criteria. Record dependencies and keep every story within\n          the iteration objectives.\n        access: write\n        when: always\n        config: {}\n  - id: analysis\n    name: Elaborate stories and design tests\n    mode: parallel\n    steps:\n      - id: stories\n        agent: business-analyst\n        action: analyze\n        instructions: Elaborate every planned story in this iteration with requirements,\n          acceptance criteria and edge cases. Preserve planned story ids. Own\n          requirement artifacts; do not edit test-design artifacts.\n        access: write\n        when: always\n        config: {}\n      - id: test-design\n        agent: test-architect\n        action: design-tests\n        instructions: Create traceable test cases for all planned stories in this\n          iteration, including failure cases. Own test-design artifacts; do not\n          edit requirement artifacts. Work from the shared story plan.\n        access: write\n        when: always\n        config: {}\n  - id: scope-review\n    name: Review iteration readiness\n    mode: sequential\n    steps:\n      - id: scope\n        agent: technical-architect\n        action: review-iteration-scope\n        instructions: Review all current iteration stories, elaborated requirements and\n          test cases for consistency, feasibility and technical readiness. Bound\n          this review to current iteration objectives. Missing prerequisites or\n          technical blockers must be reported as blocked.\n        access: read\n        when: always\n        config: {}\n  - id: delivery\n    name: Develop and test complete iteration\n    mode: iteration\n    steps:\n      - id: build\n        agent: full-stack-developer\n        action: implement\n        instructions: Implement every planned story in the current delivery iteration.\n          Follow the elaborated requirements, acceptance criteria and test\n          design. On remediation attempts fix the reported iteration test\n          defects and update regression tests.\n        access: write\n        when: always\n        config: {}\n      - id: test\n        agent: tester\n        action: test\n        instructions: After the developer completes all planned stories, execute\n          integrated, regression and acceptance tests for the complete\n          iteration. Report defects with evidence; never claim unexecuted tests\n          passed. Success requires every iteration objective to pass.\n        access: write\n        when: always\n        config: {}\n    exitWhen: testing.accepted\n    requiresPlan: plan-stories\n  - id: iteration-review\n    name: Technical Architect final iteration delivery review\n    mode: sequential\n    steps:\n      - id: review-delivery\n        agent: technical-architect\n        action: review-iteration-delivery\n        instructions: After the complete iteration passes testing, review the delivery\n          end to end, including all stories, cross-story architecture,\n          integration and test evidence. Report blockers for human review.\n          Approve only when the iteration objectives are satisfied.\n        access: read\n        when: always\n        config: {}\n  - id: solution-review\n    name: Review overall intake solution\n    mode: sequential\n    steps:\n      - id: review-solution\n        agent: solution-architect\n        action: review-intake-solution\n        instructions: Review the completed intake end to end across all delivery\n          iterations. Check requirements coverage, architecture, integration and\n          test evidence. Report unresolved issues as defects or blocked.\n        access: read\n        when: always\n        config: {}\n  - id: closure\n    name: Technical Project Manager intake closure\n    mode: sequential\n    steps:\n      - id: close\n        agent: technical-project-manager\n        action: close-intake\n        instructions: Close the intake only after the Solution Architect review passes.\n          Record delivered scope, story and iteration outcomes, test and review\n          evidence, decisions and any explicitly accepted limitations. Do not\n          deploy or publish.\n        access: write\n        when: always\n        config: {}\n",
+    "factoryConfig": {
+      "provider": "simulated",
+      "maxAttempts": 2,
+      "timeoutSeconds": 300
+    },
+    "projectConfig": {
+      "defaults": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "timeoutSeconds": 900
+      },
+      "AD_HOC_FILES": ".env.local",
+      "engineVersion": "0.1.0",
+      "maxIterations": 3,
+      "schemaVersion": 1,
+      "executionPolicy": "autonomous-development",
+      "bootstrapProfile": "nextjs-prisma",
+      "enabledProcesses": [
+        ".ai_factory/delivery/processes/feature-delivery/0.1.yaml",
+        ".ai_factory/delivery/processes/multi-iteration-delivery/1.1.yaml"
+      ],
+      "configurationVersion": 6,
+      "requireIterationPlanReview": true
+    },
+    "resolvedConfigs": {
+      "closure/close": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/test": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "planning/plan": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/build": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/stories": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "scope-review/scope": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/test-design": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "readiness/review-readiness": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "solution-review/review-solution": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "iteration-review/review-delivery": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      }
+    },
+    "taxonomyVersion": "1.0"
+  },
+  "createdAt": "2026-10-06T05:13:42.777Z",
+  "iteration": 1,
+  "projectId": "374c27f5-fe28-4ae1-94d4-2ad24fb9d490",
+  "updatedAt": "2026-10-06T13:18:37.715Z",
+  "workspace": {
+    "path": "C:\\workspace\\AI\\ai_factory_workspace\\customer-feedback-portal\\d8c49425-ee5a-4399-bf43-03d048abc9d7",
+    "root": "C:\\workspace\\AI\\ai_factory_workspace",
+    "branch": "codex/ai-factory/customer-feedback-portal/d8c49425-ee5a-4399-bf43-03d048abc9d7",
+    "remote": "origin",
+    "status": "ready",
+    "bootstrap": {
+      "steps": [
+        {
+          "at": "2026-10-06T11:21:44.690Z",
+          "id": "node.install-locked-dependencies",
+          "label": "Restore locked Node dependencies",
+          "status": "succeeded"
+        },
+        {
+          "at": "2026-10-06T11:21:49.463Z",
+          "id": "prisma.generate-client",
+          "label": "Generate Prisma client",
+          "status": "succeeded"
+        },
+        {
+          "at": "2026-10-06T11:22:29.600Z",
+          "id": "node.typecheck",
+          "label": "Verify TypeScript",
+          "status": "succeeded"
+        }
+      ],
+      "status": "succeeded",
+      "profile": "nextjs-prisma"
+    },
+    "commonDir": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal\\.git",
+    "adHocFiles": [
+      ".env.local"
+    ],
+    "baseBranch": "main",
+    "baseCommit": "18c2cb54b80eac793cc2b6dd72ce9b281d5dc738",
+    "processFile": ".ai_factory/delivery/processes/feature-delivery/0.1.yaml",
+    "repositoryRoot": "C:\\workspace\\AI\\ai_factory_projects\\customer-feedback-portal"
+  },
+  "stageIndex": 8,
+  "engineVersion": "0.1.0",
+  "iterationLimits": {},
+  "executionOverrides": {
+    "networkAccess": true,
+    "timeoutSeconds": 1800,
+    "localBrowserTests": true,
+    "detailedTranscript": true
+  },
+  "deliveryReviewRepairs": {}
+}
