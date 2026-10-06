@@ -1,0 +1,28 @@
+{
+  "outcome": "defects",
+  "summary": "Solution review found the delivered source covers the Left menu 4 requirements: Level 1 items are Home, Feedback, and Configure; Feedback replaces Feedback Request; Feedback and Configure are button-based expandable parents; Home remains a direct dashboard link; submenu routes render matching headings; Provide Feedback preserves the existing upload workflow. Review checks passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused dashboard source test 4/4, and full Node unit suite 28/28. Browser execution was not run in this sandbox. Recorded controller Playwright reports passed, but they only executed `feedback/registration.spec.ts`, so they do not provide executed browser coverage for the new left-menu interaction.",
+  "defects": [
+    {
+      "id": "missing-executed-left-menu-browser-coverage",
+      "layer": "frontend",
+      "severity": "medium",
+      "description": "The intake requires interactive menu behavior, but there is no executed functional/browser spec for Left menu 4. `.ai_factory/tests/functional/dashboard/left-menu-4-test-design.md` is design-only, `.ai_factory/tests/functional` contains only `feedback/registration.spec.ts` as an executable spec, and both controller Playwright reports show only the registration spec executed. Source/static tests cover labels, routes, and code patterns, but they do not exercise expanding/collapsing Feedback or Configure, preserving main content on parent clicks, or navigating submenu items in a browser."
+    }
+  ],
+  "artifacts": [
+    "src/features/dashboard/shell.tsx",
+    "src/app/globals.css",
+    "src/app/dashboard/feedback/provide/page.tsx",
+    "src/app/dashboard/feedback/past/page.tsx",
+    "src/app/dashboard/configure/profile/page.tsx",
+    "src/app/dashboard/configure/change-password/page.tsx",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

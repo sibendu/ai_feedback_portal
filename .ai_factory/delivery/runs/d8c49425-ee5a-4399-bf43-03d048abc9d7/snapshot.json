@@ -1,0 +1,344 @@
+{
+  "brief": "# Customer Feedback Portal\n\n## Purpose\nCollect customer feedback, validate submissions, and provide an administrative review dashboard.\n\n## Technology and source layout\nNext.js, TypeScript, and Playwright. Follow framework-native source conventions.\n\n## Modules and constraints\nDocument modules, integrations, and acceptance expectations here.\n",
+  "agents": {
+    "tester": {
+      "id": "tester",
+      "config": {},
+      "prompt": "Act as the project's Tester. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "tester",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "scrum-master": {
+      "id": "scrum-master",
+      "config": {},
+      "prompt": "Act as the project's Scrum Master. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "scrum-master",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "test-architect": {
+      "id": "test-architect",
+      "config": {},
+      "prompt": "Act as the project's Test Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "test-architect",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "business-analyst": {
+      "id": "business-analyst",
+      "config": {},
+      "prompt": "Act as the project's Business Analyst. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "business-analyst",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "solution-architect": {
+      "id": "solution-architect",
+      "config": {},
+      "prompt": "Act as the project's Solution Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "solution-architect",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "technical-architect": {
+      "id": "technical-architect",
+      "config": {},
+      "prompt": "Act as the project's Technical Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "technical-architect",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "full-stack-developer": {
+      "id": "full-stack-developer",
+      "config": {},
+      "prompt": "Act as the project's Full-stack Developer. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "full-stack-developer",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    },
+    "technical-project-manager": {
+      "id": "technical-project-manager",
+      "config": {},
+      "prompt": "Act as the project's Technical Project Manager. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+      "version": "1.0",
+      "baseRole": "technical-project-manager",
+      "promptFile": "prompt.md",
+      "schemaVersion": 1
+    }
+  },
+  "digest": "cfd387c2520a3657a005a86a973f77ba1d1ee26d65af91446dd505c72ebcd075",
+  "process": {
+    "id": "feature-delivery",
+    "name": "Feature delivery",
+    "stages": [
+      {
+        "id": "readiness",
+        "mode": "sequential",
+        "name": "Solution Architect readiness review",
+        "steps": [
+          {
+            "id": "review-readiness",
+            "when": "always",
+            "agent": "solution-architect",
+            "access": "read",
+            "action": "review-intake-readiness",
+            "config": {},
+            "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+          }
+        ]
+      },
+      {
+        "id": "planning",
+        "mode": "sequential",
+        "name": "Plan iteration stories",
+        "steps": [
+          {
+            "id": "plan",
+            "when": "always",
+            "agent": "scrum-master",
+            "access": "write",
+            "action": "plan-stories",
+            "config": {},
+            "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+          }
+        ]
+      },
+      {
+        "id": "analysis",
+        "mode": "parallel",
+        "name": "Elaborate stories and design tests",
+        "steps": [
+          {
+            "id": "stories",
+            "when": "always",
+            "agent": "business-analyst",
+            "access": "write",
+            "action": "analyze",
+            "config": {},
+            "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+          },
+          {
+            "id": "test-design",
+            "when": "always",
+            "agent": "test-architect",
+            "access": "write",
+            "action": "design-tests",
+            "config": {},
+            "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+          }
+        ]
+      },
+      {
+        "id": "scope-review",
+        "mode": "sequential",
+        "name": "Review iteration readiness",
+        "steps": [
+          {
+            "id": "scope",
+            "when": "always",
+            "agent": "technical-architect",
+            "access": "read",
+            "action": "review-iteration-scope",
+            "config": {},
+            "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+          }
+        ]
+      },
+      {
+        "id": "delivery",
+        "mode": "iteration",
+        "name": "Develop and test complete iteration",
+        "steps": [
+          {
+            "id": "build",
+            "when": "always",
+            "agent": "full-stack-developer",
+            "access": "write",
+            "action": "implement",
+            "config": {},
+            "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+          },
+          {
+            "id": "test",
+            "when": "always",
+            "agent": "tester",
+            "access": "write",
+            "action": "test",
+            "config": {},
+            "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+          }
+        ],
+        "exitWhen": "testing.accepted",
+        "requiresPlan": "plan-stories"
+      },
+      {
+        "id": "iteration-review",
+        "mode": "sequential",
+        "name": "Technical Architect final iteration delivery review",
+        "steps": [
+          {
+            "id": "review-delivery",
+            "when": "always",
+            "agent": "technical-architect",
+            "access": "read",
+            "action": "review-iteration-delivery",
+            "config": {},
+            "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+          }
+        ]
+      },
+      {
+        "id": "solution-review",
+        "mode": "sequential",
+        "name": "Review overall intake solution",
+        "steps": [
+          {
+            "id": "review-solution",
+            "when": "always",
+            "agent": "solution-architect",
+            "access": "read",
+            "action": "review-intake-solution",
+            "config": {},
+            "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+          }
+        ]
+      },
+      {
+        "id": "closure",
+        "mode": "sequential",
+        "name": "Technical Project Manager intake closure",
+        "steps": [
+          {
+            "id": "close",
+            "when": "always",
+            "agent": "technical-project-manager",
+            "access": "write",
+            "action": "close-intake",
+            "config": {},
+            "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+          }
+        ]
+      }
+    ],
+    "version": "0.1",
+    "schemaVersion": 1
+  },
+  "taxonomy": "# Project Taxonomy\n\n- Version: 1.0\n- Previous version: none\n\n## Documentation\n\nAll AI Factory artifacts live under .ai_factory/.\nUse .ai_factory/docs/project-brief.md for evolving purpose, scope, technology, integrations and source layout.\nUse .ai_factory/docs/architecture/, .ai_factory/docs/requirements/, .ai_factory/docs/design/, .ai_factory/docs/decisions/, .ai_factory/docs/security/, and .ai_factory/docs/operations/ as appropriate.\nFor large projects use requirements/modules/<module>/ and design/modules/<module>/; put cross-cutting work under shared/.\n\n## Delivery\n\nUse .ai_factory/delivery/intakes/, .ai_factory/delivery/planning/, .ai_factory/delivery/processes/, .ai_factory/delivery/agents/, .ai_factory/delivery/actions/, .ai_factory/delivery/runs/, .ai_factory/delivery/reviews/, and .ai_factory/delivery/releases/.\nRun-specific evidence belongs under .ai_factory/delivery/runs/<run-id>/; iteration and task identifiers must remain traceable.\nPostgreSQL owns live execution state. Files under .ai_factory/delivery/runs/ are reviewable exports, not recovery checkpoints.\n\n## Tests and source\n\nUse .ai_factory/tests/functional/ for Playwright browser tests by default, and .ai_factory/tests/reports/ for evidence.\nUse .ai_factory/tests/unit/, .ai_factory/tests/integration/, and .ai_factory/tests/fixtures/ where the technology allows it.\nNative conventions take precedence for source and co-located tests (for example src/test/ in Java).\nAdd or update tests during feature and defect-remediation iterations. Keep module identifiers consistent across requirements, design and tests.\n\n## Versioning\n\nIncrement the human-readable version for changes. Use a minor increment for compatible additions and a major increment for restructuring.\nProcess runs keep an immutable copy of the taxonomy version used at their start.\n",
+  "agentYamls": {
+    "tester": "schemaVersion: 1\nid: tester\nversion: \"1.0\"\nbaseRole: tester\npromptFile: prompt.md\nconfig: {}\n",
+    "scrum-master": "schemaVersion: 1\nid: scrum-master\nversion: \"1.0\"\nbaseRole: scrum-master\npromptFile: prompt.md\nconfig: {}\n",
+    "test-architect": "schemaVersion: 1\nid: test-architect\nversion: \"1.0\"\nbaseRole: test-architect\npromptFile: prompt.md\nconfig: {}\n",
+    "business-analyst": "schemaVersion: 1\nid: business-analyst\nversion: \"1.0\"\nbaseRole: business-analyst\npromptFile: prompt.md\nconfig: {}\n",
+    "solution-architect": "schemaVersion: 1\nid: solution-architect\nversion: \"1.0\"\nbaseRole: solution-architect\npromptFile: prompt.md\nconfig: {}\n",
+    "technical-architect": "schemaVersion: 1\nid: technical-architect\nversion: \"1.0\"\nbaseRole: technical-architect\npromptFile: prompt.md\nconfig: {}\n",
+    "full-stack-developer": "schemaVersion: 1\nid: full-stack-developer\nversion: \"1.0\"\nbaseRole: full-stack-developer\npromptFile: prompt.md\nconfig: {}\n",
+    "technical-project-manager": "schemaVersion: 1\nid: technical-project-manager\nversion: \"1.0\"\nbaseRole: technical-project-manager\npromptFile: prompt.md\nconfig: {}\n"
+  },
+  "processYaml": "schemaVersion: 1\nid: feature-delivery\nversion: \"0.1\"\nname: Feature delivery\nstages:\n  - id: readiness\n    name: Solution Architect readiness review\n    mode: sequential\n    steps:\n      - id: review-readiness\n        agent: solution-architect\n        action: review-intake-readiness\n        instructions: Review the whole intake end to end, including the iteration plan\n          when present. Check requirements, technical decisions, dependencies\n          and prerequisites. Identify technical blockers early and return\n          blocked when human clarification is needed.\n        access: read\n        when: always\n        config: {}\n  - id: planning\n    name: Plan iteration stories\n    mode: sequential\n    steps:\n      - id: plan\n        agent: scrum-master\n        action: plan-stories\n        instructions: Plan user stories for the current delivery iteration only (or the\n          narrow intake for single-iteration delivery). Return an ordered\n          workItems array of 1 to 20 unique ids, titles and descriptions with\n          acceptance criteria. Record dependencies and keep every story within\n          the iteration objectives.\n        access: write\n        when: always\n        config: {}\n  - id: analysis\n    name: Elaborate stories and design tests\n    mode: parallel\n    steps:\n      - id: stories\n        agent: business-analyst\n        action: analyze\n        instructions: Elaborate every planned story in this iteration with requirements,\n          acceptance criteria and edge cases. Preserve planned story ids. Own\n          requirement artifacts; do not edit test-design artifacts.\n        access: write\n        when: always\n        config: {}\n      - id: test-design\n        agent: test-architect\n        action: design-tests\n        instructions: Create traceable test cases for all planned stories in this\n          iteration, including failure cases. Own test-design artifacts; do not\n          edit requirement artifacts. Work from the shared story plan.\n        access: write\n        when: always\n        config: {}\n  - id: scope-review\n    name: Review iteration readiness\n    mode: sequential\n    steps:\n      - id: scope\n        agent: technical-architect\n        action: review-iteration-scope\n        instructions: Review all current iteration stories, elaborated requirements and\n          test cases for consistency, feasibility and technical readiness. Bound\n          this review to current iteration objectives. Missing prerequisites or\n          technical blockers must be reported as blocked.\n        access: read\n        when: always\n        config: {}\n  - id: delivery\n    name: Develop and test complete iteration\n    mode: iteration\n    steps:\n      - id: build\n        agent: full-stack-developer\n        action: implement\n        instructions: Implement every planned story in the current delivery iteration.\n          Follow the elaborated requirements, acceptance criteria and test\n          design. On remediation attempts fix the reported iteration test\n          defects and update regression tests.\n        access: write\n        when: always\n        config: {}\n      - id: test\n        agent: tester\n        action: test\n        instructions: After the developer completes all planned stories, execute\n          integrated, regression and acceptance tests for the complete\n          iteration. Report defects with evidence; never claim unexecuted tests\n          passed. Success requires every iteration objective to pass.\n        access: write\n        when: always\n        config: {}\n    exitWhen: testing.accepted\n    requiresPlan: plan-stories\n  - id: iteration-review\n    name: Technical Architect final iteration delivery review\n    mode: sequential\n    steps:\n      - id: review-delivery\n        agent: technical-architect\n        action: review-iteration-delivery\n        instructions: After the complete iteration passes testing, review the delivery\n          end to end, including all stories, cross-story architecture,\n          integration and test evidence. Report blockers for human review.\n          Approve only when the iteration objectives are satisfied.\n        access: read\n        when: always\n        config: {}\n  - id: solution-review\n    name: Review overall intake solution\n    mode: sequential\n    steps:\n      - id: review-solution\n        agent: solution-architect\n        action: review-intake-solution\n        instructions: Review the completed intake end to end across all delivery\n          iterations. Check requirements coverage, architecture, integration and\n          test evidence. Report unresolved issues as defects or blocked.\n        access: read\n        when: always\n        config: {}\n  - id: closure\n    name: Technical Project Manager intake closure\n    mode: sequential\n    steps:\n      - id: close\n        agent: technical-project-manager\n        action: close-intake\n        instructions: Close the intake only after the Solution Architect review passes.\n          Record delivered scope, story and iteration outcomes, test and review\n          evidence, decisions and any explicitly accepted limitations. Do not\n          deploy or publish.\n        access: write\n        when: always\n        config: {}\n",
+  "factoryConfig": {
+    "provider": "simulated",
+    "maxAttempts": 2,
+    "timeoutSeconds": 300
+  },
+  "projectConfig": {
+    "defaults": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "timeoutSeconds": 900
+    },
+    "AD_HOC_FILES": ".env.local",
+    "engineVersion": "0.1.0",
+    "maxIterations": 3,
+    "schemaVersion": 1,
+    "executionPolicy": "autonomous-development",
+    "bootstrapProfile": "nextjs-prisma",
+    "enabledProcesses": [
+      ".ai_factory/delivery/processes/feature-delivery/0.1.yaml",
+      ".ai_factory/delivery/processes/multi-iteration-delivery/1.1.yaml"
+    ],
+    "configurationVersion": 6,
+    "requireIterationPlanReview": true
+  },
+  "resolvedConfigs": {
+    "closure/close": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "delivery/test": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "planning/plan": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "delivery/build": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "analysis/stories": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "scope-review/scope": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "analysis/test-design": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "readiness/review-readiness": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "solution-review/review-solution": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    },
+    "iteration-review/review-delivery": {
+      "model": "gpt-5.5",
+      "provider": "codex-cli",
+      "reasoning": "medium",
+      "maxAttempts": 2,
+      "timeoutSeconds": 900
+    }
+  },
+  "taxonomyVersion": "1.0"
+}

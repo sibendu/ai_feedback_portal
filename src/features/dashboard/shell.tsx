@@ -13,16 +13,65 @@ type DashboardShellProps = {
   onLogout: () => Promise<void>;
 };
 
-const navItems = [
+type IconComponent = (props: { className?: string }) => React.ReactNode;
+
+type NavChildItem = {
+  href: string;
+  label: string;
+};
+
+type NavItem =
+  | {
+      href: string;
+      label: string;
+      icon: IconComponent;
+    }
+  | {
+      id: "feedback" | "configure";
+      label: string;
+      icon: IconComponent;
+      children: NavChildItem[];
+    };
+
+const navItems: NavItem[] = [
   { href: "/dashboard", label: "Home", icon: HomeIcon },
-  { href: "/dashboard/feedback-request", label: "Feedback Request", icon: FeedbackIcon },
-  { href: "/dashboard/configure", label: "Configure", icon: ConfigureIcon }
+  {
+    id: "feedback",
+    label: "Feedback",
+    icon: FeedbackIcon,
+    children: [
+      { href: "/dashboard/feedback/provide", label: "Provide Feedback" },
+      { href: "/dashboard/feedback/past", label: "Past Feedbacks" }
+    ]
+  },
+  {
+    id: "configure",
+    label: "Configure",
+    icon: ConfigureIcon,
+    children: [
+      { href: "/dashboard/configure/profile", label: "Profile" },
+      { href: "/dashboard/configure/change-password", label: "Change Password" }
+    ]
+  }
 ];
+
+type ExpandableNavItem = Extract<NavItem, { children: NavChildItem[] }>;
+type ExpandedSectionState = Record<ExpandableNavItem["id"], boolean>;
+
+function getActiveExpandedSections(pathname: string): ExpandedSectionState {
+  return {
+    feedback: pathname.startsWith("/dashboard/feedback"),
+    configure: pathname.startsWith("/dashboard/configure")
+  };
+}
 
 export function DashboardShell({ children, user, onLogout }: DashboardShellProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [expandedSections, setExpandedSections] = useState<ExpandedSectionState>(() =>
+    getActiveExpandedSections(pathname)
+  );
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("dashboard-theme");
@@ -30,6 +79,14 @@ export function DashboardShell({ children, user, onLogout }: DashboardShellProps
     setTheme(initialTheme);
     document.documentElement.dataset.dashboardTheme = initialTheme;
   }, []);
+
+  useEffect(() => {
+    const activeSections = getActiveExpandedSections(pathname);
+    setExpandedSections((current) => ({
+      feedback: current.feedback || activeSections.feedback,
+      configure: current.configure || activeSections.configure
+    }));
+  }, [pathname]);
 
   function toggleTheme() {
     const nextTheme = theme === "dark" ? "light" : "dark";
@@ -59,19 +116,67 @@ export function DashboardShell({ children, user, onLogout }: DashboardShellProps
         <nav className="dashboard-nav">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href;
+            const hasChildren = "children" in item;
+
+            if (!hasChildren) {
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  className={`dashboard-nav-link${isActive ? " is-active" : ""}`}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  title={collapsed ? item.label : undefined}
+                  key={item.href}
+                >
+                  <Icon className="dashboard-icon" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            }
+
+            const isExpanded = expandedSections[item.id];
+            const isParentActive = item.children.some((child) => pathname === child.href);
 
             return (
-              <Link
-                className={`dashboard-nav-link${isActive ? " is-active" : ""}`}
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                title={collapsed ? item.label : undefined}
-                key={item.href}
-              >
-                <Icon className="dashboard-icon" />
-                <span>{item.label}</span>
-              </Link>
+              <div className="dashboard-nav-group" key={item.id}>
+                <button
+                  className={`dashboard-nav-link dashboard-nav-button${isParentActive ? " is-active" : ""}`}
+                  type="button"
+                  aria-expanded={isExpanded}
+                  aria-controls={`dashboard-nav-${item.id}`}
+                  title={collapsed ? item.label : undefined}
+                  onClick={() =>
+                    setExpandedSections((current) => ({
+                      ...current,
+                      [item.id]: !current[item.id]
+                    }))
+                  }
+                >
+                  <Icon className="dashboard-icon" />
+                  <span>{item.label}</span>
+                </button>
+                <div
+                  className="dashboard-nav-children"
+                  id={`dashboard-nav-${item.id}`}
+                  hidden={!isExpanded}
+                >
+                  {item.children.map((child) => {
+                    const isChildActive = pathname === child.href;
+
+                    return (
+                      <Link
+                        className={`dashboard-nav-child-link${isChildActive ? " is-active" : ""}`}
+                        href={child.href}
+                        aria-current={isChildActive ? "page" : undefined}
+                        key={child.href}
+                      >
+                        {child.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </nav>

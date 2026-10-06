@@ -1,0 +1,19 @@
+{
+  "outcome": "succeeded",
+  "summary": "Remediated Left menu 4 iteration 2 defects. Added an explicit `.dashboard-nav-children[hidden] { display: none; }` rule so Feedback and Configure Level 2 menus actually hide when collapsed instead of only changing the arrow. Strengthened the dashboard source regression test to assert the hidden submenu CSS rule. Source review also confirms submenu destination pages render the requested headings: Provide Feedback, Past Feedbacks, Profile, and Change Password. Browser/Playwright was not run per task restriction and remains pending for the controller. Verification passed: `npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, `node --test .ai_factory\\tests\\unit\\dashboard\\dashboard-authenticated-shell-source.test.mjs` 4/4, and full unit suite `node --test (Get-ChildItem -Recurse -File .ai_factory\\tests\\unit -Filter *.mjs).FullName` 28/28.\n\nApproved local Playwright runner passed. Evidence: .ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json.",
+  "defects": [],
+  "artifacts": [
+    "src/app/globals.css",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    "src/features/dashboard/shell.tsx",
+    "src/app/dashboard/feedback/provide/page.tsx",
+    "src/app/dashboard/feedback/past/page.tsx",
+    "src/app/dashboard/configure/profile/page.tsx",
+    "src/app/dashboard/configure/change-password/page.tsx",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-2-build-1-5f970970-ad50-4560-b43e-30f205a9272c.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

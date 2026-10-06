@@ -1,0 +1,34 @@
+{
+  "outcome": "defects",
+  "summary": "Intake-wide solution review found an unresolved core UI defect matching the human clarification. The implementation added the requested Level 1 and Level 2 menu structure and submenu destination pages with matching source-level headings, but the submenu show/hide behavior is not reliably implemented: `src/features/dashboard/shell.tsx` relies on the HTML `hidden` attribute while `src/app/globals.css` assigns `.dashboard-nav-children { display: grid; }`, which can override hidden behavior and leave Level 2 menus visible. Non-browser checks passed (`npx.cmd tsc --noEmit --incremental false`, `npm.cmd run lint`, focused Node source test 4/4), but those checks did not catch the visual collapse defect. Browser/Playwright was not run in this task per restriction.",
+  "defects": [
+    {
+      "id": "left-menu-submenus-remain-visible-when-collapsed",
+      "layer": "frontend",
+      "severity": "high",
+      "description": "Core acceptance is not met: clicking Feedback or Configure should display/hide Level 2 menu options, but the implementation can leave all submenus visible. Evidence: `src/features/dashboard/shell.tsx` renders `<div className=\"dashboard-nav-children\" hidden={!isExpanded}>`, while `src/app/globals.css` sets `.dashboard-nav-children { display: grid; }`; author CSS display rules can override native hidden rendering, matching the recorded manual finding that only the arrow changes while Level 2 options remain visible."
+    },
+    {
+      "id": "left-menu-collapse-regression-not-covered-by-effective-test",
+      "layer": "frontend",
+      "severity": "medium",
+      "description": "The focused source test passed but does not verify the actual collapsed visual state or CSS-hidden interaction. Evidence: `.ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs` asserts that `aria-expanded`, state toggling, and `.dashboard-nav-children` styles exist, but it does not assert an explicit `[hidden]` or collapsed-state CSS rule that forces submenu content out of layout when `isExpanded` is false."
+    }
+  ],
+  "artifacts": [
+    "src/features/dashboard/shell.tsx",
+    "src/app/globals.css",
+    "src/app/dashboard/feedback/provide/page.tsx",
+    "src/app/dashboard/feedback/past/page.tsx",
+    "src/app/dashboard/configure/profile/page.tsx",
+    "src/app/dashboard/configure/change-password/page.tsx",
+    ".ai_factory/tests/unit/dashboard/dashboard-authenticated-shell-source.test.mjs",
+    ".ai_factory/tests/functional/dashboard/left-menu-4-test-design.md",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-build-1-47d81f08-3ec5-44fe-afd3-4288fc161878.json",
+    ".ai_factory/tests/reports/local-runner/d8c49425-ee5a-4399-bf43-03d048abc9d7/delivery-1-test-1-a8ade100-9f00-4d64-8d48-cdec77a74ea2.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

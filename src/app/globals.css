@@ -723,6 +723,7 @@ h3 {
 .dashboard-session,
 .dashboard-brand,
 .dashboard-nav-link,
+.dashboard-nav-button,
 .logout-button,
 .icon-button {
   align-items: center;
@@ -742,14 +743,16 @@ h3 {
 }
 
 .dashboard-brand-text,
-.dashboard-nav-link span {
+.dashboard-nav-link span,
+.dashboard-nav-child-link {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .dashboard-shell.is-collapsed .dashboard-brand-text,
-.dashboard-shell.is-collapsed .dashboard-nav-link span {
+.dashboard-shell.is-collapsed .dashboard-nav-link span,
+.dashboard-shell.is-collapsed .dashboard-nav-children {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
@@ -786,10 +789,70 @@ h3 {
   padding: 0;
 }
 
+.dashboard-shell.is-collapsed .dashboard-nav-children {
+  display: none;
+}
+
+.dashboard-nav-group {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.dashboard-nav-button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
 .dashboard-nav-link:hover,
-.dashboard-nav-link.is-active {
+.dashboard-nav-link.is-active,
+.dashboard-nav-child-link:hover,
+.dashboard-nav-child-link.is-active {
   background: var(--dashboard-active);
   color: var(--dashboard-text);
+}
+
+.dashboard-nav-children {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding-left: 32px;
+}
+
+.dashboard-nav-children[hidden] {
+  display: none;
+}
+
+.dashboard-nav-child-link {
+  border-radius: 8px;
+  color: var(--dashboard-muted);
+  font-size: 0.92rem;
+  min-height: 38px;
+  padding: 10px 12px;
+}
+
+.dashboard-nav-button::after {
+  border-color: currentColor;
+  border-style: solid;
+  border-width: 0 1.8px 1.8px 0;
+  content: "";
+  height: 7px;
+  margin-left: auto;
+  rotate: 45deg;
+  transition: rotate 160ms ease;
+  width: 7px;
+}
+
+.dashboard-nav-button[aria-expanded="true"]::after {
+  rotate: -135deg;
+}
+
+.dashboard-shell.is-collapsed .dashboard-nav-button::after {
+  display: none;
 }
 
 .dashboard-icon {
@@ -1350,6 +1413,10 @@ h3 {
     margin-top: 14px;
   }
 
+  .dashboard-nav-group {
+    align-content: start;
+  }
+
   .dashboard-nav-link {
     justify-content: center;
     min-height: 52px;
@@ -1357,12 +1424,25 @@ h3 {
   }
 
   .dashboard-nav-link span,
-  .dashboard-shell.is-collapsed .dashboard-nav-link span {
+  .dashboard-shell.is-collapsed .dashboard-nav-link span,
+  .dashboard-shell.is-collapsed .dashboard-nav-children {
     clip: auto;
     clip-path: none;
     height: auto;
     position: static;
     width: auto;
+  }
+
+  .dashboard-nav-children {
+    padding-left: 0;
+  }
+
+  .dashboard-nav-child-link {
+    font-size: 0.84rem;
+    min-height: 40px;
+    padding: 10px 8px;
+    text-align: center;
+    white-space: normal;
   }
 
   .dashboard-workspace {
