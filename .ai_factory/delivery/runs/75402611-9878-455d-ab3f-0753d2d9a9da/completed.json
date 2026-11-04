@@ -1,0 +1,938 @@
+{
+  "id": "75402611-9878-455d-ab3f-0753d2d9a9da",
+  "tasks": [
+    {
+      "key": "readiness/1/review-readiness",
+      "step": {
+        "id": "review-readiness",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-readiness",
+        "config": {},
+        "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Ready for delivery. The exact replacement text is clear: \"Process your customer signals into clearer next moves\" without a trailing period. src/features/landing/content.ts owns hero.title; src/features/landing/client.ts uses it for normal and fallback content, and src/app/page.tsx renders it in the homepage h1. No new dependencies, integrations, migrations, or human clarification are required. No iteration plan exists for this run; the supplied single-iteration scope is sufficient. The recorded gpt-6.1-sol correction supersedes the snapshot’s older gpt-5.5 setting. Following restore-git-availability, git status --short and source reads succeeded; Git reports version 2.54.0. Status shows only generated intake/run records, with no application-source changes. No files changed or tests run. Browser verification remains pending.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/e2c25451-2add-4b1f-9146-bbf9f23c151f.md",
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/snapshot.json",
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/tasks/readiness-1-review-readiness-attempt-3.json",
+          "src/features/landing/content.ts",
+          "src/features/landing/client.ts",
+          "src/app/page.tsx",
+          "package.json"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 4,
+      "stageId": "readiness",
+      "activity": {
+        "at": "2026-11-04T11:22:28.094Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:21:41.906Z",
+      "finishedAt": "2026-11-04T11:22:30.283Z",
+      "clarification": "Decision restore-git-availability: Restore Git and PATH in this sandbox, then retry in the same worktree. The image now links pinned Git and bundled ripgrep into /usr/local/bin. Owner applied the rebuilt image and confirmed the strengthened login-shell sandbox-check passed. The platform operator also replayed Git status and source readability checks successfully in this original worktree. Original agent processes have stopped; no application-source edits are present, only generated factory intake/run records. Retry the existing readiness step with the retained gpt-6.1-sol correction; keep sandbox and network restrictions enabled.",
+      "detailedTranscript": true
+    },
+    {
+      "key": "planning/1/plan",
+      "step": {
+        "id": "plan",
+        "when": "always",
+        "agent": "scrum-master",
+        "access": "write",
+        "action": "plan-stories",
+        "config": {},
+        "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Planned one story for iteration 1, supported by source and test review. No dependencies or blockers identified. Recorded evidence and the owner’s model correction. No application source changed or tests run.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-plan-stories.md"
+        ],
+        "retryable": false,
+        "workItems": [
+          {
+            "id": "update-homepage-headline",
+            "title": "Update the homepage headline",
+            "description": "As a homepage visitor, I want the headline to explain the portal's promise. Dependencies: none. Acceptance criteria: (1) The homepage hero h1 reads exactly \"Process your customer signals into clearer next moves\" without a trailing period. (2) Update hero.title in src/features/landing/content.ts so normal and fallback content share the replacement; preserve existing semantics, styling, actions, and surrounding copy. (3) Update both old-headline assertions in __ai_factory__/tests/functional/feedback/build-saas-landing-home.spec.ts for desktop and mobile coverage. (4) Review the diff, run applicable non-browser checks, and record actual results. Browser verification remains pending under this run's execution policy."
+          }
+        ],
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "planning",
+      "activity": {
+        "at": "2026-11-04T11:23:29.520Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:22:30.292Z",
+      "finishedAt": "2026-11-04T11:23:31.360Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "analysis/1/stories",
+      "step": {
+        "id": "stories",
+        "when": "always",
+        "agent": "business-analyst",
+        "access": "write",
+        "action": "analyze",
+        "config": {},
+        "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Elaborated update-homepage-headline with requirements, five acceptance criteria, edge cases, and source evidence. Document consistency checks passed using Node after Python was unavailable. No source or test-design files edited; application tests and browser verification were not run.",
+        "artifacts": [
+          ".ai_factory/docs/requirements/modules/update-headline/iteration-1-requirements.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "activity": {
+        "at": "2026-11-04T11:25:15.684Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:23:31.375Z",
+      "finishedAt": "2026-11-04T11:25:17.460Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "analysis/1/test-design",
+      "step": {
+        "id": "test-design",
+        "when": "always",
+        "agent": "test-architect",
+        "access": "write",
+        "action": "design-tests",
+        "config": {},
+        "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Designed eight traceable cases covering the single planned story, all four acceptance criteria, and failure paths. Document integrity checks passed. Application and browser tests were not run. Existing legacy-suite verification limits are documented. Requirements and application source were preserved.",
+        "artifacts": [
+          ".ai_factory/tests/functional/update-headline/iteration-1-test-design.md",
+          ".ai_factory/tests/reports/update-headline-iteration-1-design-review.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "analysis",
+      "activity": {
+        "at": "2026-11-04T11:25:27.015Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:23:31.375Z",
+      "finishedAt": "2026-11-04T11:25:28.831Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "scope-review/1/scope",
+      "step": {
+        "id": "scope",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-scope",
+        "config": {},
+        "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Iteration 1 is technically ready. The story, requirements, and eight designed cases are consistent and feasible, with no missing prerequisites. Document integrity checks and git diff --check passed. Legacy browser-suite limits are documented. Application tests were not run; browser verification remains pending. No application source changed.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-technical-scope-review.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "scope-review",
+      "activity": {
+        "at": "2026-11-04T11:26:40.233Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:25:28.990Z",
+      "finishedAt": "2026-11-04T11:26:45.979Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/1/build",
+      "step": {
+        "id": "build",
+        "when": "always",
+        "agent": "full-stack-developer",
+        "access": "write",
+        "action": "implement",
+        "config": {},
+        "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Updated the shared homepage headline to \"Process your customer signals into clearer next moves\" and both exact desktop/mobile assertions. Lint, fallback checks, and diff checks passed. Browser verification remains pending; no browser or server was started.",
+        "artifacts": [
+          "src/features/landing/content.ts",
+          "__ai_factory__/tests/functional/feedback/build-saas-landing-home.spec.ts",
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-implementation-evidence.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-11-04T11:28:51.386Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:26:46.209Z",
+      "finishedAt": "2026-11-04T11:28:53.739Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "delivery/1/test",
+      "step": {
+        "id": "test",
+        "when": "always",
+        "agent": "tester",
+        "access": "write",
+        "action": "test",
+        "config": {},
+        "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "All 15 non-browser acceptance, integration, and regression checks passed. Final lint passed. No application defects found. Browser visibility and responsive layout verification remain pending; no browser or server was started.",
+        "artifacts": [
+          ".ai_factory/tests/integration/update-headline/iteration-1.test.mjs",
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-test-evidence.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "delivery",
+      "activity": {
+        "at": "2026-11-04T11:34:26.057Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:28:53.795Z",
+      "finishedAt": "2026-11-04T11:34:28.448Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "iteration-review/1/review-delivery",
+      "step": {
+        "id": "review-delivery",
+        "when": "always",
+        "agent": "technical-architect",
+        "access": "read",
+        "action": "review-iteration-delivery",
+        "config": {},
+        "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Approved iteration 1 for the authorized delivery scope. Exact headline, shared fallback behavior, and both test assertions are correct. All 15 non-browser tests, lint, and whitespace checks passed. No delivery defects found. Browser visibility and responsive layout verification remain pending.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-delivery-review.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "iteration-review",
+      "activity": {
+        "at": "2026-11-04T11:36:59.032Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:34:28.558Z",
+      "finishedAt": "2026-11-04T11:37:00.955Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "solution-review/1/review-solution",
+      "step": {
+        "id": "review-solution",
+        "when": "always",
+        "agent": "solution-architect",
+        "access": "read",
+        "action": "review-intake-solution",
+        "config": {},
+        "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Reviewed the complete single-iteration intake. The exact headline, shared fallback behavior, architecture, and test updates satisfy the authorized scope. All 15 non-browser checks, lint, and whitespace checks passed. No unresolved defects found. Browser visibility and responsive layout verification remain pending; no browser or server was launched.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/intake-solution-review.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "solution-review",
+      "activity": {
+        "at": "2026-11-04T11:39:22.778Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:37:01.075Z",
+      "finishedAt": "2026-11-04T11:39:24.814Z",
+      "detailedTranscript": true
+    },
+    {
+      "key": "closure/1/close",
+      "step": {
+        "id": "close",
+        "when": "always",
+        "agent": "technical-project-manager",
+        "access": "write",
+        "action": "close-intake",
+        "config": {},
+        "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+      },
+      "config": {
+        "model": "gpt-6.1-sol",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "networkAccess": true,
+        "timeoutSeconds": 900
+      },
+      "result": {
+        "blocker": null,
+        "defects": [],
+        "outcome": "succeeded",
+        "summary": "Closed the intake after the Solution Architect review passed. Recorded delivered headline, story and iteration outcomes, passing non-browser evidence, decisions, and limitations. Closeout integrity and whitespace checks passed. Browser verification remains pending. No deployment or publication performed.",
+        "artifacts": [
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/intake-closeout.md"
+        ],
+        "retryable": false,
+        "workItems": null,
+        "planningBrief": null
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "stageId": "closure",
+      "activity": {
+        "at": "2026-11-04T11:40:43.907Z",
+        "kind": "turn",
+        "message": "Agent completed its response."
+      },
+      "iteration": 1,
+      "startedAt": "2026-11-04T11:39:25.062Z",
+      "finishedAt": "2026-11-04T11:40:46.653Z",
+      "detailedTranscript": true
+    }
+  ],
+  "intake": {
+    "title": "update headline",
+    "description": "On the home page, change the statement to \"Process your customer signals into clearer next moves\""
+  },
+  "module": "update headline",
+  "status": "completed",
+  "reviews": [
+    {
+      "id": "4304b391-1b38-47e4-b822-7f1b4d2bee22",
+      "kind": "uncertain",
+      "prompt": "Agent execution stopped without a confirmed result. Inspect the failure details and prior changes before confirming a safe retry.",
+      "finding": {
+        "defects": [],
+        "summary": "The agent did not return a valid confirmed result.\nElapsed: 9 seconds.\nAgent process exit observed; descendant processes and file changes still require verification.\nError: Codex exited 1: Error: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\n",
+        "artifacts": []
+      },
+      "stageId": "readiness",
+      "taskKey": "readiness/1/review-readiness",
+      "decision": {
+        "at": "2026-11-04T10:39:07.708Z",
+        "note": "Owner approved gpt-6.1-sol for retry. Reconciled prior authentication-only failure: original Codex process exited, container process inspection confirmed no leftover agent/helper processes, and worktree Git status contains only generated AI Factory intake/run records with no application-source edits. Shared current Windows Codex cache was verified with a real CLI request. Retry the same task and worktree; preserve the original snapshot and record this explicit model correction.",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-11-04T10:16:56.909Z",
+      "resolution": "retry: Owner approved gpt-6.1-sol for retry. Reconciled prior authentication-only failure: original Codex process exited, container process inspection confirmed no leftover agent/helper processes, and worktree Git status contains only generated AI Factory intake/run records with no application-source edits. Shared current Windows Codex cache was verified with a real CLI request. Retry the same task and worktree; preserve the original snapshot and record this explicit model correction.",
+      "resolvedAt": "2026-11-04T10:39:07.708Z"
+    },
+    {
+      "id": "0e9880ee-0355-4dcd-9d73-4b1ca24d1c58",
+      "kind": "blocker",
+      "prompt": "Readiness could not be assessed because sandbox initialization prevented source and artifact inspection. The recorded owner decision authorizes retry with gpt-6.1-sol after the earlier authentication-only failure; this attempt encountered a separate environment failure. No files were changed, tests or browsers run, or background processes started.",
+      "finding": {
+        "defects": [],
+        "summary": "Readiness could not be assessed because sandbox initialization prevented source and artifact inspection. The recorded owner decision authorizes retry with gpt-6.1-sol after the earlier authentication-only failure; this attempt encountered a separate environment failure. No files were changed, tests or browsers run, or background processes started.",
+        "artifacts": []
+      },
+      "stageId": "readiness",
+      "taskKey": "readiness/1/review-readiness",
+      "decision": {
+        "at": "2026-11-04T11:14:19.460Z",
+        "note": "Decision restore-workspace-access: Repair the sandbox configuration and retry in this worktree. Owner applied the tested Docker namespace/seccomp profile and confirmed sandbox-check passed in the running container: workspace reads/writes and Git/Node/ripgrep work; outside-workspace writes and direct network connections remain blocked. Codex sandbox stays enabled, with no privileged mode or added capabilities. Reconciled the prior blocked attempt: no agent processes remain and Git status shows only generated intake/run artifacts, with no application source changes. Retry this same readiness step in the existing worktree, retaining the approved gpt-6.1-sol override.",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-11-04T10:39:35.343Z",
+      "resolution": "retry: Decision restore-workspace-access: Repair the sandbox configuration and retry in this worktree. Owner applied the tested Docker namespace/seccomp profile and confirmed sandbox-check passed in the running container: workspace reads/writes and Git/Node/ripgrep work; outside-workspace writes and direct network connections remain blocked. Codex sandbox stays enabled, with no privileged mode or added capabilities. Reconciled the prior blocked attempt: no agent processes remain and Git status shows only generated intake/run artifacts, with no application source changes. Retry this same readiness step in the existing worktree, retaining the approved gpt-6.1-sol override.",
+      "resolvedAt": "2026-11-04T11:14:19.460Z"
+    },
+    {
+      "id": "32ca18bb-92d2-4072-a1a6-039f2674955c",
+      "kind": "blocker",
+      "prompt": "The intake is technically clear: replace hero.title in src/features/landing/content.ts with the exact requested text. Both normal and fallback content use this value, rendered by src/app/page.tsx. No integration or schema change is indicated; no iteration plan was found for this run. The recorded gpt-6.1-sol decision supersedes snapshot gpt-5.5 settings. Readiness remains blocked by the observed Git environment failure. No files changed, tests executed, browsers launched, or background processes started.",
+      "finding": {
+        "defects": [],
+        "summary": "The intake is technically clear: replace hero.title in src/features/landing/content.ts with the exact requested text. Both normal and fallback content use this value, rendered by src/app/page.tsx. No integration or schema change is indicated; no iteration plan was found for this run. The recorded gpt-6.1-sol decision supersedes snapshot gpt-5.5 settings. Readiness remains blocked by the observed Git environment failure. No files changed, tests executed, browsers launched, or background processes started.",
+        "artifacts": [
+          ".ai_factory/delivery/intakes/e2c25451-2add-4b1f-9146-bbf9f23c151f.md",
+          ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/snapshot.json",
+          "src/features/landing/content.ts",
+          "src/features/landing/client.ts",
+          "src/app/page.tsx"
+        ]
+      },
+      "stageId": "readiness",
+      "taskKey": "readiness/1/review-readiness",
+      "decision": {
+        "at": "2026-11-04T11:21:39.651Z",
+        "note": "Decision restore-git-availability: Restore Git and PATH in this sandbox, then retry in the same worktree. The image now links pinned Git and bundled ripgrep into /usr/local/bin. Owner applied the rebuilt image and confirmed the strengthened login-shell sandbox-check passed. The platform operator also replayed Git status and source readability checks successfully in this original worktree. Original agent processes have stopped; no application-source edits are present, only generated factory intake/run records. Retry the existing readiness step with the retained gpt-6.1-sol correction; keep sandbox and network restrictions enabled.",
+        "actor": "local-owner",
+        "action": "retry"
+      },
+      "createdAt": "2026-11-04T11:15:13.224Z",
+      "resolution": "retry: Decision restore-git-availability: Restore Git and PATH in this sandbox, then retry in the same worktree. The image now links pinned Git and bundled ripgrep into /usr/local/bin. Owner applied the rebuilt image and confirmed the strengthened login-shell sandbox-check passed. The platform operator also replayed Git status and source readability checks successfully in this original worktree. Original agent processes have stopped; no application-source edits are present, only generated factory intake/run records. Retry the existing readiness step with the retained gpt-6.1-sol correction; keep sandbox and network restrictions enabled.",
+      "resolvedAt": "2026-11-04T11:21:39.651Z"
+    }
+  ],
+  "intakeId": "e2c25451-2add-4b1f-9146-bbf9f23c151f",
+  "scenario": "happy-path",
+  "snapshot": {
+    "brief": "# Customer Feedback Portal\n\n## Purpose\nCollect customer feedback, validate submissions, and provide an administrative review dashboard.\n\n## Technology and source layout\nNext.js, TypeScript, and Playwright. Follow framework-native source conventions.\n\n## Modules and constraints\nDocument modules, integrations, and acceptance expectations here.\n",
+    "agents": {
+      "tester": {
+        "id": "tester",
+        "config": {},
+        "prompt": "Act as the project's Tester. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "tester",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "scrum-master": {
+        "id": "scrum-master",
+        "config": {},
+        "prompt": "Act as the project's Scrum Master. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "scrum-master",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "test-architect": {
+        "id": "test-architect",
+        "config": {},
+        "prompt": "Act as the project's Test Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "test-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "business-analyst": {
+        "id": "business-analyst",
+        "config": {},
+        "prompt": "Act as the project's Business Analyst. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "business-analyst",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "solution-architect": {
+        "id": "solution-architect",
+        "config": {},
+        "prompt": "Act as the project's Solution Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "solution-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-architect": {
+        "id": "technical-architect",
+        "config": {},
+        "prompt": "Act as the project's Technical Architect. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-architect",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "full-stack-developer": {
+        "id": "full-stack-developer",
+        "config": {},
+        "prompt": "Act as the project's Full-stack Developer. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "full-stack-developer",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      },
+      "technical-project-manager": {
+        "id": "technical-project-manager",
+        "config": {},
+        "prompt": "Act as the project's Technical Project Manager. Follow the supplied project brief and taxonomy. Produce evidence for your conclusions. Report a blocker if required information is missing. Never claim tests passed unless you ran them successfully. Do not deploy, publish, or contact external people.",
+        "version": "1.0",
+        "baseRole": "technical-project-manager",
+        "promptFile": "prompt.md",
+        "schemaVersion": 1
+      }
+    },
+    "digest": "11fce8b42b26bbf9d4fa65e998583bb341af9d0a54dc8056a51ce71e29c589fa",
+    "process": {
+      "id": "feature-delivery",
+      "name": "Feature delivery",
+      "stages": [
+        {
+          "id": "readiness",
+          "mode": "sequential",
+          "name": "Solution Architect readiness review",
+          "steps": [
+            {
+              "id": "review-readiness",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-readiness",
+              "config": {},
+              "instructions": "Review the whole intake end to end, including the iteration plan when present. Check requirements, technical decisions, dependencies and prerequisites. Identify technical blockers early and return blocked when human clarification is needed."
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "mode": "sequential",
+          "name": "Plan iteration stories",
+          "steps": [
+            {
+              "id": "plan",
+              "when": "always",
+              "agent": "scrum-master",
+              "access": "write",
+              "action": "plan-stories",
+              "config": {},
+              "instructions": "Plan user stories for the current delivery iteration only (or the narrow intake for single-iteration delivery). Return an ordered workItems array of 1 to 20 unique ids, titles and descriptions with acceptance criteria. Record dependencies and keep every story within the iteration objectives."
+            }
+          ]
+        },
+        {
+          "id": "analysis",
+          "mode": "parallel",
+          "name": "Elaborate stories and design tests",
+          "steps": [
+            {
+              "id": "stories",
+              "when": "always",
+              "agent": "business-analyst",
+              "access": "write",
+              "action": "analyze",
+              "config": {},
+              "instructions": "Elaborate every planned story in this iteration with requirements, acceptance criteria and edge cases. Preserve planned story ids. Own requirement artifacts; do not edit test-design artifacts."
+            },
+            {
+              "id": "test-design",
+              "when": "always",
+              "agent": "test-architect",
+              "access": "write",
+              "action": "design-tests",
+              "config": {},
+              "instructions": "Create traceable test cases for all planned stories in this iteration, including failure cases. Own test-design artifacts; do not edit requirement artifacts. Work from the shared story plan."
+            }
+          ]
+        },
+        {
+          "id": "scope-review",
+          "mode": "sequential",
+          "name": "Review iteration readiness",
+          "steps": [
+            {
+              "id": "scope",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-scope",
+              "config": {},
+              "instructions": "Review all current iteration stories, elaborated requirements and test cases for consistency, feasibility and technical readiness. Bound this review to current iteration objectives. Missing prerequisites or technical blockers must be reported as blocked."
+            }
+          ]
+        },
+        {
+          "id": "delivery",
+          "mode": "iteration",
+          "name": "Develop and test complete iteration",
+          "steps": [
+            {
+              "id": "build",
+              "when": "always",
+              "agent": "full-stack-developer",
+              "access": "write",
+              "action": "implement",
+              "config": {},
+              "instructions": "Implement every planned story in the current delivery iteration. Follow the elaborated requirements, acceptance criteria and test design. On remediation attempts fix the reported iteration test defects and update regression tests."
+            },
+            {
+              "id": "test",
+              "when": "always",
+              "agent": "tester",
+              "access": "write",
+              "action": "test",
+              "config": {},
+              "instructions": "After the developer completes all planned stories, execute integrated, regression and acceptance tests for the complete iteration. Report defects with evidence; never claim unexecuted tests passed. Success requires every iteration objective to pass."
+            }
+          ],
+          "exitWhen": "testing.accepted",
+          "requiresPlan": "plan-stories"
+        },
+        {
+          "id": "iteration-review",
+          "mode": "sequential",
+          "name": "Technical Architect final iteration delivery review",
+          "steps": [
+            {
+              "id": "review-delivery",
+              "when": "always",
+              "agent": "technical-architect",
+              "access": "read",
+              "action": "review-iteration-delivery",
+              "config": {},
+              "instructions": "After the complete iteration passes testing, review the delivery end to end, including all stories, cross-story architecture, integration and test evidence. Report blockers for human review. Approve only when the iteration objectives are satisfied."
+            }
+          ]
+        },
+        {
+          "id": "solution-review",
+          "mode": "sequential",
+          "name": "Review overall intake solution",
+          "steps": [
+            {
+              "id": "review-solution",
+              "when": "always",
+              "agent": "solution-architect",
+              "access": "read",
+              "action": "review-intake-solution",
+              "config": {},
+              "instructions": "Review the completed intake end to end across all delivery iterations. Check requirements coverage, architecture, integration and test evidence. Report unresolved issues as defects or blocked."
+            }
+          ]
+        },
+        {
+          "id": "closure",
+          "mode": "sequential",
+          "name": "Technical Project Manager intake closure",
+          "steps": [
+            {
+              "id": "close",
+              "when": "always",
+              "agent": "technical-project-manager",
+              "access": "write",
+              "action": "close-intake",
+              "config": {},
+              "instructions": "Close the intake only after the Solution Architect review passes. Record delivered scope, story and iteration outcomes, test and review evidence, decisions and any explicitly accepted limitations. Do not deploy or publish."
+            }
+          ]
+        }
+      ],
+      "version": "0.1",
+      "schemaVersion": 1
+    },
+    "taxonomy": "# Project Taxonomy\n\n- Version: 1.0\n- Previous version: none\n\n## Documentation\n\nAll AI Factory artifacts live under .ai_factory/.\nUse .ai_factory/docs/project-brief.md for evolving purpose, scope, technology, integrations and source layout.\nUse .ai_factory/docs/architecture/, .ai_factory/docs/requirements/, .ai_factory/docs/design/, .ai_factory/docs/decisions/, .ai_factory/docs/security/, and .ai_factory/docs/operations/ as appropriate.\nFor large projects use requirements/modules/<module>/ and design/modules/<module>/; put cross-cutting work under shared/.\n\n## Delivery\n\nUse .ai_factory/delivery/intakes/, .ai_factory/delivery/planning/, .ai_factory/delivery/processes/, .ai_factory/delivery/agents/, .ai_factory/delivery/actions/, .ai_factory/delivery/runs/, .ai_factory/delivery/reviews/, and .ai_factory/delivery/releases/.\nRun-specific evidence belongs under .ai_factory/delivery/runs/<run-id>/; iteration and task identifiers must remain traceable.\nPostgreSQL owns live execution state. Files under .ai_factory/delivery/runs/ are reviewable exports, not recovery checkpoints.\n\n## Tests and source\n\nUse .ai_factory/tests/functional/ for Playwright browser tests by default, and .ai_factory/tests/reports/ for evidence.\nUse .ai_factory/tests/unit/, .ai_factory/tests/integration/, and .ai_factory/tests/fixtures/ where the technology allows it.\nNative conventions take precedence for source and co-located tests (for example src/test/ in Java).\nAdd or update tests during feature and defect-remediation iterations. Keep module identifiers consistent across requirements, design and tests.\n\n## Versioning\n\nIncrement the human-readable version for changes. Use a minor increment for compatible additions and a major increment for restructuring.\nProcess runs keep an immutable copy of the taxonomy version used at their start.\n",
+    "agentYamls": {
+      "tester": "schemaVersion: 1\nid: tester\nversion: \"1.0\"\nbaseRole: tester\npromptFile: prompt.md\nconfig: {}\n",
+      "scrum-master": "schemaVersion: 1\nid: scrum-master\nversion: \"1.0\"\nbaseRole: scrum-master\npromptFile: prompt.md\nconfig: {}\n",
+      "test-architect": "schemaVersion: 1\nid: test-architect\nversion: \"1.0\"\nbaseRole: test-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "business-analyst": "schemaVersion: 1\nid: business-analyst\nversion: \"1.0\"\nbaseRole: business-analyst\npromptFile: prompt.md\nconfig: {}\n",
+      "solution-architect": "schemaVersion: 1\nid: solution-architect\nversion: \"1.0\"\nbaseRole: solution-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-architect": "schemaVersion: 1\nid: technical-architect\nversion: \"1.0\"\nbaseRole: technical-architect\npromptFile: prompt.md\nconfig: {}\n",
+      "full-stack-developer": "schemaVersion: 1\nid: full-stack-developer\nversion: \"1.0\"\nbaseRole: full-stack-developer\npromptFile: prompt.md\nconfig: {}\n",
+      "technical-project-manager": "schemaVersion: 1\nid: technical-project-manager\nversion: \"1.0\"\nbaseRole: technical-project-manager\npromptFile: prompt.md\nconfig: {}\n"
+    },
+    "processYaml": "schemaVersion: 1\nid: feature-delivery\nversion: \"0.1\"\nname: Feature delivery\nstages:\n  - id: readiness\n    name: Solution Architect readiness review\n    mode: sequential\n    steps:\n      - id: review-readiness\n        agent: solution-architect\n        action: review-intake-readiness\n        instructions: Review the whole intake end to end, including the iteration plan\n          when present. Check requirements, technical decisions, dependencies\n          and prerequisites. Identify technical blockers early and return\n          blocked when human clarification is needed.\n        access: read\n        when: always\n        config: {}\n  - id: planning\n    name: Plan iteration stories\n    mode: sequential\n    steps:\n      - id: plan\n        agent: scrum-master\n        action: plan-stories\n        instructions: Plan user stories for the current delivery iteration only (or the\n          narrow intake for single-iteration delivery). Return an ordered\n          workItems array of 1 to 20 unique ids, titles and descriptions with\n          acceptance criteria. Record dependencies and keep every story within\n          the iteration objectives.\n        access: write\n        when: always\n        config: {}\n  - id: analysis\n    name: Elaborate stories and design tests\n    mode: parallel\n    steps:\n      - id: stories\n        agent: business-analyst\n        action: analyze\n        instructions: Elaborate every planned story in this iteration with requirements,\n          acceptance criteria and edge cases. Preserve planned story ids. Own\n          requirement artifacts; do not edit test-design artifacts.\n        access: write\n        when: always\n        config: {}\n      - id: test-design\n        agent: test-architect\n        action: design-tests\n        instructions: Create traceable test cases for all planned stories in this\n          iteration, including failure cases. Own test-design artifacts; do not\n          edit requirement artifacts. Work from the shared story plan.\n        access: write\n        when: always\n        config: {}\n  - id: scope-review\n    name: Review iteration readiness\n    mode: sequential\n    steps:\n      - id: scope\n        agent: technical-architect\n        action: review-iteration-scope\n        instructions: Review all current iteration stories, elaborated requirements and\n          test cases for consistency, feasibility and technical readiness. Bound\n          this review to current iteration objectives. Missing prerequisites or\n          technical blockers must be reported as blocked.\n        access: read\n        when: always\n        config: {}\n  - id: delivery\n    name: Develop and test complete iteration\n    mode: iteration\n    steps:\n      - id: build\n        agent: full-stack-developer\n        action: implement\n        instructions: Implement every planned story in the current delivery iteration.\n          Follow the elaborated requirements, acceptance criteria and test\n          design. On remediation attempts fix the reported iteration test\n          defects and update regression tests.\n        access: write\n        when: always\n        config: {}\n      - id: test\n        agent: tester\n        action: test\n        instructions: After the developer completes all planned stories, execute\n          integrated, regression and acceptance tests for the complete\n          iteration. Report defects with evidence; never claim unexecuted tests\n          passed. Success requires every iteration objective to pass.\n        access: write\n        when: always\n        config: {}\n    exitWhen: testing.accepted\n    requiresPlan: plan-stories\n  - id: iteration-review\n    name: Technical Architect final iteration delivery review\n    mode: sequential\n    steps:\n      - id: review-delivery\n        agent: technical-architect\n        action: review-iteration-delivery\n        instructions: After the complete iteration passes testing, review the delivery\n          end to end, including all stories, cross-story architecture,\n          integration and test evidence. Report blockers for human review.\n          Approve only when the iteration objectives are satisfied.\n        access: read\n        when: always\n        config: {}\n  - id: solution-review\n    name: Review overall intake solution\n    mode: sequential\n    steps:\n      - id: review-solution\n        agent: solution-architect\n        action: review-intake-solution\n        instructions: Review the completed intake end to end across all delivery\n          iterations. Check requirements coverage, architecture, integration and\n          test evidence. Report unresolved issues as defects or blocked.\n        access: read\n        when: always\n        config: {}\n  - id: closure\n    name: Technical Project Manager intake closure\n    mode: sequential\n    steps:\n      - id: close\n        agent: technical-project-manager\n        action: close-intake\n        instructions: Close the intake only after the Solution Architect review passes.\n          Record delivered scope, story and iteration outcomes, test and review\n          evidence, decisions and any explicitly accepted limitations. Do not\n          deploy or publish.\n        access: write\n        when: always\n        config: {}\n",
+    "factoryConfig": {
+      "provider": "simulated",
+      "maxAttempts": 2,
+      "timeoutSeconds": 300
+    },
+    "projectConfig": {
+      "defaults": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "timeoutSeconds": 900
+      },
+      "AD_HOC_FILES": ".env.local",
+      "engineVersion": "0.1.0",
+      "maxIterations": 3,
+      "schemaVersion": 1,
+      "executionPolicy": "autonomous-development",
+      "bootstrapProfile": "nextjs-prisma",
+      "enabledProcesses": [
+        ".ai_factory/delivery/processes/feature-delivery/0.1.yaml",
+        ".ai_factory/delivery/processes/multi-iteration-delivery/1.1.yaml"
+      ],
+      "configurationVersion": 7,
+      "requireIterationPlanReview": true
+    },
+    "resolvedConfigs": {
+      "closure/close": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/test": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "planning/plan": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "delivery/build": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/stories": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "scope-review/scope": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "analysis/test-design": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "readiness/review-readiness": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "solution-review/review-solution": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      },
+      "iteration-review/review-delivery": {
+        "model": "gpt-5.5",
+        "provider": "codex-cli",
+        "reasoning": "medium",
+        "maxAttempts": 2,
+        "timeoutSeconds": 900
+      }
+    },
+    "taxonomyVersion": "1.0"
+  },
+  "createdAt": "2026-11-04T10:09:54.968Z",
+  "iteration": 1,
+  "projectId": "374c27f5-fe28-4ae1-94d4-2ad24fb9d490",
+  "updatedAt": "2026-11-04T11:40:46.712Z",
+  "workspace": {
+    "path": "/workspace/worktrees/customerfeedbackportal/75402611-9878-455d-ab3f-0753d2d9a9da",
+    "root": "/workspace/worktrees",
+    "branch": "codex/ai-factory/customerfeedbackportal/75402611-9878-455d-ab3f-0753d2d9a9da",
+    "remote": "origin",
+    "status": "ready",
+    "bootstrap": {
+      "steps": [
+        {
+          "at": "2026-11-04T10:16:12.928Z",
+          "id": "node.install-locked-dependencies",
+          "label": "Restore locked Node dependencies",
+          "status": "succeeded"
+        },
+        {
+          "at": "2026-11-04T10:16:26.686Z",
+          "id": "prisma.generate-client",
+          "label": "Generate Prisma client",
+          "status": "succeeded"
+        },
+        {
+          "at": "2026-11-04T10:16:47.664Z",
+          "id": "node.typecheck",
+          "label": "Verify TypeScript",
+          "status": "succeeded"
+        }
+      ],
+      "status": "succeeded",
+      "profile": "nextjs-prisma"
+    },
+    "commonDir": "/workspace/AI/ai_factory_projects/customer-feedback-portal/.git",
+    "adHocFiles": [
+      ".env.local"
+    ],
+    "baseBranch": "main",
+    "baseCommit": "53b7f6ab516c534e3a1d0a5d98db4e0386e9e744",
+    "processFile": ".ai_factory/delivery/processes/feature-delivery/0.1.yaml",
+    "repositoryRoot": "/workspace/AI/ai_factory_projects/customer-feedback-portal"
+  },
+  "stageIndex": 8,
+  "engineVersion": "0.1.0",
+  "iterationLimits": {},
+  "applicationBuild": "0.2.0",
+  "executionOverrides": {
+    "model": "gpt-6.1-sol",
+    "networkAccess": true,
+    "detailedTranscript": true
+  },
+  "deliveryReviewRepairs": {}
+}

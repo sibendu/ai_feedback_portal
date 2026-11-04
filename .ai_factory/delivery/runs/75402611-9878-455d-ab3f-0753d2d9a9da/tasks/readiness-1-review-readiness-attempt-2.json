@@ -1,0 +1,24 @@
+{
+  "outcome": "blocked",
+  "summary": "Readiness could not be assessed because sandbox initialization prevented source and artifact inspection. The recorded owner decision authorizes retry with gpt-6.1-sol after the earlier authentication-only failure; this attempt encountered a separate environment failure. No files were changed, tests or browsers run, or background processes started.",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": {
+    "title": "Workspace inspection blocked by sandbox failure",
+    "reason": "The initial read-only command failed before project files could be inspected. Command: pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*page*' -g '*intake*' -g '*plan*' -g '*headline*' -g 'README*' -g 'project-brief.md' -g '!node_modules' -g '!.git' . .ai_factory. Exit code: 1. Error: bwrap: No permissions to create a new namespace, likely because the kernel does not allow non-privileged user namespaces.",
+    "decisions": [
+      {
+        "id": "restore-workspace-access",
+        "question": "How should workspace access be restored for the readiness review?",
+        "choices": [
+          "Repair the sandbox configuration and retry in this worktree.",
+          "Retry using a supported execution environment with access to this same worktree."
+        ],
+        "recommended": "Repair the sandbox configuration and retry in this worktree."
+      }
+    ]
+  }
+}

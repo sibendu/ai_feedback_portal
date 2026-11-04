@@ -1,0 +1,18 @@
+{
+  "outcome": "succeeded",
+  "summary": "Planned one story for iteration 1, supported by source and test review. No dependencies or blockers identified. Recorded evidence and the owner’s model correction. No application source changed or tests run.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-plan-stories.md"
+  ],
+  "retryable": false,
+  "workItems": [
+    {
+      "id": "update-homepage-headline",
+      "title": "Update the homepage headline",
+      "description": "As a homepage visitor, I want the headline to explain the portal's promise. Dependencies: none. Acceptance criteria: (1) The homepage hero h1 reads exactly \"Process your customer signals into clearer next moves\" without a trailing period. (2) Update hero.title in src/features/landing/content.ts so normal and fallback content share the replacement; preserve existing semantics, styling, actions, and surrounding copy. (3) Update both old-headline assertions in __ai_factory__/tests/functional/feedback/build-saas-landing-home.spec.ts for desktop and mobile coverage. (4) Review the diff, run applicable non-browser checks, and record actual results. Browser verification remains pending under this run's execution policy."
+    }
+  ],
+  "planningBrief": null,
+  "blocker": null
+}

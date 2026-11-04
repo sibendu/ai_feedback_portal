@@ -8,7 +8,9 @@ test.describe("build-saas-landing-home", () => {
 
     await expect(
       page.getByRole("heading", {
-        name: "Turn every customer signal into a clearer next move."
+        level: 1,
+        name: "Process your customer signals into clearer next moves",
+        exact: true
       })
     ).toBeVisible();
     await expect(page.getByText("Feedback review preview")).toHaveCount(0);
@@ -58,7 +60,13 @@ test.describe("build-saas-landing-home", () => {
 
     await expect(page.getByRole("navigation", { name: "Primary navigation" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Request demo" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Turn every customer signal/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Process your customer signals into clearer next moves",
+        exact: true
+      })
+    ).toBeVisible();
     await expect(page.getByRole("heading", { name: /A calm system of record/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Start with the landing page/ })).toBeVisible();
   });
