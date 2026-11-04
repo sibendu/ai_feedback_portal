@@ -1,0 +1,30 @@
+{
+  "outcome": "blocked",
+  "summary": "The intake is technically clear: replace hero.title in src/features/landing/content.ts with the exact requested text. Both normal and fallback content use this value, rendered by src/app/page.tsx. No integration or schema change is indicated; no iteration plan was found for this run. The recorded gpt-6.1-sol decision supersedes snapshot gpt-5.5 settings. Readiness remains blocked by the observed Git environment failure. No files changed, tests executed, browsers launched, or background processes started.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/e2c25451-2add-4b1f-9146-bbf9f23c151f.md",
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/snapshot.json",
+    "src/features/landing/content.ts",
+    "src/features/landing/client.ts",
+    "src/app/page.tsx"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": {
+    "title": "Git unavailable in task environment",
+    "reason": "The inspection command `git status --short && cat package.json && sed -n '1,240p' src/app/page.tsx && rg --files --hidden -g AGENTS.md -g '!node_modules' -g '!.git'` exited 127 with `/bin/bash: line 1: git: command not found`. File reads and ripgrep succeeded, but worktree status could not be verified. This contradicts the owner-reported Git availability after sandbox repair.",
+    "decisions": [
+      {
+        "id": "restore-git-availability",
+        "question": "How should Git availability be restored for this task?",
+        "choices": [
+          "Restore Git and PATH in this sandbox, then retry in the same worktree.",
+          "Retry in a supported sandbox with Git and access to this same worktree."
+        ],
+        "recommended": "Restore Git and PATH in this sandbox, then retry in the same worktree."
+      }
+    ]
+  }
+}

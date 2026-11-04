@@ -10,7 +10,7 @@ export const fallbackLandingContent: LandingPageContent = {
   ],
   hero: {
     eyebrow: "Feedback operations for growing teams",
-    title: "Turn every customer signal into a clearer next move.",
+    title: "Process your customer signals into clearer next moves",
     body:
       "Customer Feedback Portal is a SaaS foundation for collecting feedback, validating submissions, and giving review teams a focused place to understand what customers need next.",
     primaryAction: { label: "Start collecting feedback", href: "#demo" },

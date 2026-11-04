@@ -1,0 +1,18 @@
+{
+  "outcome": "succeeded",
+  "summary": "Ready for delivery. The exact replacement text is clear: \"Process your customer signals into clearer next moves\" without a trailing period. src/features/landing/content.ts owns hero.title; src/features/landing/client.ts uses it for normal and fallback content, and src/app/page.tsx renders it in the homepage h1. No new dependencies, integrations, migrations, or human clarification are required. No iteration plan exists for this run; the supplied single-iteration scope is sufficient. The recorded gpt-6.1-sol correction supersedes the snapshot’s older gpt-5.5 setting. Following restore-git-availability, git status --short and source reads succeeded; Git reports version 2.54.0. Status shows only generated intake/run records, with no application-source changes. No files changed or tests run. Browser verification remains pending.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/delivery/intakes/e2c25451-2add-4b1f-9146-bbf9f23c151f.md",
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/snapshot.json",
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/tasks/readiness-1-review-readiness-attempt-3.json",
+    "src/features/landing/content.ts",
+    "src/features/landing/client.ts",
+    "src/app/page.tsx",
+    "package.json"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

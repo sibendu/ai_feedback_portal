@@ -1,0 +1,14 @@
+{
+  "outcome": "succeeded",
+  "summary": "Updated the shared homepage headline to \"Process your customer signals into clearer next moves\" and both exact desktop/mobile assertions. Lint, fallback checks, and diff checks passed. Browser verification remains pending; no browser or server was started.",
+  "defects": [],
+  "artifacts": [
+    "src/features/landing/content.ts",
+    "__ai_factory__/tests/functional/feedback/build-saas-landing-home.spec.ts",
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-implementation-evidence.md"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

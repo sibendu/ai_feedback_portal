@@ -1,0 +1,13 @@
+{
+  "outcome": "succeeded",
+  "summary": "All 15 non-browser acceptance, integration, and regression checks passed. Final lint passed. No application defects found. Browser visibility and responsive layout verification remain pending; no browser or server was started.",
+  "defects": [],
+  "artifacts": [
+    ".ai_factory/tests/integration/update-headline/iteration-1.test.mjs",
+    ".ai_factory/delivery/runs/75402611-9878-455d-ab3f-0753d2d9a9da/iteration-1-test-evidence.md"
+  ],
+  "retryable": false,
+  "workItems": null,
+  "planningBrief": null,
+  "blocker": null
+}

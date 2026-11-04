@@ -1,0 +1,7 @@
+{
+  "outcome": "failed",
+  "summary": "The agent did not return a valid confirmed result.\nElapsed: 9 seconds.\nAgent process exit observed; descendant processes and file changes still require verification.\nError: Codex exited 1: Error: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\n",
+  "defects": [],
+  "artifacts": [],
+  "retryable": false
+}
