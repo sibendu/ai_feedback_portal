@@ -1,0 +1,256 @@
+schemaVersion: 1
+id: multi-iteration-delivery
+version: "1.7"
+name: Multi-iteration feature delivery
+stages:
+  - id: iteration-planning
+    name: Technical Project Manager iteration planning
+    mode: sequential
+    steps:
+      - id: plan-iterations
+        agent: technical-project-manager
+        action: plan-iterations
+        instructions: "Own the complete intake planning brief. Derive scope, priorities,
+          acceptance criteria, dependencies and release constraints from
+          business intake and project evidence. Distinguish facts, assumptions
+          and missing decisions. Propose ordered, coherent delivery iterations
+          with a demonstrable outcome each. Justify boundaries using complexity,
+          affected components, unknowns and test effort; neither pack unrelated
+          changes together nor split simple changes into artificial increments.
+          This process requires at least two iterations: if evidence supports
+          only one, request a human process-selection decision instead of
+          inventing work. Return the complete workItems plan and planningBrief
+          on every revision. Address each evaluator, architecture or human
+          finding explicitly in the summary, explaining what changed or remains
+          unresolved. For a human-directed revision, follow the latest owner
+          comments and return directly for human approval; do not initiate
+          additional reviews."
+        access: write
+        when: always
+        config: {}
+  - id: plan-evaluation
+    name: Independent iteration plan evaluation
+    mode: sequential
+    steps:
+      - id: evaluate-plan
+        agent: plan-evaluator
+        action: evaluate-iteration-plan
+        instructions: Independently evaluate the latest TPM plan against intake and
+          project evidence. Do not rewrite it. Assess scope coverage, dependency
+          order, iteration cohesion, granularity, acceptance criteria,
+          testability, delivery risk and unnecessary splitting. For every
+          iteration explain complexity, affected areas, unknowns and test
+          effort; flag oversized bundles and fragments with no meaningful
+          verification outcome. In the summary provide a reasoned scorecard
+          (ready, concern, or blocking per dimension), specific evidence and
+          suggested corrections. Return planning-layer defects for actionable
+          weaknesses the TPM can fix; name affected iteration ids. Return
+          blocked for missing business decisions or evidence that a
+          single-iteration process is appropriate. Return succeeded only with no
+          unresolved findings. The TPM may refine and resubmit twice before
+          human escalation. Architecture feasibility receives a separate focused
+          review afterward.
+        access: read
+        when: always
+        config: {}
+    planningLoop:
+      plannerStage: iteration-planning
+      maxCycles: 3
+      minPlannedIterations: 2
+    requiresPlan: plan-iterations
+  - id: intake-readiness
+    name: Solution Architect focused architecture review
+    mode: sequential
+    steps:
+      - id: review-intake-readiness
+        agent: solution-architect
+        action: review-intake-readiness
+        instructions: "Review the complete TPM iteration plan for project-specific
+          architectural feasibility: technical boundaries, API and data
+          contracts, migrations, rollout, cross-cutting concerns and material
+          technical risks. Use source and architecture evidence. The independent
+          evaluator has already assessed planning mechanics; focus on
+          architecture. Return actionable planning-layer defects when the TPM
+          can incorporate corrections using available evidence. Those findings
+          receive one TPM revision, then proceed directly to the human gate
+          without repeating automated reviews. Return blocked for unresolved
+          technical or business decisions requiring human input. Return
+          succeeded if no corrections are needed. Do not reopen approved
+          allocation during subsequent iteration story planning."
+        access: read
+        when: always
+        config: {}
+    requiresPlan: plan-iterations
+    planRevision:
+      plannerStage: iteration-planning
+      returnStage: iteration-plan-approval
+  - id: iteration-plan-approval
+    name: Human iteration plan review
+    mode: review
+    steps: []
+    requiresPlan: plan-iterations
+    reviewPrompt: Review the latest iteration plan, evaluation and architecture
+      findings. Approve to start delivery, or send feedback to the TPM.
+      Revisions return directly to you without repeating automated reviews.
+    planApproval:
+      plannerStage: iteration-planning
+  - id: iterations
+    name: Execute planned iterations
+    mode: iterations
+    steps: []
+  - id: production-verification
+    name: Verify final production readiness
+    mode: sequential
+    steps:
+      - id: verify-production
+        agent: technical-architect
+        action: release-readiness
+        instructions: After every planned delivery iteration has passed its own review,
+          perform the project-native final production build and applicable
+          non-browser release checks once for this intake. This is not an
+          iteration check. Build output and verification reports may be created,
+          but do not modify application source, dependencies, deployment
+          configuration, or environment files. Report the exact checks and
+          evidence. A real non-zero exit, timeout, or unresolved verification
+          failure is a blocker.
+        access: write
+        when: always
+        config: {}
+  - id: solution-review
+    name: Review overall intake solution
+    mode: sequential
+    steps:
+      - id: review-solution
+        agent: solution-architect
+        action: review-intake-solution
+        instructions: Review the completed intake end to end across all delivery
+          iterations. Check requirements coverage, architecture, integration and
+          test evidence. Report unresolved issues as defects or blocked.
+        access: read
+        when: always
+        config: {}
+  - id: closure
+    name: Technical Project Manager intake closure
+    mode: sequential
+    steps:
+      - id: close
+        agent: technical-project-manager
+        action: close-intake
+        instructions: Close the intake only after the Solution Architect review passes.
+          Record delivered scope, story and iteration outcomes, test and review
+          evidence, decisions and any explicitly accepted limitations. Do not
+          deploy or publish.
+        access: write
+        when: always
+        config: {}
+iterationTemplate:
+  - id: planning
+    name: Plan iteration stories
+    mode: sequential
+    steps:
+      - id: plan
+        agent: scrum-master
+        action: plan-stories
+        instructions: Plan user stories for the current delivery iteration only (or the
+          narrow intake for single-iteration delivery). Translate the approved
+          iteration objective into actionable stories with explicit acceptance
+          criteria, including documentation placement and data-contract
+          boundaries when relevant. Record dependencies and keep every story
+          within the iteration objectives. Do not reopen the intake-wide TPM
+          iteration allocation for story-level refinements. Return an ordered
+          workItems array of 1 to 20 unique ids, titles and descriptions.
+        access: write
+        when: always
+        config: {}
+  - id: analysis
+    name: Elaborate stories and design tests
+    mode: parallel
+    steps:
+      - id: stories
+        agent: business-analyst
+        action: analyze
+        instructions: Elaborate every planned story in this iteration with requirements,
+          acceptance criteria and edge cases. Preserve planned story ids. Own
+          requirement artifacts; do not edit test-design artifacts.
+        access: write
+        when: always
+        config: {}
+      - id: test-design
+        agent: test-architect
+        action: design-tests
+        instructions: Create traceable test cases for all planned stories in this
+          iteration, including failure cases. Own test-design artifacts; do not
+          edit requirement artifacts. Work from the shared story plan.
+        access: write
+        when: always
+        config: {}
+  - id: scope-review
+    name: Review iteration readiness
+    mode: sequential
+    steps:
+      - id: scope
+        agent: technical-architect
+        action: review-iteration-scope
+        instructions: Review all current iteration stories, elaborated requirements and
+          test cases for consistency, feasibility and technical readiness. Bound
+          this review to current iteration objectives. Return planning-layer
+          defects only when the existing planner, analyst or test designer can
+          correct them from available evidence; the engine will send up to two
+          such repair cycles back automatically. Return blocked for missing
+          business input, wider architecture/technical decisions, safety
+          concerns, or unavailable prerequisites.
+        access: read
+        when: always
+        config: {}
+    remediationLoop:
+      repairStage: analysis
+      maxRepairs: 2
+  - id: delivery
+    name: Develop and test complete iteration
+    mode: iteration
+    steps:
+      - id: build
+        agent: full-stack-developer
+        action: implement
+        instructions: Implement every planned story in the current delivery iteration.
+          Follow the elaborated requirements, acceptance criteria and test
+          design. On remediation attempts fix the reported iteration test
+          defects and update regression tests.
+        access: write
+        when: always
+        config: {}
+      - id: test
+        agent: tester
+        action: test
+        instructions: After the developer completes all planned stories, execute
+          integrated, regression and acceptance tests for the complete
+          iteration. Report defects with evidence; never claim unexecuted tests
+          passed. Success requires every iteration objective to pass.
+        access: write
+        when: always
+        config: {}
+    exitWhen: testing.accepted
+    requiresPlan: plan-stories
+  - id: iteration-review
+    name: Technical Architect final iteration delivery review
+    mode: sequential
+    steps:
+      - id: review-delivery
+        agent: technical-architect
+        action: review-iteration-delivery
+        instructions: "After the complete iteration passes testing, review the delivery
+          end to end, including all stories, cross-story architecture,
+          integration and test evidence. Do not run a production build here:
+          final production readiness is verified once after all delivery
+          iterations. Return defects for corrections the developer and tester
+          can make within the approved scope; the engine sends these back for up
+          to two automatic repair and retest cycles. Return blocked with focused
+          decisions for changes to business intent, architecture, safety, scope
+          or acceptance criteria. Approve only when the iteration objectives are
+          satisfied."
+        access: read
+        when: always
+        config: {}
+    deliveryReviewLoop:
+      repairStage: delivery
+      maxRepairs: 2

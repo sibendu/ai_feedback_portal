@@ -1,0 +1,6 @@
+schemaVersion: 1
+id: plan-evaluator
+version: "1.0"
+baseRole: plan-evaluator
+promptFile: prompt.md
+config: {}

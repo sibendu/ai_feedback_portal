@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "next start",
     "test:e2e": "playwright test",
-    "postinstall": "prisma skills sync || exit 0"
+    "postinstall": "prisma skills sync || exit 0",
+    "sandcastle": "npx tsx .sandcastle/main.mts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
